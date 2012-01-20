@@ -331,12 +331,13 @@ function init_tree() {
 // Drag and Drop
 function init_DragDrop() {
 	$('#parts').sortable({  
+		items: '.draggable',
+		disabled: false,
 	    handle: '.prop_bar',  
 	    cursor: 'move',  
 	    placeholder: 'placeholder',  
 	    forcePlaceholderSize: true, 
 		revert: 100,
-	    //opacity: 0.4
 	    opacity: 1,
 		start: function(e, ui) {
 			$('.draggable').css('opacity', ".4");
@@ -345,12 +346,8 @@ function init_DragDrop() {
 		stop: function(e, ui) {
 			$('.draggable').css('opacity', "1");
 		}
-	    //containment: 'document'
-	})  
-	.disableSelection();
-}
-
- 
+	});  
+} 
 
 // Drop down main_actions
 function init_main_functions() {

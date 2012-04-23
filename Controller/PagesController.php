@@ -255,11 +255,11 @@ class PagesController extends Controller
         //add the specific data from the custom page
         $formbuilder->add('main', $page->getDefaultAdminType());
         $formbuilder->add('node', $node->getDefaultAdminType($this->container));
-        
+
         if(method_exists($page, "getExtraAdminTypes")){
         	foreach($page->getExtraAdminTypes() as $key => $admintype){
         		$formbuilder->add($key, $admintype);
-        	}	
+        	}
         }
 
         $bindingarray = array('node' => $node, 'main' => $page);
@@ -268,7 +268,7 @@ class PagesController extends Controller
         		$bindingarray[$key] = $page;
         	}
         }
-                
+
         $formbuilder->setData($bindingarray);
 
         //handle the pagepart functions (fetching, change form to reflect all fields, assigning data, etc...)
@@ -297,8 +297,11 @@ class PagesController extends Controller
             if ($this->get('security.context')->isGranted('ROLE_PERMISSIONMANAGER')) {
                 $permissionadmin->bindRequest($request);
             }
+
             if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
+                $em->flush(); // maybe more at the bottom of the if statement, what with the flush in PermissionAdmin->bindRequest?
+
+                $em = $this->getDoctrine()->getEntityManager(); // is this needed here? We already have the $em variable
 
                 $formValues = $request->request->get('form');
                 if(isset($formValues['node']['roles'])) {

@@ -58,7 +58,8 @@ class PermissionAdmin {
             }
             $this->em->persist($dbPermission);
         }
-        $this->em->flush();
+
+        // $this->em->flush(); // bind request is called in the editAction of pagescontroller, this flush command is called to soon, before we know the data is valid.
 
         return true;
     }

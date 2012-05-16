@@ -13,7 +13,7 @@
 
     <target name="linter" depends="beforescripts">
         <echo msg="Checking for syntax errors..." />
-        <phplint haltonfailure="true" deprecatedAsError="true">
+        <phplint haltonfailure="true" deprecatedAsError="true" level="debug">
             <fileset dir=".">
                 <patternset>
                     <include name="**/*.php"/>

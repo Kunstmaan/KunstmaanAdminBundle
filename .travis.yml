@@ -9,7 +9,7 @@ before_script:
     - pyrus install phing/phing
     - phpenv rehash
 
-script: phing
+script: phing -verbose
 
 
 notifications:

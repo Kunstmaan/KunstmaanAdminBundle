@@ -8,7 +8,9 @@ before_script:
     - pyrus channel-discover pear.phing.info
     - pyrus install phing/phing
     - phpenv rehash
-    - phing -verbose
+
+script: phing
+
 
 notifications:
   email:

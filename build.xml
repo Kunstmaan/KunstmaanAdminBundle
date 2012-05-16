@@ -24,5 +24,15 @@
         <echo msg="Done checking for syntax errors..." />
     </target>
 
+   <target name="phpunit" depends="linter">
+       <phpunit haltonfailure="true" haltonerror="true" printsummary="true"  bootstrap="vendor/autoload.php">
+           <formatter type="plain" usefile="false"/>
+           <batchtest>
+               <fileset dir="Tests">
+                   <include name="**/*Test*.php"/>
+               </fileset>
+           </batchtest>
+       </phpunit>
+   </target>
 
 </project>

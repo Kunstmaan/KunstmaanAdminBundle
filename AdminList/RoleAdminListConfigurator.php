@@ -42,4 +42,7 @@ class RoleAdminListConfigurator extends AbstractAdminListConfigurator{
     	);
     }
 
+    public function getIndexUrlFor() {
+    	return 'KunstmaanAdminBundle_settings_roles';
+    }
 }

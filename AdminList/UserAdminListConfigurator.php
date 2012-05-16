@@ -30,7 +30,6 @@ class UserAdminListConfigurator extends AbstractAdminListConfigurator{
     	return array(
     			'user' => array('path' => 'KunstmaanAdminBundle_settings_users_add', 'params'=> $params)
     	);
-
     }
 
     public function getEditUrlFor($item) {
@@ -50,5 +49,9 @@ class UserAdminListConfigurator extends AbstractAdminListConfigurator{
     			'action' => 'KunstmaanAdminBundle:Settings:deleteUser',
     			'path'   => 'KunstmaanAdminBundle_settings_users_delete'
 		);
+	}
+
+	public function getIndexUrlFor() {
+		return 'KunstmaanAdminBundle_settings_users';
 	}
 }

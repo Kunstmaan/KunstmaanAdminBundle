@@ -44,4 +44,8 @@ class GroupAdminListConfigurator extends AbstractAdminListConfigurator{
     			'path'   => 'KunstmaanAdminBundle_settings_groups_delete'
     	);
     }
+
+    public function getIndexUrlFor() {
+    	return 'KunstmaanAdminBundle_settings_groups';
+    }
 }

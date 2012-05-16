@@ -8,10 +8,6 @@ before_script:
     - curl -s http://getcomposer.org/installer | php
     - php composer.phar --dev install
 
-env:
-  - SYMFONY_VERSION=origin/2.0
-  - SYMFONY_VERSION=origin/master
-
 notifications:
   email:
     - travis@kunstmaan.be

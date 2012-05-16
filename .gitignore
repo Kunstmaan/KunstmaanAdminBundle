@@ -1,2 +1,5 @@
-
 .DS_Store
+.idea
+vendors/*
+composer.lock
+composer.phar

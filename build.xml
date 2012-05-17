@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="kunstmaanbundles" default="phpunit">
+<project name="kunstmaanbundles" default="linter">
 
     <target name="beforescripts">
         <echo msg="Running the before scripts..." />
@@ -13,7 +13,7 @@
 
     <target name="linter" depends="beforescripts">
         <echo msg="Checking for syntax errors..." />
-        <phplint haltonfailure="true" deprecatedAsError="true" level="debug">
+        <phplint haltonfailure="true" deprecatedAsError="true">
             <fileset dir=".">
                 <patternset>
                     <include name="**/*.php"/>
@@ -23,15 +23,5 @@
         </phplint>
         <echo msg="Done checking for syntax errors..." />
     </target>
-
-   <target name="phpunit" depends="linter">
-       <phpunit haltonfailure="true" haltonerror="true" printsummary="true"  bootstrap="vendor/autoload.php">
-           <batchtest>
-               <fileset dir="Tests">
-                   <include name="**/*Test*.php"/>
-               </fileset>
-           </batchtest>
-       </phpunit>
-   </target>
 
 </project>

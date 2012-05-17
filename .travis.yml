@@ -9,8 +9,7 @@ before_script:
     - pyrus install phing/phing
     - phpenv rehash
 
-script: phing -verbose
-
+script: phing -f build.xml phpunit
 
 notifications:
   email:

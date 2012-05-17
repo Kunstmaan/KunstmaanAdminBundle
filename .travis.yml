@@ -5,7 +5,9 @@ php:
   - 5.4
 
 before_script:
-    - pyrus channel-discover pear.netpirates.net pear.symfony.com pear.phpunit.de
+    - pyrus channel-discover pear.netpirates.net
+    - pyrus channel-discover pear.symfony.com
+    - pyrus channel-discover pear.phpunit.de
     - pyrus install pear.phpunit.de/hphpa
     - phpenv rehash
     - hphpa --checkstyle hphpa.xml .

@@ -21,6 +21,10 @@
     <filter>
         <whitelist>
             <directory>./</directory>
+            <exclude>
+                <directory>./Resources</directory>
+                <directory>./vendor</directory>
+            </exclude>
         </whitelist>
     </filter>
 

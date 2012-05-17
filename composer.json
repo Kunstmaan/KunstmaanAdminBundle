@@ -16,12 +16,21 @@
         {
             "type": "vcs",
             "url": "http://github.com/Kunstmaan/KunstmaanAdminListBundle"
+        },
+        {
+            "type": "vcs",
+            "url": "http://github.com/Kunstmaan/KunstmaanAdminNodeBundle"
         }
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.0.x-dev",
-        "kunstmaan/adminlist-bundle": "dev-master"
+        "doctrine/orm": "2.1.*",
+        "doctrine/doctrine-fixtures-bundle": "2.0.*",
+        "symfony/symfony": "2.0.*",
+        "friendsofsymfony/user-bundle": "1.2.*",
+        
+        "kunstmaan/adminlist-bundle": "dev-tests/setuptraviscomposer",
+        "kunstmaan/adminnode-bundle": "dev-tests/setuptraviscomposer"
     },
     "autoload": {
         "psr-0": { "Kunstmaan\\AdminBundle": "" }

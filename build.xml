@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="kunstmaanbundles" default="linter">
+<project name="kunstmaanbundles" default="full">
 
     <target name="beforescripts">
         <echo msg="Running the before scripts..." />
@@ -11,7 +11,7 @@
         <echo msg="Done running all the before scripts." />
     </target>
 
-    <target name="linter" depends="beforescripts">
+    <target name="linter">
         <echo msg="Checking for syntax errors..." />
         <phplint haltonfailure="true" deprecatedAsError="true">
             <fileset dir=".">
@@ -23,5 +23,7 @@
         </phplint>
         <echo msg="Done checking for syntax errors..." />
     </target>
+
+    <target name="full" depends="beforescripts,linter" />
 
 </project>

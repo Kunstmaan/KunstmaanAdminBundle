@@ -5,12 +5,10 @@ php:
   - 5.4
 
 before_script:
-    - pyrus channel-discover pear.netpirates.net
-    - pyrus channel-discover pear.symfony.com
-    - pyrus channel-discover pear.phpunit.de
-    - pyrus install pear.phpunit.de/hphpa
+    - pyrus channel-discover pear.phing.info
+    - pyrus install phing/phing
     - phpenv rehash
-    - hphpa --checkstyle hphpa.xml .
+    - phing -debug linter
     - curl -s http://getcomposer.org/installer | php
     - php composer.phar --dev install
 

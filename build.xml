@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="kunstmaanbundles" default="full">
+<project name="kunstmaanbundles" default="beforescripts">
 
     <target name="beforescripts">
         <echo msg="Running the before scripts..." />
@@ -10,20 +10,5 @@
         <exec command="php composer.phar --dev install" dir="." />
         <echo msg="Done running all the before scripts." />
     </target>
-
-    <target name="linter">
-        <echo msg="Checking for syntax errors..." />
-        <phplint haltonfailure="true" deprecatedAsError="true">
-            <fileset dir=".">
-                <patternset>
-                    <include name="**/*.php"/>
-                    <exclude name="vendor/**"/>
-                </patternset>
-            </fileset>
-        </phplint>
-        <echo msg="Done checking for syntax errors..." />
-    </target>
-
-    <target name="full" depends="beforescripts,linter" />
 
 </project>

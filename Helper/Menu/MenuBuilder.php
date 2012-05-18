@@ -1,5 +1,5 @@
 <?php
-// src/Acme/DemoBundle/Menu/Builder.php
+
 namespace Kunstmaan\AdminBundle\Helper\Menu;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -18,6 +18,8 @@ class MenuBuilder
     private $adaptors = array();
     private $topmenuitems = null;
 
+    private $currentCache = null;
+
     /**
      * @param FactoryInterface $factory
      */
@@ -27,14 +29,17 @@ class MenuBuilder
         $this->rootItem = $this->populateMenu($translator);
         $this->container = $container;
     }
-    
+
     public function addAdaptMenu(MenuAdaptorInterface $adaptor)
     {
         $this->adaptors[] = $adaptor;
     }
-    
+
     public function getCurrent()
     {
+        if ($this->currentCache !== null) {
+            return $this->currentCache;
+        }
         $active = null;
         do {
             $children = $this->getChildren($active);
@@ -47,6 +52,9 @@ class MenuBuilder
                 }
             }
         } while($foundActiveChild);
+
+        $this->currentCache = $active;
+
         return $active;
     }
     
@@ -77,21 +85,29 @@ class MenuBuilder
         if(is_null($this->topmenuitems)){
             $this->topmenuitems = array();
             foreach($this->adaptors as $menuadaptor){
-                $adaptions = $menuadaptor->adaptChildren($this, $this->topmenuitems, null, $request);
+                $menuadaptor->adaptChildren($this, $this->topmenuitems, null, $request);
             }
         }
         return $this->topmenuitems;
     }
     
     public function getChildren(MenuItem $parent = null){
+        if ($parent == null) {
+            return $this->getTopChildren();
+        }
         $request = $this->container->get('request');
         $result = array();
         foreach($this->adaptors as $menuadaptor){
-            $adaptions = $menuadaptor->adaptChildren($this, $result, $parent, $request);
+            $menuadaptor->adaptChildren($this, $result, $parent, $request);
         }
         return $result;
     }
 
+    /**
+     * @todo: clean this up, why the die?
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return null
+     */
     public function mainMenu(\Symfony\Component\HttpFoundation\Request $request)
     {
         die();
@@ -102,13 +118,18 @@ class MenuBuilder
         	case (stripos($request->attributes->get('_route'), "KunstmaanAdminBundle_settings") === 0):
         		$this->rootItem[$this->translator->trans('settings.title')]->setCurrent(true);
         		break;
-        }     
+        }
         foreach($this->extra as $menuadaptor){
         	$menuadaptor->setCurrent($this->rootItem, $this->translator, $request);
-        }   
+        }
         return $this->rootItem;*/
     }
 
+    /**
+     * @todo: can this be removed?
+     * @param \Symfony\Component\Translation\Translator $translator
+     * @return null
+     */
     public function populateMenu(Translator $translator){
         return null;
         /*$rootItem = $this->factory->createItem('root');

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: kris
- * Date: 15/11/11
- * Time: 22:23
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Kunstmaan\AdminBundle\AdminList;
 
@@ -36,6 +29,15 @@ class RoleAdminListConfigurator extends AbstractAdminListConfigurator{
 
     public function getAdminType($item) {
         return null;
+    }
+
+    public function getDeleteUrlFor($item) {
+        return array(
+            'path'      => 'KunstmaanAdminBundle_settings_roles_delete',
+            'params'    => array(
+                'role_id'    => $item->getId()
+            )
+        );
     }
 
     public function getRepositoryName() {

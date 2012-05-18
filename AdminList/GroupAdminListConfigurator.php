@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: kris
- * Date: 15/11/11
- * Time: 22:23
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Kunstmaan\AdminBundle\AdminList;
 
@@ -35,6 +28,15 @@ class GroupAdminListConfigurator extends AbstractAdminListConfigurator{
 
     public function getEditUrlFor($item) {
     	return array('path' => 'KunstmaanAdminBundle_settings_groups_edit', 'params' => array( 'group_id' => $item->getId()));
+    }
+
+    public function getDeleteUrlFor($item) {
+        return array(
+            'path'      => 'KunstmaanAdminBundle_settings_groups_delete',
+            'params'    => array(
+                'group_id'    => $item->getId()
+            )
+        );
     }
 
     public function getAdminType($item) {

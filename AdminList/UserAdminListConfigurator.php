@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: kris
- * Date: 15/11/11
- * Time: 22:23
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Kunstmaan\AdminBundle\AdminList;
 
@@ -46,6 +39,15 @@ class UserAdminListConfigurator extends AbstractAdminListConfigurator{
 
     public function getAdminType($item) {
         return null;
+    }
+
+    public function getDeleteUrlFor($item) {
+        return array(
+            'path'      => 'KunstmaanAdminBundle_settings_users_delete',
+            'params'    => array(
+                'user_id'    => $item->getId()
+            )
+        );
     }
 
     public function getRepositoryName() {

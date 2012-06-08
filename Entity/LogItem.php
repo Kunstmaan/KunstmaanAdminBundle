@@ -37,6 +37,7 @@ class LogItem
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $user;
 

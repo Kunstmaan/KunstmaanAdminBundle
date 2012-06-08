@@ -11,12 +11,13 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 class MenuBuilder
 {
-    private $rootItem;
     private $translator;
     private $extra;
     private $request;
     private $adaptors = array();
     private $topmenuitems = null;
+
+    private $currentCache = null;
 
     /**
      * @param FactoryInterface $factory
@@ -24,17 +25,19 @@ class MenuBuilder
     public function __construct(Translator $translator, ContainerInterface $container)
     {
         $this->translator = $translator;
-        $this->rootItem = $this->populateMenu($translator);
         $this->container = $container;
     }
-    
+
     public function addAdaptMenu(MenuAdaptorInterface $adaptor)
     {
         $this->adaptors[] = $adaptor;
     }
-    
+
     public function getCurrent()
     {
+        if ($this->currentCache !== null) {
+            return $this->currentCache;
+        }
         $active = null;
         do {
             $children = $this->getChildren($active);
@@ -47,6 +50,9 @@ class MenuBuilder
                 }
             }
         } while($foundActiveChild);
+
+        $this->currentCache = $active;
+
         return $active;
     }
     
@@ -95,40 +101,4 @@ class MenuBuilder
         return $result;
     }
 
-    /**
-     * @todo: clean this up, why the die?
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return null
-     */
-    public function mainMenu(\Symfony\Component\HttpFoundation\Request $request)
-    {
-        die();
-        $this->request = $request;
-        return null;
-        /*$this->rootItem->setCurrentUri($request->getRequestUri());
-        switch(true) {
-        	case (stripos($request->attributes->get('_route'), "KunstmaanAdminBundle_settings") === 0):
-        		$this->rootItem[$this->translator->trans('settings.title')]->setCurrent(true);
-        		break;
-        }
-        foreach($this->extra as $menuadaptor){
-        	$menuadaptor->setCurrent($this->rootItem, $this->translator, $request);
-        }
-        return $this->rootItem;*/
-    }
-
-    /**
-     * @todo: can this be removed?
-     * @param \Symfony\Component\Translation\Translator $translator
-     * @return null
-     */
-    public function populateMenu(Translator $translator){
-        return null;
-        /*$rootItem = $this->factory->createItem('root');
-        $rootItem->getRoot()->setChildrenAttribute('class', 'nav');
-
-        $rootItem->addChild($translator->trans('settings.title'), array( 'route' => 'KunstmaanAdminBundle_settings'));
-        
-        return $rootItem;*/
-    }
 }

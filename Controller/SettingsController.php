@@ -88,12 +88,12 @@ class SettingsController extends Controller
      * @Template()
      */
     public function edituserAction($user_id) {
+        
     	$em = $this->getDoctrine()->getEntityManager();
 
     	$request = $this->getRequest();
     	$helper = $em->getRepository('KunstmaanAdminBundle:User')->getUser($user_id, $em);
     	$form = $this->createForm(new UserType($this->container), $helper, array('password_required' => false));
-
     	if ('POST' == $request->getMethod()) {
     		$form->bindRequest($request);
     		if ($form->isValid()){

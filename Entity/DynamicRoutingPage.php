@@ -1,19 +1,26 @@
 <?php
+
 namespace Kunstmaan\AdminBundle\Entity;
 
+use Kunstmaan\AdminNodeBundle\Entity\AbstractPage;
 use Kunstmaan\AdminBundle\Helper\Routing\DynamicUrlMatcher;
 
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-abstract class DynamicRoutingPage implements DynamicRoutingPageInterface
+abstract class DynamicRoutingPage extends AbstractPage implements DynamicRoutingPageInterface
 {
-    private $routes = null;
+    private $routes = NULL;
+    private $context;
+    private $matcher;
+    private $generator;
+    protected $locale;
     
     /**
      * Routes should be defined here
@@ -24,7 +31,7 @@ abstract class DynamicRoutingPage implements DynamicRoutingPageInterface
             $this->routes = new RouteCollection();
         }
     }
-    
+
     /**
      * Set routing collection
      *
@@ -42,26 +49,68 @@ abstract class DynamicRoutingPage implements DynamicRoutingPageInterface
      */
     public function getRoutes()
     {
+        if (!$this->routes) {
+            $this->initRoutes();
+        }
         return $this->routes;
     }
-    
+
     /**
      * Match slug against route collection
      *
      * @param string $slug
-     * @param string $prefix Optional prefix for routes
      * @return array|false Matching controller info
      */
-    public function match($slug, $prefix = '')
+    public function match($slug)
     {
-        $this->initRoutes();
-        if (!empty($prefix)) {
-            $this->routes->addPrefix('/' . $prefix);
-        }
-        $context = new RequestContext();
-        $matcher = new DynamicUrlMatcher($this->routes, $context);
-        $result = $matcher->match('/' . $slug);
+        return $this->getMatcher()->match($slug);
+    }
 
-        return $result;
+    public function generate($name, $parameters = array(), $absolute = FALSE)
+    {
+        return $this->getGenerator()->generate($name, $parameters, $absolute);
+    }
+
+    /**
+     * @return RequestContext
+     */
+    public function getContext()
+    {
+        if (!$this->context) {
+            $this->context = new RequestContext();
+        }
+        return $this->context;
+    }
+
+    /**
+     * @return DynamicUrlMatcher
+     */
+    public function getMatcher()
+    {
+        if (!$this->matcher) {
+            $this->matcher = new DynamicUrlMatcher($this->getRoutes(), $this->getContext());
+        }
+        return $this->matcher;
+    }
+
+    /**
+     * @return UrlGenerator
+     */
+    public function getGenerator()
+    {
+        if (!$this->generator) {
+            $this->generator = new UrlGenerator($this->getRoutes(), $this->getContext());
+        }
+        return $this->generator;
+    }
+
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    public function getLocale()
+    {
+        return $this->locale;
     }
 }

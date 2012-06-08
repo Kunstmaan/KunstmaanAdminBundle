@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Kunstmaan\AdminBundle\Form\EventListener\AddUserNameFieldSubscriber; 
 
 class UserType extends AbstractType
 {
@@ -30,10 +31,12 @@ class UserType extends AbstractType
     			}
     		}
     	}*/
-    	    	
-        $builder->add('username', null, array(
-                'invalid_message' => "This value is already used",
-                ));
+    	
+        //This is an event used to add the username, based on if it is a new user or an existing user that 
+        //is being edited, the username field will be read only or not. 
+        $subscriber = new AddUserNameFieldSubscriber($builder->getFormFactory());
+        $builder->addEventSubscriber($subscriber); 
+        
         $builder->add('plainPassword', 'repeated', array(
                 'type' => 'password',
                 'required' => $options['password_required'],

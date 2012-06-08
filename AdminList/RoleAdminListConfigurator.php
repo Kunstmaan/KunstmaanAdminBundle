@@ -44,4 +44,14 @@ class RoleAdminListConfigurator extends AbstractAdminListConfigurator{
         return 'KunstmaanAdminBundle:Role';
     }
 
+    public function getDeleteUrlFor($item) {
+    	return array(
+    			'action' => 'KunstmaanAdminBundle:Settings:deleteRole',
+    			'path'   => 'KunstmaanAdminBundle_settings_roles_delete'
+    	);
+    }
+
+    public function getIndexUrlFor() {
+    	return 'KunstmaanAdminBundle_settings_roles';
+    }
 }

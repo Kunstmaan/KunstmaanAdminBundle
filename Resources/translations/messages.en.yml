@@ -68,6 +68,8 @@ form:
   updatedat: Updated At
   actions: Actions
   addfilter: Add filter
+  modal:
+    delete: Are you sure you want to delete this item?
     
 omnext:
   home: Home

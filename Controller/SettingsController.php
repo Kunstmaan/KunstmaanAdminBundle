@@ -21,6 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class SettingsController extends Controller
 {
+
 	/**
 	 * @Route("/", name="KunstmaanAdminBundle_settings")
 	 * @Template()
@@ -31,7 +32,7 @@ class SettingsController extends Controller
     	$request = $this->getRequest();
     	$adminlist = $this->get("adminlist.factory")->createList(new UserAdminListConfigurator(), $em);
     	$adminlist->bindRequest($request);
-    	
+
     	return array(
     			'useradminlist' => $adminlist
     	);
@@ -51,7 +52,7 @@ class SettingsController extends Controller
             'adminlist' => $adminlist,
         );
     }
-    
+
     /**
      * @Route("/users/add", name="KunstmaanAdminBundle_settings_users_add")
      * @Method({"GET", "POST"})
@@ -59,19 +60,19 @@ class SettingsController extends Controller
      */
     public function adduserAction() {
     	$em = $this->getDoctrine()->getEntityManager();
-    	
+
     	$request = $this->getRequest();
     	$helper = new User();
     	$form = $this->createForm(new UserType($this->container), $helper, array('password_required' => true));
-    	
+
     	if ('POST' == $request->getMethod()) {
     		$form->bindRequest($request);
     		if ($form->isValid()){
     			$em->persist($helper);
     			$em->flush();
     			$manipulator = $this->get('fos_user.util.user_manipulator');
-    			$manipulator->changePassword($helper->getUsername(), $helper->getPlainpassword());	
-    				
+    			$manipulator->changePassword($helper->getUsername(), $helper->getPlainpassword());
+
     			return new RedirectResponse($this->generateUrl('KunstmaanAdminBundle_settings_users'));
     		}
     	}
@@ -80,7 +81,7 @@ class SettingsController extends Controller
     			'form' => $form->createView(),
     	);
     }
-    
+
     /**
      * @Route("/users/{user_id}/edit", requirements={"user_id" = "\d+"}, name="KunstmaanAdminBundle_settings_users_edit")
      * @Method({"GET", "POST"})
@@ -88,11 +89,11 @@ class SettingsController extends Controller
      */
     public function edituserAction($user_id) {
     	$em = $this->getDoctrine()->getEntityManager();
-    
+
     	$request = $this->getRequest();
     	$helper = $em->getRepository('KunstmaanAdminBundle:User')->getUser($user_id, $em);
     	$form = $this->createForm(new UserType($this->container), $helper, array('password_required' => false));
-    	
+
     	if ('POST' == $request->getMethod()) {
     		$form->bindRequest($request);
     		if ($form->isValid()){
@@ -106,30 +107,12 @@ class SettingsController extends Controller
     			return new RedirectResponse($this->generateUrl('KunstmaanAdminBundle_settings_users'));
     		}
     	}
-    
+
     	return array(
     			'form' => $form->createView(),
     			'user' => $helper
     	);
     }
-
-    /**
-     * @Route("/users/{user_id}/delete", requirements={"user_id" = "\d+"}, name="KunstmaanAdminBundle_settings_users_delete")
-     * @Method({"GET", "POST"})
-     */
-    public function deleteuserAction($user_id) {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $repo = $em->getRepository('KunstmaanAdminBundle:User');
-        $item = $repo->find($user_id);
-        if (!is_null($item)) {
-            $em->remove($item);
-            $em->flush();
-        }
-
-        return new RedirectResponse($this->generateUrl('KunstmaanAdminBundle_settings_users'));
-    }
-
 
     /**
      * @Route("/groups", name="KunstmaanAdminBundle_settings_groups")
@@ -200,25 +183,6 @@ class SettingsController extends Controller
     }
 
     /**
-     * @Route("/groups/{group_id}/delete", requirements={"group_id" = "\d+"}, name="KunstmaanAdminBundle_settings_groups_delete")
-     * @Method({"GET", "POST"})
-     * @Template()
-     */
-    public function deletegroupAction($group_id) {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $repo = $em->getRepository('KunstmaanAdminBundle:Group');
-        $item = $repo->find($group_id);
-        if (!is_null($item)) {
-            $em->remove($item);
-            $em->flush();
-        }
-
-        return new RedirectResponse($this->generateUrl('KunstmaanAdminBundle_settings_groups'));
-    }
-
-    
-    /**
      * @Route("/searches", name="KunstmaanAdminBundle_settings_searches")
      * @Template("KunstmaanAdminListBundle:Default:list.html.twig")
      */
@@ -227,12 +191,12 @@ class SettingsController extends Controller
     	$request = $this->getRequest();
     	$adminlist = $this->get("adminlist.factory")->createList(new SearchedForAdminListConfigurator(), $em);
     	$adminlist->bindRequest($request);
-    
+
     	return array(
     			'adminlist' => $adminlist,
     	);
     }
-    
+
     /**
      * @Route("/logs", name="KunstmaanAdminBundle_settings_logs")
      * @Template("KunstmaanAdminListBundle:Default:list.html.twig")
@@ -242,12 +206,12 @@ class SettingsController extends Controller
     	$request = $this->getRequest();
     	$adminlist = $this->get("adminlist.factory")->createList(new LogAdminListConfigurator(), $em);
     	$adminlist->bindRequest($request);
-    
+
     	return array(
     			'adminlist' => $adminlist,
     	);
     }
-    
+
     /**
      * @Route("/roles", name="KunstmaanAdminBundle_settings_roles")
      * @Template("KunstmaanAdminListBundle:Default:list.html.twig")
@@ -316,21 +280,62 @@ class SettingsController extends Controller
         );
     }
 
+
     /**
-     * @Route("/roles/{role_id}/delete", requirements={"role_id" = "\d+"}, name="KunstmaanAdminBundle_settings_roles_delete")
+     * @Route("/user/{entity_id}/delete", requirements={"entity_id" = "\d+"}, name="KunstmaanAdminBundle_settings_users_delete")
      * @Method({"GET", "POST"})
+     * @Template("KunstmaanAdminListBundle:Default:delete.html.twig")
      */
-    public function deleteroleAction($role_id) {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $repo = $em->getRepository('KunstmaanAdminBundle:Role');
-        $item = $repo->find($role_id);
-        if (!is_null($item)) {
-            $em->remove($item);
-            $em->flush();
-        }
-
-        return new RedirectResponse($this->generateUrl('KunstmaanAdminBundle_settings_roles'));
+    public function deleteUserAction($entity_id) {
+    	return $this->handleDelete($entity_id, new UserAdminListConfigurator(), 'KunstmaanAdminBundle_settings_users');
     }
 
+    /**
+     * @Route("/role/{entity_id}/delete", requirements={"entity_id" = "\d+"}, name="KunstmaanAdminBundle_settings_roles_delete")
+     * @Method({"GET", "POST"})
+     * @Template("KunstmaanAdminListBundle:Default:delete.html.twig")
+     */
+    public function deleteRoleAction($entity_id) {
+    	return $this->handleDelete($entity_id, new RoleAdminListConfigurator(), 'KunstmaanAdminBundle_settings_roles');
+    }
+
+    /**
+     * @Route("/group/{entity_id}/delete", requirements={"entity_id" = "\d+"}, name="KunstmaanAdminBundle_settings_groups_delete")
+     * @Method({"GET", "POST"})
+     * @Template("KunstmaanAdminListBundle:Default:delete.html.twig")
+     */
+    public function deleteGroupAction($entity_id) {
+    	return $this->handleDelete($entity_id, new GroupAdminListConfigurator(), 'KunstmaanAdminBundle_settings_groups');
+    }
+
+    /**
+     * @param integer $entity_id
+     * @param Kunstmaan\AdminListBundle\AdminList\AbstractAdminListConfigurator $adminListConfigurator
+     * @param string $returnPath
+     * @throws NotFoundHttpException
+     */
+    protected function handleDelete($entity_id, $adminListConfigurator, $returnPath) {
+
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$request = $this->getRequest();
+    	$helper = $em->getRepository($adminListConfigurator->getRepositoryName())->findOneById($entity_id);
+    	if ($helper == null) {
+    		throw new NotFoundHttpException("Entity not found.");
+    	}
+    	$form = $this->createFormBuilder($helper)->add('id', "hidden")->getForm();
+
+    	if ('POST' == $request->getMethod()) {
+    		$form->bindRequest($request);
+    		if ($form->isValid()) {
+    			$em->remove($helper);
+    			$em->flush();
+    			return new RedirectResponse($this->generateUrl($returnPath));
+    		}
+    	}
+    	return array(
+    			'form' => $form->createView(),
+    			'entity' => $helper,
+    			'adminlistconfiguration' => $adminListConfigurator
+    	);
+    }
 }

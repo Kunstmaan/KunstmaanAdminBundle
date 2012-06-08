@@ -46,4 +46,15 @@ class GroupAdminListConfigurator extends AbstractAdminListConfigurator{
     public function getRepositoryName() {
         return 'KunstmaanAdminBundle:Group';
     }
+
+    public function getDeleteUrlFor($item) {
+    	return array(
+    			'action' => 'KunstmaanAdminBundle:Settings:deleteGroup',
+    			'path'   => 'KunstmaanAdminBundle_settings_groups_delete'
+    	);
+    }
+
+    public function getIndexUrlFor() {
+    	return 'KunstmaanAdminBundle_settings_groups';
+    }
 }

@@ -31,12 +31,16 @@ class UserType extends AbstractType
     		}
     	}*/
     	    	
-        $builder->add('username');
+        $builder->add('username', null, array(
+                'invalid_message' => "This value is already used",
+                ));
         $builder->add('plainPassword', 'repeated', array(
                 'type' => 'password',
                 'required' => $options['password_required'],
             	'invalid_message' => "The passwords don't match!"));
-        $builder->add('email');
+        $builder->add('email', null, array(
+                'invalid_message' => "This value is already used")
+                );
         $builder->add('enabled', 'checkbox', array('required' => false));
         $builder->add('groups', null, array(
             'expanded'  => false //change to true to expand to checkboxes

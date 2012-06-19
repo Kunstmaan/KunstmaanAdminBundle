@@ -17,28 +17,29 @@ class RoleAdminListConfigurator extends AbstractAdminListConfigurator{
     	$this->addField("role", "Role", true);
     }
 
+	public function getAdminType($item) {
+		return null;
+	}
+
     public function getAddUrlFor($params=array()) {
     	return array(
-            'role' => array('path' => 'KunstmaanAdminBundle_settings_roles_add', 'params' => $params)
+            'role' => array(
+				'path' => 'KunstmaanAdminBundle_settings_roles_add', 'params' => $params
+			)
     	);
     }
 
     public function getEditUrlFor($item) {
-    	return array('path' => 'KunstmaanAdminBundle_settings_roles_edit', 'params' => array('role_id' => $item->getId()));
-    }
-
-    public function getIndexUrlFor()
-    {
-        return array('path' => 'KunstmaanAdminBundle_settings_roles');
-    }
-
-    public function getAdminType($item) {
-        return null;
+    	return array(
+			'path' => 'KunstmaanAdminBundle_settings_roles_edit',
+			'params' => array('role_id' => $item->getId())
+		);
     }
 
     public function getDeleteUrlFor($item) {
         return array(
-            'path'      => 'KunstmaanAdminBundle_settings_roles_delete',
+			'action'	=> 'KunstmaanAdminBundle:Settings:deleteRole',
+			'path'      => 'KunstmaanAdminBundle_settings_roles_delete',
             'params'    => array(
                 'role_id'    => $item->getId()
             )
@@ -47,13 +48,6 @@ class RoleAdminListConfigurator extends AbstractAdminListConfigurator{
 
     public function getRepositoryName() {
         return 'KunstmaanAdminBundle:Role';
-    }
-
-    public function getDeleteUrlFor($item) {
-    	return array(
-    			'action' => 'KunstmaanAdminBundle:Settings:deleteRole',
-    			'path'   => 'KunstmaanAdminBundle_settings_roles_delete'
-    	);
     }
 
     public function getIndexUrlFor() {

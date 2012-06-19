@@ -26,28 +26,30 @@ class UserAdminListConfigurator extends AbstractAdminListConfigurator{
     	$this->addField("groups", "Groups", false);
     }
 
+	public function getAdminType($item) {
+		return null;
+	}
+
     public function getAddUrlFor($params=array()) {
     	return array(
-    			'user' => array('path' => 'KunstmaanAdminBundle_settings_users_add', 'params'=> $params)
+			'user' => array(
+				'path' => 'KunstmaanAdminBundle_settings_users_add',
+				'params'=> $params
+			)
     	);
     }
 
     public function getEditUrlFor($item) {
-    	return array('path' => 'KunstmaanAdminBundle_settings_users_edit', 'params' => array( 'user_id' => $item->getId()));
-    }
-
-    public function getIndexUrlFor()
-    {
-        return array('path' => 'KunstmaanAdminBundle_settings_users');
-    }
-
-    public function getAdminType($item) {
-        return null;
+    	return array(
+			'path' => 'KunstmaanAdminBundle_settings_users_edit',
+			'params' => array( 'user_id' => $item->getId())
+		);
     }
 
     public function getDeleteUrlFor($item) {
         return array(
-            'path'      => 'KunstmaanAdminBundle_settings_users_delete',
+			'action'	=> 'KunstmaanAdminBundle:Settings:deleteUser',
+			'path'      => 'KunstmaanAdminBundle_settings_users_delete',
             'params'    => array(
                 'user_id'    => $item->getId()
             )
@@ -57,13 +59,6 @@ class UserAdminListConfigurator extends AbstractAdminListConfigurator{
     public function getRepositoryName() {
         return 'KunstmaanAdminBundle:User';
     }
-
-	public function getDeleteUrlFor($item) {
-		return array(
-    			'action' => 'KunstmaanAdminBundle:Settings:deleteUser',
-    			'path'   => 'KunstmaanAdminBundle_settings_users_delete'
-		);
-	}
 
 	public function getIndexUrlFor() {
 		return 'KunstmaanAdminBundle_settings_users';

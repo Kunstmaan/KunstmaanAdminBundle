@@ -21,23 +21,24 @@ class GroupAdminListConfigurator extends AbstractAdminListConfigurator{
 
     public function getAddUrlFor($params=array()) {
     	return array(
-    			'group' => array('path' => 'KunstmaanAdminBundle_settings_groups_add', 'params'=> $params)
+    		'group' => array(
+				'path' => 'KunstmaanAdminBundle_settings_groups_add', 'params'=> $params
+			)
     	);
 
     }
 
     public function getEditUrlFor($item) {
-    	return array('path' => 'KunstmaanAdminBundle_settings_groups_edit', 'params' => array( 'group_id' => $item->getId()));
-    }
-
-    public function getIndexUrlFor()
-    {
-        return array('path' => 'KunstmaanAdminBundle_settings_groups');
+    	return array(
+			'path' => 'KunstmaanAdminBundle_settings_groups_edit',
+			'params' => array( 'group_id' => $item->getId())
+		);
     }
 
     public function getDeleteUrlFor($item) {
         return array(
-            'path'      => 'KunstmaanAdminBundle_settings_groups_delete',
+			'action' => 'KunstmaanAdminBundle:Settings:deleteGroup',
+			'path'      => 'KunstmaanAdminBundle_settings_groups_delete',
             'params'    => array(
                 'group_id'    => $item->getId()
             )
@@ -50,13 +51,6 @@ class GroupAdminListConfigurator extends AbstractAdminListConfigurator{
 
     public function getRepositoryName() {
         return 'KunstmaanAdminBundle:Group';
-    }
-
-    public function getDeleteUrlFor($item) {
-    	return array(
-    			'action' => 'KunstmaanAdminBundle:Settings:deleteGroup',
-    			'path'   => 'KunstmaanAdminBundle_settings_groups_delete'
-    	);
     }
 
     public function getIndexUrlFor() {

@@ -40,11 +40,6 @@ class LogAdminListConfigurator extends AbstractAdminListConfigurator{
     	return array();
     }
 
-    public function getIndexUrlFor()
-    {
-        return array('path' => 'KunstmaanAdminBundle_settings_logs');
-    }
-
     public function getDeleteUrlFor($item) {
         return array();
     }
@@ -59,13 +54,6 @@ class LogAdminListConfigurator extends AbstractAdminListConfigurator{
 
     public function getRepositoryName() {
         return 'KunstmaanAdminBundle:LogItem';
-    }
-
-    public function getDeleteUrlFor($item) {
-    	return array(
-    			'action' => null,
-    			'path'   => null
-    	);
     }
 
     public function getIndexUrlFor() {

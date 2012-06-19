@@ -54,6 +54,6 @@ class GroupAdminListConfigurator extends AbstractAdminListConfigurator{
     }
 
     public function getIndexUrlFor() {
-    	return 'KunstmaanAdminBundle_settings_groups';
+    	return array('path' => 'KunstmaanAdminBundle_settings_groups');
     }
 }

@@ -61,6 +61,6 @@ class UserAdminListConfigurator extends AbstractAdminListConfigurator{
     }
 
 	public function getIndexUrlFor() {
-		return 'KunstmaanAdminBundle_settings_users';
+		return array('path' => 'KunstmaanAdminBundle_settings_users');
 	}
 }

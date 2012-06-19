@@ -57,6 +57,6 @@ class LogAdminListConfigurator extends AbstractAdminListConfigurator{
     }
 
     public function getIndexUrlFor() {
-    	return 'KunstmaanAdminBundle_settings_logs';
+    	return array('path' => 'KunstmaanAdminBundle_settings_logs');
     }
 }

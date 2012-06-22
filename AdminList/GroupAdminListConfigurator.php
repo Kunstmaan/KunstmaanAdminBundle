@@ -40,7 +40,7 @@ class GroupAdminListConfigurator extends AbstractAdminListConfigurator{
 			'action' => 'KunstmaanAdminBundle:Settings:deleteGroup',
 			'path'      => 'KunstmaanAdminBundle_settings_groups_delete',
             'params'    => array(
-                'group_id'    => $item->getId()
+                'entity_id'    => $item->getId()
             )
         );
     }

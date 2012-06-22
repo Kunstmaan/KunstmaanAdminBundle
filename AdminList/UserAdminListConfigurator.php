@@ -51,7 +51,7 @@ class UserAdminListConfigurator extends AbstractAdminListConfigurator{
 			'action'	=> 'KunstmaanAdminBundle:Settings:deleteUser',
 			'path'      => 'KunstmaanAdminBundle_settings_users_delete',
             'params'    => array(
-                'user_id'    => $item->getId()
+                'entity_id'    => $item->getId()
             )
         );
     }

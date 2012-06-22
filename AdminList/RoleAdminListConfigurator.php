@@ -41,7 +41,7 @@ class RoleAdminListConfigurator extends AbstractAdminListConfigurator{
 			'action'	=> 'KunstmaanAdminBundle:Settings:deleteRole',
 			'path'      => 'KunstmaanAdminBundle_settings_roles_delete',
             'params'    => array(
-                'role_id'    => $item->getId()
+                'entity_id'    => $item->getId()
             )
         );
     }

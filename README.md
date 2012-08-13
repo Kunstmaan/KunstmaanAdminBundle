@@ -27,7 +27,7 @@ Installation is straightforward, add the following lines to your deps file:
 Register the Kunstmaan namespace in your autoload.php file:
 
 ```
-'Kunstmaan'        => __DIR__.'/../vendor/bundles'
+'Kunstmaan'      => __DIR__.'/../vendor/bundles'
 ```
 
 Add the KunstmaanAdminBundle to your AppKernel.php file:

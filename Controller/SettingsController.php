@@ -2,7 +2,6 @@
 
 namespace Kunstmaan\AdminBundle\Controller;
 
-use Kunstmaan\SearchBundle\AdminList\SearchedForAdminListConfigurator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Kunstmaan\AdminBundle\Entity\User;
 use Kunstmaan\AdminBundle\Entity\Group;
@@ -39,15 +38,7 @@ class SettingsController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-        /* @var AdminList $adminList */
-        $adminList = $this->get("kunstmaan_adminlist.factory")->createList(new UserAdminListConfigurator(), $em);
-        $adminList->bindRequest($request);
-
-        return array(
-            'useradminlist' => $adminList
-        );
+        return array();
     }
 
     /**
@@ -63,7 +54,7 @@ class SettingsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         /* @var AdminList $adminList */
-        $adminList = $this->get("kunstmaan_adminlist.factory")->createList(new UserAdminListConfigurator(), $em);
+        $adminList = $this->get("kunstmaan_adminlist.factory")->createList(new UserAdminListConfigurator($em));
         $adminList->bindRequest($request);
 
         return array(
@@ -109,20 +100,20 @@ class SettingsController extends Controller
     /**
      * Edit a user
      *
-     * @param int $userId
+     * @param int $id
      *
-     * @Route("/users/{userId}/edit", requirements={"userId" = "\d+"}, name="KunstmaanAdminBundle_settings_users_edit")
+     * @Route("/users/{id}/edit", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_settings_users_edit")
      * @Method({"GET", "POST"})
      * @Template()
      *
      * @return array
      */
-    public function editUserAction($userId)
+    public function editUserAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         /* @var User $user */
-        $user = $em->getRepository('KunstmaanAdminBundle:User')->find($userId);
+        $user = $em->getRepository('KunstmaanAdminBundle:User')->find($id);
 
         $form = $this->createForm(new UserType(), $user, array('password_required' => false));
 
@@ -150,18 +141,18 @@ class SettingsController extends Controller
     /**
      * Delete a user
      *
-     * @param int $userId
+     * @param int $id
      *
-     * @Route("/users/{userId}/delete", requirements={"userId" = "\d+"}, name="KunstmaanAdminBundle_settings_users_delete")
+     * @Route("/users/{id}/delete", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_settings_users_delete")
      * @Method({"GET", "POST"})
      *
      * @return array
      */
-    public function deleteUserAction($userId)
+    public function deleteUserAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         /* @var User $user */
-        $user = $em->getRepository('KunstmaanAdminBundle:User')->find($userId);
+        $user = $em->getRepository('KunstmaanAdminBundle:User')->find($id);
         if (!is_null($user)) {
             $em->remove($user);
             $em->flush();
@@ -183,7 +174,7 @@ class SettingsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         /* @var AdminList $adminlist */
-        $adminlist = $this->get("kunstmaan_adminlist.factory")->createList(new GroupAdminListConfigurator(), $em);
+        $adminlist = $this->get("kunstmaan_adminlist.factory")->createList(new GroupAdminListConfigurator($em));
         $adminlist->bindRequest($request);
 
         return array(
@@ -225,20 +216,20 @@ class SettingsController extends Controller
     /**
      * Edit a group
      *
-     * @param int $groupId
+     * @param int $id
      *
-     * @Route("/groups/{groupId}/edit", requirements={"groupId" = "\d+"}, name="KunstmaanAdminBundle_settings_groups_edit")
+     * @Route("/groups/{id}/edit", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_settings_groups_edit")
      * @Method({"GET", "POST"})
      * @Template()
      *
      * @return array
      */
-    public function editGroupAction($groupId)
+    public function editGroupAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         /* @var Group $group */
-        $group = $em->getRepository('KunstmaanAdminBundle:Group')->find($groupId);
+        $group = $em->getRepository('KunstmaanAdminBundle:Group')->find($id);
         $form = $this->createForm(new GroupType(), $group);
 
         if ('POST' == $request->getMethod()) {
@@ -260,47 +251,24 @@ class SettingsController extends Controller
     /**
      * Delete a group
      *
-     * @param int $groupId
+     * @param int $id
      *
-     * @Route("/groups/{groupId}/delete", requirements={"groupId" = "\d+"}, name="KunstmaanAdminBundle_settings_groups_delete")
+     * @Route("/groups/{id}/delete", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_settings_groups_delete")
      * @Method({"GET", "POST"})
      * @Template()
      *
      * @return RedirectResponse
      */
-    public function deleteGroupAction($groupId)
+    public function deleteGroupAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $group = $em->getRepository('KunstmaanAdminBundle:Group')->find($groupId);
+        $group = $em->getRepository('KunstmaanAdminBundle:Group')->find($id);
         if (!is_null($group)) {
             $em->remove($group);
             $em->flush();
         }
 
         return new RedirectResponse($this->generateUrl('KunstmaanAdminBundle_settings_groups'));
-    }
-
-    /**
-     * Display searches
-     *
-     * @Route   ("/searches", name="KunstmaanAdminBundle_settings_searches")
-     * @Template("KunstmaanAdminListBundle:Default:list.html.twig")
-     *
-     * @todo This method should be moved to KunstmaanSearchBundle & injected into the menu
-     *
-     * @return array
-     */
-    public function searchesAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
-        /* @var AdminList $adminlist */
-        $adminlist = $this->get("kunstmaan_adminlist.factory")->createList(new SearchedForAdminListConfigurator(), $em);
-        $adminlist->bindRequest($request);
-
-        return array(
-            'adminlist' => $adminlist,
-        );
     }
 
     /**
@@ -316,7 +284,7 @@ class SettingsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         /* @var AdminList $adminlist */
-        $adminlist = $this->get("kunstmaan_adminlist.factory")->createList(new LogAdminListConfigurator(), $em);
+        $adminlist = $this->get("kunstmaan_adminlist.factory")->createList(new LogAdminListConfigurator($em));
         $adminlist->bindRequest($request);
 
         return array(
@@ -337,7 +305,7 @@ class SettingsController extends Controller
         $em        = $this->getDoctrine()->getManager();
         $request   = $this->getRequest();
         /* @var AdminList $adminlist */
-        $adminlist = $this->get("kunstmaan_adminlist.factory")->createList(new RoleAdminListConfigurator(), $em);
+        $adminlist = $this->get("kunstmaan_adminlist.factory")->createList(new RoleAdminListConfigurator($em));
         $adminlist->bindRequest($request);
 
         return array(
@@ -379,20 +347,20 @@ class SettingsController extends Controller
     /**
      * Edit a role
      *
-     * @param int $roleId
+     * @param int $id
      *
-     * @Route("/roles/{roleId}/edit", requirements={"roleId" = "\d+"}, name="KunstmaanAdminBundle_settings_roles_edit")
+     * @Route("/roles/{id}/edit", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_settings_roles_edit")
      * @Method({"GET", "POST"})
      * @Template()
      *
      * @return array|RedirectResponse
      */
-    public function editRoleAction($roleId)
+    public function editRoleAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $request = $this->getRequest();
         /* @var Role $role */
-        $role = $em->getRepository('KunstmaanAdminBundle:Role')->find($roleId);
+        $role = $em->getRepository('KunstmaanAdminBundle:Role')->find($id);
         $form = $this->createForm(new RoleType(), $role);
 
         if ('POST' == $request->getMethod()) {
@@ -414,18 +382,18 @@ class SettingsController extends Controller
     /**
      * Delete a role
      *
-     * @param int $roleId
+     * @param int $id
      *
-     * @Route ("/roles/{roleId}/delete", requirements={"roleId" = "\d+"}, name="KunstmaanAdminBundle_settings_roles_delete")
+     * @Route ("/roles/{id}/delete", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_settings_roles_delete")
      * @Method({"GET", "POST"})
      *
      * @return RedirectResponse
      */
-    public function deleteRoleAction($roleId)
+    public function deleteRoleAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         /* @var Role $role */
-        $role = $em->getRepository('KunstmaanAdminBundle:Role')->find($roleId);
+        $role = $em->getRepository('KunstmaanAdminBundle:Role')->find($id);
         if (!is_null($role)) {
             $em->remove($role);
             $em->flush();

@@ -8,7 +8,7 @@ namespace Kunstmaan\AdminBundle\Helper\Menu;
 class MenuItem
 {
     /**
-     * @var MenuBuilder
+     * @var OldMenuBuilder
      */
     private $menu;
 
@@ -65,9 +65,9 @@ class MenuItem
     /**
      * Construct the MenuItem
      *
-     * @param MenuBuilder $menu
+     * @param OldMenuBuilder $menu
      */
-    public function __construct(MenuBuilder $menu)
+    public function __construct(OldMenuBuilder $menu)
     {
         $this->menu = $menu;
     }
@@ -75,7 +75,7 @@ class MenuItem
     /**
      * Get menu builder
      *
-     * @return MenuBuilder
+     * @return OldMenuBuilder
      */
     public function getMenu()
     {

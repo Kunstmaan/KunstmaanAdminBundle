@@ -79,30 +79,7 @@
   				<div class="container-fluid">
 					<a class="brand" href="{{ path('KunstmaanAdminBundle_homepage') }}">{{ websitetitle | trans }}</a>
 					<nav>
-						<ul class="nav">
-							{% for menuitem in adminmenu.topchildren %}
-							{% set topchildren = menuitem.topchildren %}
-							{% if topchildren | length > 0 %}
-							<li class="dropdown {% if menuitem.active %} active {% endif %} {% if loop.first %} first {% endif %} {% if loop.last %} last {% endif %}">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									{{ menuitem.internalname | trans }}
-									<b class="caret"></b>
-								</a>
-								<ul class="dropdown-menu">
-									{% for topchild in topchildren %}
-									<li class="{% if topchild.active %} active {% endif %} {% if loop.first %} first {% endif %} {% if loop.last %} last {% endif %}">
-										<a href="{{ path(topchild.route, topchild.routeparams) }}">{{ topchild.internalname | trans }}</a>
-									</li>
-									{% endfor %}
-								</ul>
-							</li>
-							{% else %}
-							<li class="{% if menuitem.active %} active {% endif %} {% if loop.first %} first {% endif %} {% if loop.last %} last {% endif %}">
-								<a href="{{ path(menuitem.route, menuitem.routeparams) }}">{{ menuitem.internalname | trans }}</a>
-							</li>
-							{% endif %}
-							{% endfor %}
-						</ul>
+                        {{ knp_menu_render('topMenu', { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_topmenu.html.twig'}) }}
 						<ul class="nav pull-right">
 							{% set route = app.request.attributes.get('_route') %}
 							{% set attribs = app.request.attributes.all %}

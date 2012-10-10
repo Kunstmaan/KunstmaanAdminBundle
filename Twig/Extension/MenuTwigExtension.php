@@ -2,7 +2,7 @@
 
 namespace Kunstmaan\AdminBundle\Twig\Extension;
 
-use Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder;
+use Kunstmaan\AdminBundle\Helper\Menu\OldMenuBuilder;
 
 /**
  * MenuTwigExtension
@@ -10,16 +10,16 @@ use Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder;
 class MenuTwigExtension extends \Twig_Extension
 {
     /**
-     * @var MenuBuilder $menuBuilder
+     * @var OldMenuBuilder $menuBuilder
      */
     protected $menuBuilder;
 
     /**
      * Constructor
      *
-     * @param MenuBuilder $menuBuilder
+     * @param OldMenuBuilder $menuBuilder
      */
-    public function __construct(MenuBuilder $menuBuilder)
+    public function __construct(OldMenuBuilder $menuBuilder)
     {
         $this->menuBuilder = $menuBuilder;
     }
@@ -39,7 +39,7 @@ class MenuTwigExtension extends \Twig_Extension
     /**
      * Return the admin menu MenuBuilder.
      *
-     * @return MenuBuilder
+     * @return OldMenuBuilder
      */
     public function getAdminMenu()
     {

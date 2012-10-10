@@ -1,9 +1,40 @@
 parameters:
-    kunstmaan_admin.menubuilder.class: 'Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder'
+    kunstmaan_admin.menubuilder.class: 'Kunstmaan\AdminBundle\Helper\Menu\OldMenuBuilder'
     kunstmaan_admin.apply_acl_changeset.listener.class: 'Kunstmaan\AdminBundle\EventListener\ApplyAclChangesetListener'
 
 services:
+
+    Kunstmaan_admin.menu_renderer:
+        class: Knp\Menu\Renderer\TwigRenderer
+        arguments:
+            - "@twig"
+            - "%knp_menu.renderer.twig.template%"
+            - "@knp_menu.matcher"
+            - { currentClass: 'active', ancestorClass: 'active' }
+        tags:
+            - { name: knp_menu.renderer, alias: twig }
+
+    kunstmaan_admin.menu.voter.request:
+        class: Kunstmaan\AdminBundle\Helper\Menu\RouteVoter
+        arguments:
+          - @service_container
+        tags:
+          - { name: knp_menu.voter }
+
     kunstmaan_admin.menubuilder:
+        class: Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory", "@event_dispatcher"]
+
+    kunstmaan_admin.menu.topmenu:
+        class: Knp\Menu\MenuItem # the service definition requires setting the class
+        factory_service: kunstmaan_admin.menubuilder
+        factory_method: createTopMenu
+        arguments: ["@request"]
+        scope: request # needed as we have the request as a dependency here
+        tags:
+            - { name: knp_menu.menu, alias: topMenu } # The alias is what is used to retrieve the menu
+
+    kunstmaan_admin.oldmenubuilder:
         class: %kunstmaan_admin.menubuilder.class%
         arguments: ["@translator", "@service_container"]
 
@@ -11,7 +42,7 @@ services:
         class: Kunstmaan\AdminBundle\Helper\Menu\SettingsMenuAdaptor
         tags:
             -  { name: 'kunstmaan_admin.menu.adaptor' }
-        
+
     kunstmaan_admin.menu.adaptor.modules:
         class: Kunstmaan\AdminBundle\Helper\Menu\ModulesMenuAdaptor
         tags:
@@ -31,7 +62,7 @@ services:
             
     kunstmaan_admin.menu.twig.extension:
         class: Kunstmaan\AdminBundle\Twig\Extension\MenuTwigExtension
-        arguments: ["@kunstmaan_admin.menubuilder"]
+        arguments: ["@kunstmaan_admin.oldmenubuilder"]
         tags:
             -  { name: 'twig.extension' }
 

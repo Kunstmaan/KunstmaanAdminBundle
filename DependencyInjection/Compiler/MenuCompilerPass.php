@@ -18,11 +18,11 @@ class MenuCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (false === $container->hasDefinition('kunstmaan_admin.menubuilder')) {
+        if (false === $container->hasDefinition('kunstmaan_admin.oldmenubuilder')) {
             return;
         }
 
-        $definition = $container->getDefinition('kunstmaan_admin.menubuilder');
+        $definition = $container->getDefinition('kunstmaan_admin.oldmenubuilder');
 
         foreach ($container->findTaggedServiceIds('kunstmaan_admin.menu.adaptor') as $id => $attributes) {
             $definition->addMethodCall('addAdaptMenu', array(new Reference($id)));

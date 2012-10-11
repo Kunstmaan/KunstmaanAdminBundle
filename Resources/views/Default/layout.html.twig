@@ -115,19 +115,7 @@
             {% endfor %}
 			<!--Breadcrumb-->
 			{% block breadcrumb %}
-			{% set breadcrumbitems = adminmenu.breadcrumb %}
-			{% if breadcrumbitems | length > 0 %}
-			<ul class="breadcrumb">
-				<li><a href="{{ path('KunstmaanAdminBundle_homepage') }}">{{ 'omnext.home' | trans }}</a></li>
-				{% for breadcrumbitem in breadcrumbitems %}
-				{% if loop.last %}
-				<li class="active">{{ breadcrumbitem.internalname | trans }}</li>
-				{% else %}
-				<li><a href="{{ path(breadcrumbitem.route, breadcrumbitem.routeparams) }}">{{ breadcrumbitem.internalname | trans }}</a></li>
-				{% endif %}
-				{% endfor %}
-			</ul>
-			{% endif %}
+                {{ knp_menu_render('topMenu', { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_breadcrumb.html.twig'}) }}
 			{% endblock %}
 
 			<!-- Messages -->

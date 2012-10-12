@@ -79,7 +79,7 @@
   				<div class="container-fluid">
 					<a class="brand" href="{{ path('KunstmaanAdminBundle_homepage') }}">{{ websitetitle | trans }}</a>
 					<nav>
-                        {{ knp_menu_render('topMenu', { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_topmenu.html.twig'}) }}
+                        {{ knp_menu_render('topMenu', { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_topmenu.html.twig'}, 'bootstrap') }}
 						<ul class="nav pull-right">
 							{% set route = app.request.attributes.get('_route') %}
 							{% set attribs = app.request.attributes.all %}
@@ -115,7 +115,7 @@
             {% endfor %}
 			<!--Breadcrumb-->
 			{% block breadcrumb %}
-                {{ knp_menu_render('topMenu', { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_breadcrumb.html.twig'}) }}
+                {{ knp_menu_render('topMenu', { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_breadcrumb.html.twig'}, 'bootstrap') }}
 			{% endblock %}
 
 			<!-- Messages -->

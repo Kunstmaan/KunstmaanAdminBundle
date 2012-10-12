@@ -12,7 +12,7 @@ services:
             - "@knp_menu.matcher"
             - { currentClass: 'active', ancestorClass: 'active' }
         tags:
-            - { name: knp_menu.renderer, alias: twig }
+            - { name: knp_menu.renderer, alias: bootstrap }
 
     kunstmaan_admin.menubuilder:
         class: Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder

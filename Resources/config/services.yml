@@ -14,13 +14,6 @@ services:
         tags:
             - { name: knp_menu.renderer, alias: twig }
 
-    kunstmaan_admin.menu.voter.request:
-        class: Kunstmaan\AdminBundle\Helper\Menu\RouteVoter
-        arguments:
-          - @service_container
-        tags:
-          - { name: knp_menu.voter }
-
     kunstmaan_admin.menubuilder:
         class: Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder
         arguments: ["@knp_menu.factory", "@event_dispatcher"]

@@ -14,18 +14,28 @@ services:
         tags:
             - { name: knp_menu.renderer, alias: bootstrap }
 
+    kunstmaan_admin.menufactory:
+        class: Kunstmaan\AdminBundle\Helper\Menu\MenuFactory
+        arguments: ["@router", "@event_dispatcher"]
+
     kunstmaan_admin.menubuilder:
         class: Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder
-        arguments: ["@knp_menu.factory", "@event_dispatcher"]
+        arguments: ["@kunstmaan_admin.menufactory", "@event_dispatcher"]
 
-    kunstmaan_admin.menu.topmenu:
-        class: Knp\Menu\MenuItem # the service definition requires setting the class
+    kunstmaan_admin.menu.menu:
+        class: Kunstmaan\AdminBundle\Helper\Menu\MenuItem
         factory_service: kunstmaan_admin.menubuilder
-        factory_method: createTopMenu
+        factory_method: createMenu
         arguments: ["@request"]
-        scope: request # needed as we have the request as a dependency here
+        scope: request
         tags:
-            - { name: knp_menu.menu, alias: topMenu } # The alias is what is used to retrieve the menu
+            - { name: knp_menu.menu, alias: menu } # The alias is what is used to retrieve the menu
+
+    kunstmaan_admin.configure_menu_children_listener:
+        class: Kunstmaan\AdminBundle\EventListener\ConfigureMenuChildrenListener
+        tags:
+            - { name: 'kernel.event_listener', event: 'kunstmaan_admin.configureMenuChildren', method: 'onMenuChildrenConfigure' }
+
 
     kunstmaan_admin.oldmenubuilder:
         class: %kunstmaan_admin.menubuilder.class%

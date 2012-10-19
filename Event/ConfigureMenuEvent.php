@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\FactoryInterface;
 
-class ConfigureTopMenuEvent extends Event
+class ConfigureMenuEvent extends Event
 {
     /**
      * @var FactoryInterface

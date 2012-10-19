@@ -2,7 +2,7 @@
 
 namespace Kunstmaan\AdminBundle\EventListener;
 
-use Kunstmaan\AdminBundle\Event\ConfigureTopMenuChildrenEvent;
+use Kunstmaan\AdminBundle\Event\ConfigureMenuChildrenEvent;
 
 class ConfigureMenuChildrenListener
 {
@@ -12,7 +12,7 @@ class ConfigureMenuChildrenListener
 
     }
 
-    public function onMenuChildrenConfigure(ConfigureTopMenuChildrenEvent $event)
+    public function onMenuChildrenConfigure(ConfigureMenuChildrenEvent $event)
     {
         $menu = $event->getMenu();
         $factory = $event->getFactory();

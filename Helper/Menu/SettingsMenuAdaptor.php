@@ -3,7 +3,7 @@
 namespace Kunstmaan\AdminBundle\Helper\Menu;
 
 use Kunstmaan\AdminBundle\Helper\Menu\OldMenuBuilder;
-use Kunstmaan\AdminBundle\Helper\Menu\MenuItem;
+use Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem;
 use Kunstmaan\AdminBundle\Helper\Menu\MenuAdaptorInterface;
 use Kunstmaan\AdminBundle\Helper\Menu\TopMenuItem;
 
@@ -23,7 +23,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
      * @param MenuItem    $parent    The parent Menu item
      * @param Request     $request   The Request
      */
-    public function adaptChildren(OldMenuBuilder $menu, array &$children, MenuItem $parent = null, Request $request = null)
+    public function adaptChildren(OldMenuBuilder $menu, array &$children, OldMenuItem $parent = null, Request $request = null)
     {
         if (is_null($parent)) {
             $menuItem = new TopMenuItem($menu);
@@ -36,7 +36,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
             }
             $children[] = $menuItem;
         } elseif ('KunstmaanAdminBundle_settings' == $parent->getRoute()) {
-            $menuItem = new MenuItem($menu);
+            $menuItem = new OldMenuItem($menu);
             $menuItem->setRoute('KunstmaanAdminBundle_settings_users')
                 ->setInternalName('Users')
                 ->setParent($parent);
@@ -45,7 +45,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
             }
             $children[] = $menuItem;
 
-            $menuItem = new MenuItem($menu);
+            $menuItem = new OldMenuItem($menu);
             $menuItem->setRoute('KunstmaanAdminBundle_settings_groups')
                 ->setInternalName('Groups')
                 ->setParent($parent);
@@ -54,7 +54,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
             }
             $children[] = $menuItem;
 
-            $menuItem = new MenuItem($menu);
+            $menuItem = new OldMenuItem($menu);
             $menuItem->setRoute('KunstmaanAdminBundle_settings_roles')
                 ->setInternalName('Roles')
                 ->setParent($parent);
@@ -63,7 +63,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
             }
             $children[] = $menuItem;
 
-            $menuItem = new MenuItem($menu);
+            $menuItem = new OldMenuItem($menu);
             $menuItem->setRoute('KunstmaanAdminBundle_settings_logs')
                 ->setInternalName('Logs')
                 ->setParent($parent);
@@ -73,7 +73,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
             $children[] = $menuItem;
         } else {
             if ('KunstmaanAdminBundle_settings_users' == $parent->getRoute()) {
-                $menuItem = new MenuItem($menu);
+                $menuItem = new OldMenuItem($menu);
                 $menuItem->setRoute('KunstmaanAdminBundle_settings_users_add')
                     ->setInternalName('Add user')
                     ->setParent($parent)
@@ -83,7 +83,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
                 }
                 $children[] = $menuItem;
 
-                $menuItem = new MenuItem($menu);
+                $menuItem = new OldMenuItem($menu);
                 $menuItem->setRoute('KunstmaanAdminBundle_settings_users_edit')
                     ->setInternalName('Edit user')
                     ->setParent($parent)
@@ -94,7 +94,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
                 $children[] = $menuItem;
             } else {
                 if ('KunstmaanAdminBundle_settings_groups' == $parent->getRoute()) {
-                    $menuItem = new MenuItem($menu);
+                    $menuItem = new OldMenuItem($menu);
                     $menuItem->setRoute('KunstmaanAdminBundle_settings_groups_add')
                         ->setInternalName('Add group')
                         ->setParent($parent)
@@ -104,7 +104,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
                     }
                     $children[] = $menuItem;
 
-                    $menuItem = new MenuItem($menu);
+                    $menuItem = new OldMenuItem($menu);
                     $menuItem->setRoute('KunstmaanAdminBundle_settings_groups_edit')
                         ->setInternalName('Edit group')
                         ->setParent($parent)
@@ -115,7 +115,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
                     $children[] = $menuItem;
                 } else {
                     if ('KunstmaanAdminBundle_settings_roles' == $parent->getRoute()) {
-                        $menuItem = new MenuItem($menu);
+                        $menuItem = new OldMenuItem($menu);
                         $menuItem->setRoute('KunstmaanAdminBundle_settings_roles_add')
                             ->setInternalName('Add role')
                             ->setParent($parent)
@@ -125,7 +125,7 @@ class SettingsMenuAdaptor implements MenuAdaptorInterface
                         }
                         $children[] = $menuItem;
 
-                        $menuItem = new MenuItem($menu);
+                        $menuItem = new OldMenuItem($menu);
                         $menuItem->setRoute('KunstmaanAdminBundle_settings_roles_edit')
                             ->setInternalName('Edit role')
                             ->setParent($parent)

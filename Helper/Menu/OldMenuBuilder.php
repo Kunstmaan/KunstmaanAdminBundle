@@ -73,7 +73,7 @@ class OldMenuBuilder
         /* @var $active MenuItem */
         $active = null;
         do {
-            /* @var MenuItem[] $children */
+            /* @var OldMenuItem[] $children */
             $children         = $this->getChildren($active);
             $foundActiveChild = false;
             foreach ($children as $child) {
@@ -127,7 +127,7 @@ class OldMenuBuilder
     /**
      * Get all top menu items
      *
-     * @return MenuItem[]
+     * @return OldMenuItem[]
      */
     public function getTopChildren()
     {
@@ -146,9 +146,9 @@ class OldMenuBuilder
     /**
      * Get immediate children of the specified menu item
      *
-     * @param MenuItem $parent
+     * @param OldMenuItem $parent
      *
-     * @return MenuItem[]
+     * @return OldMenuItem[]
      */
     public function getChildren(MenuItem $parent = null)
     {

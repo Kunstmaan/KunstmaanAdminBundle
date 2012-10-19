@@ -32,7 +32,7 @@ class OldMenuBuilder
     private $container;
 
     /**
-     * @var MenuItem|null
+     * @var OldMenuItem|null
      */
     private $currentCache = null;
 
@@ -63,14 +63,14 @@ class OldMenuBuilder
     /**
      * Get current menu item
      *
-     * @return MenuItem|null
+     * @return OldMenuItem|null
      */
     public function getCurrent()
     {
         if ($this->currentCache !== null) {
             return $this->currentCache;
         }
-        /* @var $active MenuItem */
+        /* @var $active OldMenuItem */
         $active = null;
         do {
             /* @var OldMenuItem[] $children */
@@ -150,7 +150,7 @@ class OldMenuBuilder
      *
      * @return OldMenuItem[]
      */
-    public function getChildren(MenuItem $parent = null)
+    public function getChildren(OldMenuItem $parent = null)
     {
         if ($parent == null) {
             return $this->getTopChildren();

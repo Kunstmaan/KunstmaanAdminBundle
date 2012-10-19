@@ -5,7 +5,7 @@ namespace Kunstmaan\AdminBundle\Helper\Menu;
 /**
  * A MenuItem is part of the menu in the admin interface, this will be build by the {@link MenuBuilder}
  */
-class MenuItem
+class OldMenuItem
 {
     /**
      * @var OldMenuBuilder
@@ -23,7 +23,7 @@ class MenuItem
     private $role;
 
     /**
-     * @var MenuItem
+     * @var OldMenuItem
      */
     private $parent;
 
@@ -43,7 +43,7 @@ class MenuItem
     private $active = false;
 
     /**
-     * @var MenuItem[]
+     * @var OldMenuItem[]
      */
     private $children = null;
 
@@ -97,7 +97,7 @@ class MenuItem
      *
      * @param string $internalName
      *
-     * @return MenuItem
+     * @return OldMenuItem
      */
     public function setInternalName($internalName)
     {
@@ -121,7 +121,7 @@ class MenuItem
      *
      * @param string $role
      *
-     * @return MenuItem
+     * @return OldMenuItem
      */
     public function setRole($role)
     {
@@ -133,7 +133,7 @@ class MenuItem
     /**
      * Get parent menu item
      *
-     * @return MenuItem|null
+     * @return OldMenuItem|null
      */
     public function getParent()
     {
@@ -143,11 +143,11 @@ class MenuItem
     /**
      * Set parent menu item
      *
-     * @param MenuItem|null  $parent
+     * @param OldMenuItem|null  $parent
      *
-     * @return MenuItem
+     * @return OldMenuItem
      */
-    public function setParent(MenuItem $parent = null)
+    public function setParent(OldMenuItem $parent = null)
     {
         $this->parent = $parent;
 
@@ -170,7 +170,7 @@ class MenuItem
      * @param string $route  The route
      * @param array  $params The route parameters
      *
-     * @return MenuItem
+     * @return OldMenuItem
      */
     public function setRoute($route, array $params = array())
     {
@@ -195,7 +195,7 @@ class MenuItem
      *
      * @param array $routeParams
      *
-     * @return MenuItem
+     * @return OldMenuItem
      */
     public function setRouteParams(array $routeParams = array())
     {
@@ -207,7 +207,7 @@ class MenuItem
     /**
      * Get children of current menu item
      *
-     * @return MenuItem[]
+     * @return OldMenuItem[]
      */
     public function getChildren()
     {
@@ -221,7 +221,7 @@ class MenuItem
     /**
      * Get children of current menu item that have the appearInNavigation flag set
      *
-     * @return MenuItem[]
+     * @return OldMenuItem[]
      */
     public function getNavigationChildren()
     {
@@ -259,7 +259,7 @@ class MenuItem
      *
      * @param array $attributes
      *
-     * @return MenuItem
+     * @return OldMenuItem
      */
     public function addAttributes($attributes)
     {
@@ -293,7 +293,7 @@ class MenuItem
      *
      * @param bool $active
      *
-     * @return MenuItem
+     * @return OldMenuItem
      */
     public function setActive($active)
     {
@@ -317,7 +317,7 @@ class MenuItem
      *
      * @param bool $appearInNavigation
      *
-     * @return MenuItem
+     * @return OldMenuItem
      */
     public function setAppearInNavigation($appearInNavigation)
     {
@@ -341,7 +341,7 @@ class MenuItem
      *
      * @param int $weight
      *
-     * @return MenuItem
+     * @return OldMenuItem
      */
     public function setWeight($weight)
     {

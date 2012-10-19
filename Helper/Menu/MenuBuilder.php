@@ -3,13 +3,17 @@
 namespace Kunstmaan\AdminBundle\Helper\Menu;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Knp\Menu\Silex\RouterAwareFactory;
 use Kunstmaan\AdminBundle\Event\Events;
-use Kunstmaan\AdminBundle\Event\ConfigureTopMenuEvent;
+use Kunstmaan\AdminBundle\Event\ConfigureMenuEvent;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Kunstmaan\AdminBundle\Helper\Menu\MenuItem;
 
 class MenuBuilder
 {
+
+    const MENU_ITEM_CLASS = 'Kunstmaan\AdminBundle\Helper\Menu\MenuItem';
 
     /**
      * @var FactoryInterface
@@ -20,6 +24,8 @@ class MenuBuilder
      * @var EventDispatcherInterface
      */
     private $dispatcher;
+
+    private $router;
 
     /**
      * @param FactoryInterface $factory
@@ -36,15 +42,16 @@ class MenuBuilder
      *
      * @return ItemInterface
      */
-    public function createTopMenu(Request $request)
+    public function createMenu(Request $request)
     {
+        $router = $this->router;
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav');
 
-        $menu->addChild('Settings', array('route' => 'KunstmaanAdminBundle_settings'));
-        $menu->addChild('Modules', array('route' => 'KunstmaanAdminBundle_modules'));
+        $menu->addChild($this->factory->createItem('Settings', array('route' => 'KunstmaanAdminBundle_settings')));
+        $menu->addChild($this->factory->createItem('Modules', array('route' => 'KunstmaanAdminBundle_modules')));
 
-        $this->dispatcher->dispatch(Events::CONFIGURE_TOP_MENU, new ConfigureTopMenuEvent($this->factory, $menu));
+        $this->dispatcher->dispatch(Events::CONFIGURE_MENU, new ConfigureMenuEvent($this->factory, $menu));
 
         return $menu;
     }

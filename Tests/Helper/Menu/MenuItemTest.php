@@ -1,7 +1,7 @@
 <?php
 namespace Kunstmaan\AdminBundle\Tests\Helper\Menu;
 
-use Kunstmaan\AdminBundle\Helper\Menu\MenuItem;
+use Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem;
 use Kunstmaan\AdminBundle\Helper\Menu\TopMenuItem;
 use Kunstmaan\AdminBundle\Helper\Menu\OldMenuBuilder;
 
@@ -11,7 +11,7 @@ use Kunstmaan\AdminBundle\Helper\Menu\OldMenuBuilder;
 class MenuItemTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var MenuItem
+     * @var OldMenuItem
      */
     protected $object;
 
@@ -26,7 +26,7 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->object = new MenuItem($menuBuilder);
+        $this->object = new OldMenuItem($menuBuilder);
     }
 
     /**
@@ -38,8 +38,8 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getMenu
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::__construct
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getMenu
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::__construct
      */
     public function testGetMenu()
     {
@@ -48,13 +48,13 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $object = new MenuItem($menuBuilder);
+        $object = new OldMenuItem($menuBuilder);
         $this->assertEquals($menuBuilder, $object->getMenu());
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getInternalName
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::setInternalName
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getInternalName
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::setInternalName
      */
     public function testGetSetInternalName()
     {
@@ -63,8 +63,8 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getRole
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::setRole
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getRole
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::setRole
      */
     public function testGetSetRole()
     {
@@ -73,8 +73,8 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getParent
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::setParent
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getParent
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::setParent
      */
     public function testGetSetParent()
     {
@@ -82,15 +82,15 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
         $menuBuilder = $this->getMockBuilder('Kunstmaan\AdminBundle\Helper\Menu\OldMenuBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $parent = new MenuItem($menuBuilder);
+        $parent = new OldMenuItem($menuBuilder);
         $this->object->setParent($parent);
         $this->assertEquals($parent, $this->object->getParent());
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getRoute
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::setRoute
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getRouteParams
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getRoute
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::setRoute
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getRouteParams
      */
     public function testGetSetRoute()
     {
@@ -102,8 +102,8 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getRouteParams
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::setRouteParams
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getRouteParams
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::setRouteParams
      */
     public function testGetSetRouteParams()
     {
@@ -113,13 +113,13 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getChildren
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getChildren
      */
     public function testGetChildren()
     {
-        $child1 = new MenuItem($this->object->getMenu());
+        $child1 = new OldMenuItem($this->object->getMenu());
         $child1->setAppearInNavigation(true);
-        $child2 = new MenuItem($this->object->getMenu());
+        $child2 = new OldMenuItem($this->object->getMenu());
         $child2->setAppearInNavigation(true);
         $children = array($child1, $child2);
 
@@ -132,20 +132,20 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($children));
 
         /* @var $menuBuilder OldMenuBuilder */
-        $parent = new MenuItem($menuBuilder);
+        $parent = new OldMenuItem($menuBuilder);
         $result = $parent->getChildren();
         $this->assertEquals(2, count($result));
         $this->assertEquals($children, $result);
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getNavigationChildren
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getNavigationChildren
      */
     public function testGetNavigationChildren()
     {
-        $child1 = new MenuItem($this->object->getMenu());
+        $child1 = new OldMenuItem($this->object->getMenu());
         $child1->setAppearInNavigation(true);
-        $child2 = new MenuItem($this->object->getMenu());
+        $child2 = new OldMenuItem($this->object->getMenu());
         $child2->setAppearInNavigation(false);
         $children = array($child1, $child2);
 
@@ -157,18 +157,18 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($children));
 
         /* @var $menuBuilder OldMenuBuilder */
-        $parent = new MenuItem($menuBuilder);
+        $parent = new OldMenuItem($menuBuilder);
         $result = $parent->getNavigationChildren();
         $this->assertEquals(1, count($result));
         $this->assertEquals(array($child1), $result);
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getTopChildren
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getTopChildren
      */
     public function testGetTopChildren()
     {
-        $child1 = new MenuItem($this->object->getMenu());
+        $child1 = new OldMenuItem($this->object->getMenu());
         $child2 = new TopMenuItem($this->object->getMenu());
         $children = array($child1, $child2);
 
@@ -180,15 +180,15 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($children));
 
         /* @var $menuBuilder OldMenuBuilder */
-        $parent = new MenuItem($menuBuilder);
+        $parent = new OldMenuItem($menuBuilder);
         $result = $parent->getTopChildren();
         $this->assertEquals(1, count($result));
         $this->assertEquals(array($child2), $result);
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::addAttributes
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getAttributes
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::addAttributes
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getAttributes
      */
     public function testAddGetAttributes()
     {
@@ -198,8 +198,8 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getActive
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::setActive
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getActive
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::setActive
      */
     public function testGetSetActive()
     {
@@ -208,8 +208,8 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getAppearInNavigation
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::setAppearInNavigation
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getAppearInNavigation
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::setAppearInNavigation
      */
     public function testGetSetAppearInNavigation()
     {
@@ -218,8 +218,8 @@ class MenuItemTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::getWeight
-     * @covers Kunstmaan\AdminBundle\Helper\Menu\MenuItem::setWeight
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::getWeight
+     * @covers Kunstmaan\AdminBundle\Helper\Menu\OldMenuItem::setWeight
      */
     public function testGetSetWeight()
     {

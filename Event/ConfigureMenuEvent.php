@@ -26,7 +26,6 @@ class ConfigureMenuEvent extends Event
     {
         $this->factory = $factory;
         $this->menu    = $menu;
-
     }
 
     /**

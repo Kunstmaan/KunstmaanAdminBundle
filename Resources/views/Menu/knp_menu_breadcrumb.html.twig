@@ -28,11 +28,7 @@
         {%- endif %}
         {# displaying the item #}
         <li{{ macros.attributes(attributes) }}>
-            {%- if item.uri is not empty and (not matcher.isCurrent(item)) %}
-                {{ block('linkElement') }}
-            {%- else %}
-                {{ block('spanElement') }}
-            {%- endif %}
+            {{ block('linkElement') }}
             {# render the list of children#}
             {%- set childrenClasses = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
             {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}

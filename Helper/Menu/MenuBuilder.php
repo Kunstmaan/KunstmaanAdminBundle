@@ -48,9 +48,10 @@ class MenuBuilder
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav');
 
-        $menu->addChild($this->factory->createItem('Settings', array('route' => 'KunstmaanAdminBundle_settings')));
-        $menu->addChild($this->factory->createItem('Modules', array('route' => 'KunstmaanAdminBundle_modules')));
-
+        $settingsMenu = $menu->addChild($this->factory->createItem('Settings', array('route' => 'KunstmaanAdminBundle_settings')));
+        $settingsMenu->setAttribute('rel', 'Settings');
+        $modulesMenu = $menu->addChild($this->factory->createItem('Modules', array('route' => 'KunstmaanAdminBundle_modules')));
+        $modulesMenu->setAttribute('rel', 'Modules');
         $this->dispatcher->dispatch(Events::CONFIGURE_MENU, new ConfigureMenuEvent($this->factory, $menu));
 
         return $menu;

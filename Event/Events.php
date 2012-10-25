@@ -10,7 +10,7 @@ class Events
 
    /**
     * This event will be triggered when creating the menu.
-    * It is possible to change this menu using this event.
+    * It is possible to change this menu by listening to this event.
     *
     * @var string
     */

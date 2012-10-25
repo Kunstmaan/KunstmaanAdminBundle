@@ -19,7 +19,7 @@ class MenuFactory extends RouterAwareFactory {
     }
 
     /**
-     * Creates a menu item
+     * Creates a MenuItem
      *
      * @param string $name
      * @param array  $options

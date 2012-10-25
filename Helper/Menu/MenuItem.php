@@ -10,6 +10,11 @@ use Kunstmaan\AdminBundle\Event\ConfigureMenuChildrenEvent;
 class MenuItem extends KnpMenuItem
 {
 
+    /**
+     * Boolean set to true when children of this MenuItem were requested and populated
+     *
+     * @var bool
+     */
     private $populated = false;
 
     /**
@@ -30,6 +35,13 @@ class MenuItem extends KnpMenuItem
         $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * When populated is false, trigger the Event CONFIGURE_MENU_CHILDREN and
+     * afterwards, set populated to true. The event will have to handle populating
+     * the children array
+     *
+     * @return array|\Knp\Menu\ItemInterface[]
+     */
     public function getChildren()
     {
         if (!$this->populated) {
@@ -39,6 +51,11 @@ class MenuItem extends KnpMenuItem
         return $this->children;
     }
 
+    /**
+     * Return true when this MenuItem has children and at least one of them is displayed
+     *
+     * @return bool
+     */
     public function hasChildren()
     {
         foreach ($this->getChildren() as $child) {

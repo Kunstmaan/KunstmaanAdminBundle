@@ -26,7 +26,6 @@ services:
         class: Kunstmaan\AdminBundle\Helper\Menu\MenuItem
         factory_service: kunstmaan_admin.menubuilder
         factory_method: createMenu
-        arguments: ["@request"]
         scope: request
         tags:
             - { name: knp_menu.menu, alias: menu } # The alias is what is used to retrieve the menu

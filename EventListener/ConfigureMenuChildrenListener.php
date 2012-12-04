@@ -21,8 +21,6 @@ class ConfigureMenuChildrenListener
             $groupsMenu->setAttribute('rel', 'Groups');
             $rolesMenu = $event->getMenu()->addChild($event->getFactory()->createItem('Roles', array('route' => 'KunstmaanAdminBundle_settings_roles')));
             $rolesMenu->setAttribute('rel', 'Roles');
-            $logsMenu = $event->getMenu()->addChild($event->getFactory()->createItem('Logs', array('route' => 'KunstmaanAdminBundle_settings_logs')));
-            $logsMenu->setAttribute('rel', 'Logs');
         }
     }
 }

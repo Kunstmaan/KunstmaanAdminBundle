@@ -1,5 +1,4 @@
 parameters:
-    kunstmaan_admin.menubuilder.class: 'Kunstmaan\AdminBundle\Helper\Menu\OldMenuBuilder'
     kunstmaan_admin.apply_acl_changeset.listener.class: 'Kunstmaan\AdminBundle\EventListener\ApplyAclChangesetListener'
 
 services:
@@ -36,7 +35,7 @@ services:
             - { name: 'kernel.event_listener', event: 'kunstmaan_admin.configureMenuChildren', method: 'onMenuChildrenConfigure' }
 
     kunstmaan_admin.menu.twig.extension:
-        class: Kunstmaan\AdminBundle\Twig\Extension\MenuTwigExtension
+        class: Kunstmaan\AdminBundle\Twig\MenuTwigExtension
         arguments : ["@knp_menu.matcher"]
         tags:
             -  { name: 'twig.extension' }

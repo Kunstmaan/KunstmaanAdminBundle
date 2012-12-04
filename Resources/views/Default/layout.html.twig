@@ -125,10 +125,11 @@
 			<!--Content-header-->
 			{% block header %}
 
-			<div class="page-header">
-				<h1>{{ admin_menu_current(menu).getName() }}{% block page_header_addition %}{% endblock %}</h1>
-				{% block extra_actions_header %}{% endblock %}
-			</div>
+                <div class="page-header">
+                    {% set currentmenuitem = admin_menu_current(menu) %}
+                    <h1>{% if currentmenuitem != "" %}{{ currentmenuitem.getName() }}{% endif %}{% block page_header_addition %}{% endblock %}</h1>
+                    {% block extra_actions_header %}{% endblock %}
+                </div>
 
 			{% endblock %}
 

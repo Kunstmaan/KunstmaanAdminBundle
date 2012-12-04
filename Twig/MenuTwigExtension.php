@@ -55,7 +55,11 @@ class MenuTwigExtension extends \Twig_Extension
             $array[] = $item;
         }
 
-        return $array[0];
+        if (!empty($array)) {
+            return $array[0];
+        }
+
+        return null;
     }
 
     /**

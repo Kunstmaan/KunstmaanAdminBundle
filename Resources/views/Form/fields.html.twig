@@ -1,66 +1,135 @@
-{% block choice_widget %}
-{% spaceless %}
-{% if expanded %}
-    <div {{ block('widget_container_attributes') }}>
-        {% for child in form %}
-        <div class="input_prop">
-            {{ form_label(child) }}
-            <div class="input">
-                {{ form_widget(child) }}
-            </div>
+{# Widgets #}
+
+{% block choice_widget_expanded %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                <div class="input_prop">
+                    {{ form_label(child) }}
+                    <div class="input">
+                        {{ form_widget(child) }}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-{% else %}
-    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-        {% if empty_value is not none %}
-        <option value="">{{ empty_value|trans }}</option>
+    {% endspaceless %}
+{% endblock choice_widget_expanded %}
+
+{# Labels #}
+
+{% block form_label %}
+    {% spaceless %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
         {% endif %}
-        {% if preferred_choices|length > 0 %}
-        {% set options = preferred_choices %}
-        {{ block('widget_choice_options') }}
-        {% if choices|length > 0 and separator is not none %}
-        <option disabled="disabled">{{ separator }}</option>
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
         {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
         {% endif %}
-        {% set options = choices %}
-        {{ block('widget_choice_options') }}
-    </select>
-{% endif %}
-{% endspaceless %}
-{% endblock choice_widget %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}{% if required %} *{% endif %}</label>
+    {% endspaceless %}
+{% endblock form_label %}
 
-
-
-{% block field_row %}
-{% spaceless %}
-<div class="input_prop{% if errors|length > 0 %} error{% endif %}">
-    {{ form_label(form) }}
-    <div class="input">
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-
-</div>
-{% endspaceless %}
-{% endblock field_row %}
-
-{% block field_errors %}
-{% spaceless %}
-{% if errors|length > 0 %}
-    {% for error in errors %}
-        <span class="help-inline">{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</span>
-    {% endfor %}
-{% endif %}
-{% endspaceless %}
-{% endblock field_errors %}
+{# Rows #}
 
 {% block form_row %}
-{% spaceless %}
-    <div class="input_prop">
-        {{ form_label(form) }}
-        {{ form_errors(form) }}
-        {{ form_widget(form) }}
-    </div>
-{% endspaceless %}
+    {% spaceless %}
+        <div class="input_prop{% if errors|length > 0 %} error{% endif %}">
+            {{ form_label(form) }}
+            <div class="input">
+                {{ form_widget(form) }}
+                {% if required %}
+                    <span class="help-inline">{{ 'This is a required field' | trans }}</span>
+                {% endif %}
+                {% if max_length %}
+                    <style>
+                        {#TODO frontend: add this to site.css#}
+                        .help-inline.error {
+                            color: #B94A48;
+                        }
+                    </style>
+                    <script>
+                        jQuery(document).ready(function(){
+                        	$("#{{ id }}").charCount({
+                                allowed: {{ max_length }},
+                                counterText: 'Characters left: ',
+                                css: 'help-inline',
+                                cssExceeded: 'error'
+                            });
+                        	$("#{{ id }}").attr('maxlength', '');
+                        });
+                    </script>
+                {% endif %}
+                {% if attr['title'] is defined %}
+                    <script>
+                        jQuery(document).ready(function(){
+                            $("#{{ id }}").tooltip();
+                        });
+                    </script>
+                {% endif %}
+                {% if attr['title'] is defined %}
+                    <script>
+                        jQuery(document).ready(function(){
+                            $("#{{ id }}").tooltip();
+                        });
+                    </script>
+                {% endif %}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
 {% endblock form_row %}
+
+{# Misc #}
+
+{% block datetime_widget %}
+    {% use 'form_div_layout.html.twig' with datetime_widget as base_datetime_widget %}
+    <div class="datetime">
+        {{ block('base_datetime_widget') }}
+    </div>
+{% endblock %}
+
+{% block date_widget %}
+    {% use 'form_div_layout.html.twig' with date_widget as base_date_widget %}
+    {% if widget == 'single_text' %}
+        <script>
+            jQuery(document).ready(function(){
+                $("#{{ id }}").inputmask("date");
+            });
+        </script>
+    {% endif %}
+    {{ block('base_date_widget') }}
+    {% if widget == 'single_text' %}
+        <script>
+            $("#{{ id }}").addClass('form_datepicker');
+        </script>
+    {% endif %}
+{% endblock date_widget %}
+
+{% block time_widget %}
+    {% use 'form_div_layout.html.twig' with time_widget as base_time_widget %}
+    {% if widget == 'single_text' %}
+        <script>
+            jQuery(document).ready(function(){
+                $("#{{ id }}").inputmask("hh:mm");
+            });
+        </script>
+    {% endif %}
+    {{ block('base_time_widget') }}
+{% endblock time_widget %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+                {% for error in errors %}
+                    <span class="help-inline">{{
+                    error.messagePluralization is null
+                    ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                    : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                    }}</span>
+                {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}

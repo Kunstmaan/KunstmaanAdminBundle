@@ -105,16 +105,19 @@
 
 		<!--Content_wrp-->
 		<div class="content">
-    		{% for flashMessage in app.session.flashbag.get('notice') %}
-                <div class="alert">
-                    <button type="button" class="close" data-dismiss="alert">×</button>
-                    <strong>Warning!</strong> {{ flashMessage }}
-                </div>
-            {% endfor %}
 			<!--Breadcrumb-->
 			{% block breadcrumb %}
                 {{ knp_menu_render(menu, { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_breadcrumb.html.twig'}, 'bootstrap') }}
 			{% endblock %}
+
+			{% for flashMessageType, flashMessages in app.session.flashbag.all() %}
+                {% for flashMessage in flashMessages %}
+                    <div class="alert alert-{{ flashMessageType }}">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>{{ flashMessageType | capitalize }}:</strong> {{ flashMessage }}
+                    </div>
+                 {% endfor %}
+            {% endfor %}
 
 			<!-- Messages -->
 			{% block messages %}{% endblock %}
@@ -174,8 +177,12 @@
         '@KunstmaanAdminBundle/Resources/public/js/libs/jquery.iframe-transport.js'
         '@KunstmaanAdminBundle/Resources/public/js/libs/jquery.ui.widget.js'
         '@KunstmaanAdminBundle/Resources/public/js/libs/jquery.datePicker.min.js'
+        '@KunstmaanAdminBundle/Resources/public/js/libs/jquery.inputmask.js'
+        '@KunstmaanAdminBundle/Resources/public/js/libs/jquery.inputmask.date.extensions.js'
         '@KunstmaanAdminBundle/Resources/public/js/libs/modaldialog.min.js'
         '@KunstmaanAdminBundle/Resources/public/js/libs/responsive-tables.js'
+        '@KunstmaanAdminBundle/Resources/public/js/libs/charCount.js'
+        '@KunstmaanAdminBundle/Resources/public/js/libs/bootstrap-datepicker.js'
         '@KunstmaanAdminBundle/Resources/public/js/plugins.js'
         '@KunstmaanAdminBundle/Resources/public/js/script.js'
         output='generated-js/scripts_bottom.js'

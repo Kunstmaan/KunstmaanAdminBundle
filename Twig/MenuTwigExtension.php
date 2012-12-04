@@ -2,26 +2,23 @@
 
 namespace Kunstmaan\AdminBundle\Twig;
 
-use Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder;
+use ArrayIterator;
+use Knp\Menu\ItemInterface;
+use Knp\Menu\Iterator\CurrentItemFilterIterator;
+use Knp\Menu\Iterator\RecursiveItemIterator;
+use Knp\Menu\Matcher\Matcher;
+use RecursiveIteratorIterator;
 
 /**
  * MenuTwigExtension
  */
 class MenuTwigExtension extends \Twig_Extension
 {
-    /**
-     * @var MenuBuilder $menuBuilder
-     */
-    protected $menuBuilder;
+    private $matcher;
 
-    /**
-     * Constructor
-     *
-     * @param MenuBuilder $menuBuilder
-     */
-    public function __construct(MenuBuilder $menuBuilder)
+    public function __construct(Matcher $matcher)
     {
-        $this->menuBuilder = $menuBuilder;
+        $this->matcher = $matcher;
     }
 
     /**
@@ -32,18 +29,37 @@ class MenuTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'admin_menu_get'  => new \Twig_Function_Method($this, 'getAdminMenu'),
+            'admin_menu_current'  => new \Twig_Function_Method($this, 'getCurrentMenuItem'),
         );
     }
 
     /**
-     * Return the admin menu MenuBuilder.
+     * Returns the current ItemMenu from given Menu
+     * @param ItemInterface $menu
      *
-     * @return MenuBuilder
+     * @return string
      */
-    public function getAdminMenu()
+    public function getCurrentMenuItem(ItemInterface $menu)
     {
-        return $this->menuBuilder;
+        $treeIterator = new RecursiveIteratorIterator(
+            new RecursiveItemIterator(
+                new ArrayIterator(array($menu))
+            ),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        $iterator = new CurrentItemFilterIterator($treeIterator, $this->matcher);
+
+        $array = array();
+        foreach ($iterator as $item) {
+            $array[] = $item;
+        }
+
+        if (!empty($array)) {
+            return $array[0];
+        }
+
+        return null;
     }
 
     /**

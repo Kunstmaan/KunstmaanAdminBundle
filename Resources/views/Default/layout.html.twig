@@ -1,7 +1,5 @@
-{% set adminmenu = admin_menu_get() %}
-
 {% set extraclasshtml %}{% block extraclasshtml %}{% endblock %}{% endset %}
-
+{% set menu = knp_menu_get('menu') %}
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js ie6 oldie {{ extraclasshtml }}" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js ie7 oldie {{ extraclasshtml }}" lang="en"> <![endif]-->
@@ -79,30 +77,7 @@
   				<div class="container-fluid">
 					<a class="brand" href="{{ path('KunstmaanAdminBundle_homepage') }}">{{ websitetitle | trans }}</a>
 					<nav>
-						<ul class="nav">
-							{% for menuitem in adminmenu.topchildren %}
-							{% set topchildren = menuitem.topchildren %}
-							{% if topchildren | length > 0 %}
-							<li class="dropdown {% if menuitem.active %} active {% endif %} {% if loop.first %} first {% endif %} {% if loop.last %} last {% endif %}">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-									{{ menuitem.internalname | trans }}
-									<b class="caret"></b>
-								</a>
-								<ul class="dropdown-menu">
-									{% for topchild in topchildren %}
-									<li class="{% if topchild.active %} active {% endif %} {% if loop.first %} first {% endif %} {% if loop.last %} last {% endif %}">
-										<a href="{{ path(topchild.route, topchild.routeparams) }}">{{ topchild.internalname | trans }}</a>
-									</li>
-									{% endfor %}
-								</ul>
-							</li>
-							{% else %}
-							<li class="{% if menuitem.active %} active {% endif %} {% if loop.first %} first {% endif %} {% if loop.last %} last {% endif %}">
-								<a href="{{ path(menuitem.route, menuitem.routeparams) }}">{{ menuitem.internalname | trans }}</a>
-							</li>
-							{% endif %}
-							{% endfor %}
-						</ul>
+                        {{ knp_menu_render(menu, { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_topmenu.html.twig'}, 'bootstrap') }}
 						<ul class="nav pull-right">
 							{% set route = app.request.attributes.get('_route') %}
 							{% set attribs = app.request.attributes.all %}
@@ -132,18 +107,7 @@
 		<div class="content">
 			<!--Breadcrumb-->
 			{% block breadcrumb %}
-			{% set breadcrumbitems = adminmenu.breadcrumb %}
-			{% if breadcrumbitems | length > 0 %}
-			<ul class="breadcrumb">
-				{% for breadcrumbitem in breadcrumbitems %}
-				{% if loop.last %}
-				<li class="active">{{ breadcrumbitem.internalname | trans }}</li>
-				{% else %}
-				<li><a href="{{ path(breadcrumbitem.route, breadcrumbitem.routeparams) }}">{{ breadcrumbitem.internalname | trans }}</a></li>
-				{% endif %}
-				{% endfor %}
-			</ul>
-			{% endif %}
+                {{ knp_menu_render(menu, { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_breadcrumb.html.twig'}, 'bootstrap') }}
 			{% endblock %}
 
 			{% for flashMessageType, flashMessages in app.session.flashbag.all() %}
@@ -160,12 +124,13 @@
 
 			<!--Content-header-->
 			{% block header %}
-			{% if adminmenu.current %}
-			<div class="page-header">
-				<h1>{{ adminmenu.current.internalname | trans }} {% block page_header_addition %}{% endblock %}</h1>
-				{% block extra_actions_header %}{% endblock %}
-			</div>
-			{% endif %}
+
+                <div class="page-header">
+                    {% set currentmenuitem = admin_menu_current(menu) %}
+                    <h1>{% if currentmenuitem != "" %}{{ currentmenuitem.getName() }}{% endif %}{% block page_header_addition %}{% endblock %}</h1>
+                    {% block extra_actions_header %}{% endblock %}
+                </div>
+
 			{% endblock %}
 
 			<!--Content-->

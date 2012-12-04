@@ -1,33 +1,50 @@
 parameters:
-    kunstmaan_admin.menubuilder.class: 'Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder'
     kunstmaan_admin.apply_acl_changeset.listener.class: 'Kunstmaan\AdminBundle\EventListener\ApplyAclChangesetListener'
 
 services:
-    kunstmaan_admin.menubuilder:
-        class: %kunstmaan_admin.menubuilder.class%
-        arguments: ["@translator", "@service_container"]
 
-    kunstmaan_admin.menu.adaptor.settings:
-        class: Kunstmaan\AdminBundle\Helper\Menu\SettingsMenuAdaptor
+    Kunstmaan_admin.menu_renderer:
+        class: Knp\Menu\Renderer\TwigRenderer
+        arguments:
+            - "@twig"
+            - "%knp_menu.renderer.twig.template%"
+            - "@knp_menu.matcher"
+            - { currentClass: 'active', ancestorClass: 'active' }
         tags:
-            -  { name: 'kunstmaan_admin.menu.adaptor' }
-        
-    kunstmaan_admin.menu.adaptor.modules:
-        class: Kunstmaan\AdminBundle\Helper\Menu\ModulesMenuAdaptor
+            - { name: knp_menu.renderer, alias: bootstrap }
+
+    kunstmaan_admin.menufactory:
+        class: Kunstmaan\AdminBundle\Helper\Menu\MenuFactory
+        arguments: ["@router", "@event_dispatcher"]
+
+    kunstmaan_admin.menubuilder:
+        class: Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder
+        arguments: ["@kunstmaan_admin.menufactory", "@event_dispatcher"]
+
+    kunstmaan_admin.menu.menu:
+        class: Kunstmaan\AdminBundle\Helper\Menu\MenuItem
+        factory_service: kunstmaan_admin.menubuilder
+        factory_method: createMenu
+        scope: request
         tags:
-            -  { name: 'kunstmaan_admin.menu.adaptor' }
+            - { name: knp_menu.menu, alias: menu } # The alias is what is used to retrieve the menu
+
+    kunstmaan_admin.configure_menu_children_listener:
+        class: Kunstmaan\AdminBundle\EventListener\ConfigureMenuChildrenListener
+        tags:
+            - { name: 'kernel.event_listener', event: 'kunstmaan_admin.configureMenuChildren', method: 'onMenuChildrenConfigure' }
+
+    kunstmaan_admin.menu.twig.extension:
+        class: Kunstmaan\AdminBundle\Twig\MenuTwigExtension
+        arguments : ["@knp_menu.matcher"]
+        tags:
+            -  { name: 'twig.extension' }
 
     kunstmaan_admin.login.listener:
         class: Kunstmaan\AdminBundle\EventListener\LoginListener
         arguments: ["@security.context", "@doctrine.orm.entity_manager", "@kunstmaan_admin.logger"]
         tags:
             - { name: 'kernel.event_listener', event: 'security.interactive_login' }
-            
-    kunstmaan_admin.menu.twig.extension:
-        class: Kunstmaan\AdminBundle\Twig\MenuTwigExtension
-        arguments: ["@kunstmaan_admin.menubuilder"]
-        tags:
-            -  { name: 'twig.extension' }
 
     kunstmaan_admin.localeswitcher.twig.extension:
         class: Kunstmaan\AdminBundle\Twig\LocaleSwitcherTwigExtension

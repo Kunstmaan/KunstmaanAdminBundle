@@ -1,23 +1,11 @@
-{% set lowestTopChild = adminmenu.lowestTopChild %}
-{% if lowestTopChild %}
-    {% set navigationChildren = lowestTopChild.navigationChildren %}
-{% endif %}
-
-{% if lowestTopChild and navigationChildren | length > 0 %}
-    <aside class="sidebar">
-        <div class="search_wrp">
-            <form id="treeform">
-        	    <input type="text" id="searchVal" value="" />
-        	    <button id="search" class="btn search"><i class="icon-search"></i></button>
-            </form>
-        </div>
-        <div class="tree clearfix">
-            {% set currentMenuItem = adminmenu.current %}
-   	        <ul>
-           		{% for menuitem in navigationChildren %}
-                    {% include 'KunstmaanAdminBundle:Default:rectreeview.html.twig' %}
-                {% endfor %}
-            </ul>
-        </div>
-    </aside>
-{% endif %}
+<aside class="sidebar">
+    <div class="search_wrp">
+        <form id="treeform">
+            <input type="text" id="searchVal" value="" />
+            <button id="search" class="btn search"><i class="icon-search"></i></button>
+        </form>
+    </div>
+    <div class="tree clearfix">
+        {{ knp_menu_render(menu, { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_treemenu.html.twig'}, 'bootstrap') }}
+    </div>
+</aside>

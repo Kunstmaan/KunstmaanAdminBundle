@@ -7,11 +7,9 @@ use Kunstmaan\AdminBundle\Event\ConfigureMenuChildrenEvent;
 class ConfigureMenuChildrenListener
 {
 
-    public function __construct()
-    {
-
-    }
-
+    /**
+     * @param ConfigureMenuChildrenEvent $event
+     */
     public function onMenuChildrenConfigure(ConfigureMenuChildrenEvent $event)
     {
         if ('Settings' == $event->getMenu()->getName()) {

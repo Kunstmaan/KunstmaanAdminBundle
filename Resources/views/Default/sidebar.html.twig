@@ -6,6 +6,7 @@
         </form>
     </div>
     <div class="tree clearfix">
-        {{ knp_menu_render(menu, { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_treemenu.html.twig'}, 'bootstrap') }}
+        {% set topmenuitem = admin_menu_top(menu, 1) %}
+        {{ knp_menu_render([menu, topmenuitem['label']], { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_treemenu.html.twig'}, 'bootstrap') }}
     </div>
 </aside>

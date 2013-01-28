@@ -3,11 +3,11 @@
 namespace Kunstmaan\AdminBundle\Twig;
 
 use ArrayIterator;
+use RecursiveIteratorIterator;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Iterator\CurrentItemFilterIterator;
 use Knp\Menu\Iterator\RecursiveItemIterator;
 use Knp\Menu\Matcher\Matcher;
-use RecursiveIteratorIterator;
 
 /**
  * MenuTwigExtension
@@ -30,6 +30,7 @@ class MenuTwigExtension extends \Twig_Extension
     {
         return array(
             'admin_menu_current'  => new \Twig_Function_Method($this, 'getCurrentMenuItem'),
+            'admin_menu_top'  => new \Twig_Function_Method($this, 'getTopMenuItem'),
         );
     }
 
@@ -60,6 +61,22 @@ class MenuTwigExtension extends \Twig_Extension
         }
 
         return null;
+    }
+
+    /**
+     * Returns the top MenuItem from given Menu
+     *
+     * @param ItemInterface $menu
+     * @param int $level
+     *
+     * @return string
+     */
+    public function getTopMenuItem(ItemInterface $menu, $level)
+    {
+        $item = $this->getCurrentMenuItem($menu);
+        $breadcrumbs = $item->getBreadcrumbsArray();
+
+        return $breadcrumbs[$level];
     }
 
     /**

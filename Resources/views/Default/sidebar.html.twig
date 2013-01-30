@@ -7,6 +7,8 @@
     </div>
     <div class="tree clearfix">
         {% set topmenuitem = admin_menu_top(menu, 1) %}
-        {{ knp_menu_render([menu, topmenuitem['label']], { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_treemenu.html.twig'}, 'bootstrap') }}
+        {% if topmenuitem %}
+            {{ knp_menu_render([menu, topmenuitem.name], { 'template': 'KunstmaanAdminBundle:Menu:knp_menu_treemenu.html.twig'}, 'bootstrap') }}
+        {% endif %}
     </div>
 </aside>

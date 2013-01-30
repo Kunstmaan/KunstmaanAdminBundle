@@ -31,6 +31,8 @@ services:
 
     kunstmaan_admin.configure_menu_children_listener:
         class: Kunstmaan\AdminBundle\EventListener\ConfigureMenuChildrenListener
+        arguments: ["@request", "@doctrine.orm.entity_manager"]
+        scope: request
         tags:
             - { name: 'kernel.event_listener', event: 'kunstmaan_admin.configureMenuChildren', method: 'onMenuChildrenConfigure' }
 

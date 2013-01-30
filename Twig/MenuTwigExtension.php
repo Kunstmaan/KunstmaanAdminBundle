@@ -74,9 +74,11 @@ class MenuTwigExtension extends \Twig_Extension
     public function getTopMenuItem(ItemInterface $menu, $level)
     {
         $item = $this->getCurrentMenuItem($menu);
-        $breadcrumbs = $item->getBreadcrumbsArray();
-
-        return $breadcrumbs[$level];
+        if (isset($item)) {
+            $breadcrumbs = $item->getBreadcrumbsArray();
+            return $breadcrumbs[$level]['item'];
+        }
+        return null;
     }
 
     /**

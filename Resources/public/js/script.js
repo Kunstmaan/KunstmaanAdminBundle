@@ -435,8 +435,6 @@ function initFilter() {
 }
 
 function createFilter(el, hide, options){
-    console.log("Create filter init");
-    
     var line = $(el).parent("li");
     
     if(hide == true){
@@ -478,7 +476,7 @@ function resetFilters(){
 
 
 
-function removeFilter(el){
+function removeThisFilter(el){
     if($("#filtermap").find(".filterline").length==2){
         $(el).parent(".filterline").remove();
         $("#addline").removeClass("hidden");

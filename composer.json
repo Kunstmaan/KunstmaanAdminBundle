@@ -21,8 +21,8 @@
         "knplabs/knp-menu-bundle": "*",
         "monolog/monolog": "1.4.*@dev",
         "sensio/framework-extra-bundle": "*",
-        "kunstmaan/adminlist-bundle": "self.version",
-        "kunstmaan/utilities-bundle": "self.version"
+        "kunstmaan/adminlist-bundle": "2.3.*",
+        "kunstmaan/utilities-bundle": "2.3.*"
     },
     "require-dev": {
         "doctrine/data-fixtures": "1.0.*@dev",
@@ -30,7 +30,7 @@
         "pagerfanta/pagerfanta": "1.0.*@dev",
         "white-october/pagerfanta-bundle": "1.0.*@dev"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-0": { "Kunstmaan\\AdminBundle": "" }
     },

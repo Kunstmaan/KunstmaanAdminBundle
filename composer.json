@@ -18,7 +18,7 @@
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "friendsofsymfony/user-bundle": "dev-master",
         "knplabs/knp-menu-bundle": "*",
-        "monolog/monolog": "1.4.*@dev",
+        "monolog/monolog": "1.4.*",
         "sensio/framework-extra-bundle": "*",
         "kunstmaan/adminlist-bundle": "2.3.*",
         "kunstmaan/utilities-bundle": "2.3.*",

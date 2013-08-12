@@ -22,9 +22,7 @@
         "monolog/monolog": "1.4.*@dev",
         "sensio/framework-extra-bundle": "*",
         "kunstmaan/adminlist-bundle": "2.3.*",
-        "kunstmaan/utilities-bundle": "2.3.*"
-    },
-    "require-dev": {
+        "kunstmaan/utilities-bundle": "2.3.*",
         "doctrine/data-fixtures": "1.0.*@dev",
         "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
         "pagerfanta/pagerfanta": "1.0.*@dev",

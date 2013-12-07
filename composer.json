@@ -18,12 +18,14 @@
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "friendsofsymfony/user-bundle": "dev-master",
         "knplabs/knp-menu-bundle": "*",
-        "monolog/monolog": "1.4.*",
         "sensio/framework-extra-bundle": "*",
         "kunstmaan/adminlist-bundle": "2.3.*",
         "kunstmaan/utilities-bundle": "2.3.*",
+        "guzzle/guzzle": "3.7.*@dev"
+    },
+    "require-dev": {
         "doctrine/data-fixtures": "1.0.*@dev",
-        "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
+        "doctrine/doctrine-fixtures-bundle": ">=2.1, <2.3",
         "pagerfanta/pagerfanta": "1.0.*@dev",
         "white-october/pagerfanta-bundle": "1.0.*@dev"
     },

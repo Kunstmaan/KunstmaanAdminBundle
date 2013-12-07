@@ -1,4 +1,8 @@
-# KunstmaanAdminBundle [![Build Status](https://travis-ci.org/Kunstmaan/KunstmaanAdminBundle.png?branch=master)](http://travis-ci.org/Kunstmaan/KunstmaanAdminBundle)
+# KunstmaanAdminBundle 
+
+[![Build Status](https://travis-ci.org/Kunstmaan/KunstmaanAdminBundle.png?branch=master)](http://travis-ci.org/Kunstmaan/KunstmaanAdminBundle)
+[![Total Downloads](https://poser.pugx.org/kunstmaan/admin-bundle/downloads.png)](https://packagist.org/packages/kunstmaan/admin-bundle)
+[![Latest Stable Version](https://poser.pugx.org/kunstmaan/admin-bundle/v/stable.png)](https://packagist.org/packages/kunstmaan/admin-bundle)
 
 The Kunstmaan Admin bundle supplies your project with a basic, elegant backend interface you can modify and extend so you can make your perfect admin module. The clean interface makes it straightforward for you and the people working with it to change settings and modify content.
 
@@ -7,7 +11,7 @@ View more screenshots and information [http://bundles.kunstmaan.be](http://bundl
 
 ## Installation
 
-This bundle is compatible with all Symfony 2.3.* releases. More information about installing can be found in this line by line walkthrough of installing Symfony and all our bundles, please refer to the [Getting Started guide](http://bundles.kunstmaan.be/doc/01_GettingStarted.html) and enjoy the full blown experience.
+This bundle is compatible with all Symfony 2.3.* releases. More information about installing can be found in this line by line walkthrough of installing Symfony and all our bundles, please refer to the [Getting Started guide](http://bundles.kunstmaan.be/getting-started/installation) and enjoy the full blown experience.
 
 ## Symfony 2.2
 

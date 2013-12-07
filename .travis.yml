@@ -12,7 +12,7 @@ matrix:
 
 before_script:
   - composer selfupdate
-  - COMPOSER_ROOT_VERSION=dev-master composer --prefer-source --dev install
+  - composer --prefer-source install
 
 script: phpunit --debug
 

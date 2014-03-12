@@ -3,11 +3,8 @@
 namespace Kunstmaan\AdminBundle\Entity;
 
 use DateTime;
-
-use Kunstmaan\AdminBundle\Entity\AbstractEntity;
-use Kunstmaan\UtilitiesBundle\Helper\ClassLookup;
-
 use Doctrine\ORM\Mapping as ORM;
+use Kunstmaan\UtilitiesBundle\Helper\ClassLookup;
 
 /**
  * An Acl changeset will be added to the queue whenever a change is made to the permissions. The {@link ApplyAclCommand}
@@ -52,8 +49,7 @@ class AclChangeset extends AbstractEntity
     protected $refEntityName;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Kunstmaan\AdminBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * The doctrine metadata is set dynamically in Kunstmaan\AdminBundle\EventListener\MappingListener
      */
     protected $user;
 
@@ -95,10 +91,14 @@ class AclChangeset extends AbstractEntity
      * Set ACL changeset
      *
      * @param array $changeset the changeset to apply
+     *
+     * @return AclChangeset
      */
     public function setChangeset(array $changeset)
     {
         $this->changeset = $changeset;
+
+        return $this;
     }
 
     /**
@@ -115,10 +115,14 @@ class AclChangeset extends AbstractEntity
      * Set timestamp of creation
      *
      * @param DateTime $created
+     *
+     * @return AclChangeset
      */
     public function setCreated($created)
     {
         $this->created = $created;
+
+        return $this;
     }
 
     /**
@@ -135,10 +139,14 @@ class AclChangeset extends AbstractEntity
      * Set timestamp of last modification
      *
      * @param DateTime $lastModified
+     *
+     * @return AclChangeset
      */
     public function setLastModified($lastModified)
     {
         $this->lastModified = $lastModified;
+
+        return $this;
     }
 
     /**
@@ -155,10 +163,14 @@ class AclChangeset extends AbstractEntity
      * Set reference entity id
      *
      * @param int $refId
+     *
+     * @return AclChangeset
      */
     protected function setRefId($refId)
     {
         $this->refId = $refId;
+
+        return $this;
     }
 
     /**
@@ -175,10 +187,14 @@ class AclChangeset extends AbstractEntity
      * Set reference entity name
      *
      * @param string $refEntityName
+     *
+     * @return AclChangeset
      */
     protected function setRefEntityName($refEntityName)
     {
         $this->refEntityName = $refEntityName;
+
+        return $this;
     }
 
     /**
@@ -195,22 +211,30 @@ class AclChangeset extends AbstractEntity
      * Set reference entity
      *
      * @param AbstractEntity $entity
+     *
+     * @return AclChangeset
      */
     public function setRef(AbstractEntity $entity)
     {
         $this->setRefId($entity->getId());
         $this->setRefEntityName(ClassLookup::getClass($entity));
+
+        return $this;
     }
 
     /**
      * Set status, every change in status will trigger last modified to be updated
      *
      * @param int $status
+     *
+     * @return AclChangeset
      */
     public function setStatus($status)
     {
         $this->status = $status;
         $this->setLastModified(new DateTime('now'));
+
+        return $this;
     }
 
     /**
@@ -227,10 +251,14 @@ class AclChangeset extends AbstractEntity
      * Set process id
      *
      * @param int $pid
+     *
+     * @return AclChangeset
      */
     public function setPid($pid)
     {
         $this->pid = $pid;
+
+        return $this;
     }
 
     /**
@@ -246,17 +274,21 @@ class AclChangeset extends AbstractEntity
     /**
      * Set user
      *
-     * @param User $user
+     * @param BaseUser $user
+     *
+     * @return AclChangeset
      */
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
     }
 
     /**
      * Get user
      *
-     * @return User
+     * @return BaseUser
      */
     public function getUser()
     {

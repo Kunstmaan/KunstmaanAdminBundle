@@ -496,7 +496,14 @@ function updateOptions(el, options){
         }
     });
     $(el).parent(".filterline").find(".filteroptions").find("input:not(.uniquefilterid), select").each(function(){
-        $(this).attr("name", $(this).attr("name") + "_" + uniqueid);
+        var name = $(this).attr("name");
+        if (name.indexOf("[]", name.length - 2) !== -1) {
+            name = name.substr(0, name.length - 2);
+            $(this).attr("name", name + "_" + uniqueid + "[]");
+        } else {
+            $(this).attr("name", $(this).attr("name") + "_" + uniqueid);
+        }
+        console.log($(this).attr("name"));
         if($(this).hasClass("datepick")){
             $(this).datepicker(options);
         }
@@ -654,6 +661,11 @@ function PagepartSubForm(collectionHolder, addButtonLi, removeButtonHtml, allowA
         // Add the "add new" button and li to the ul
         this.collectionHolder.append(this.addButtonLi);
 
+        // For each of the entity forms add a delete button
+        this.collectionHolder.find('.nested_form_item').each(function() {
+            self.addEntityFormDeleteButton($(this));
+        });
+
         // Make sure we have at least as many entity forms than minimally required
         if (this.min > 0 && this.min > nrEntityForms) {
             var newNeeded = this.min - nrEntityForms;
@@ -661,11 +673,6 @@ function PagepartSubForm(collectionHolder, addButtonLi, removeButtonHtml, allowA
                 this.addNewEntityForm();
             }
         }
-
-        // For each of the entity forms add a delete button
-        this.collectionHolder.find('.nested_form_item').each(function() {
-            self.addEntityFormDeleteButton($(this));
-        });
 
         // Add listerners on add button
         this.addButtonLi.find('.add-btn').on('click', function(e) {
@@ -722,11 +729,16 @@ function PagepartSubForm(collectionHolder, addButtonLi, removeButtonHtml, allowA
 
         // Check that we need to show/hide the add/delete buttons
         this.recalculateShowAddDeleteButtons();
+
+        // Quickfix to trigger CK editors on sub-entities - there should be a better way to do this...
+        if (typeof enableCKEditors !== "undefined") {
+            disableCKEditors();
+            enableCKEditors();
+        }
     }
 
     this.addEntityFormDeleteButton = function($entityFormLi) {
         var self = this;
-
         var $removeLink = $(this.removeButtonHtml);
         $entityFormLi.prepend($removeLink);
 

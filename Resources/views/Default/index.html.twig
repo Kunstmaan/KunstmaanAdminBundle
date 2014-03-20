@@ -8,148 +8,151 @@
     {% endif %}
 
     {% if dashboardConfiguration %}
-        <div class="page-header">
-            <h1>{{ dashboardConfiguration.title }}</h1>
-        </div>
 
-        <!-- TABS -->
-        <ul class="db-tabs">
-            <li class="db-tabs__item">
-                <a href="#" class="db-tabs__controller">
-                    <h6 class="db-tabs__item__title">Today</h6>
-                    <p class="db-tabs__item__number">63</p>
-                    <p class="db-tabs__item__subtitle">visitors</p>
-                </a>
-            </li>
-            <li class="db-tabs__item">
-                <a href="#" class="db-tabs__controller">
-                    <h6 class="db-tabs__item__title">Yesterday</h6>
-                    <p class="db-tabs__item__number">23</p>
-                    <p class="db-tabs__item__subtitle">visitors</p>
-                </a>
-            </li>
-            <li class="db-tabs__item db-tabs__item--active">
-                <a href="#" class="db-tabs__controller">
-                    <h6 class="db-tabs__item__title">Last week</h6>
-                    <p class="db-tabs__item__number">206</p>
-                    <p class="db-tabs__item__subtitle">visitors</p>
-                </a>
-            </li>
-            <li class="db-tabs__item">
-                <a href="#" class="db-tabs__controller">
-                    <h6 class="db-tabs__item__title">Last month</h6>
-                    <p class="db-tabs__item__number">751</p>
-                    <p class="db-tabs__item__subtitle">visitors</p>
-                </a>
-            </li>
-            <li class="db-tabs__item">
-                <a href="#" class="db-tabs__controller">
-                    <h6 class="db-tabs__item__title">Last 3 months</h6>
-                    <p class="db-tabs__item__number">2144</p>
-                    <p class="db-tabs__item__subtitle">visitors</p>
-                </a>
-            </li>
-        </ul>
-        <!-- end TABS -->
-
-        <!-- TAB CONTENT -->
-        <section class="db-content">
-
-            <!-- COL -->
-            <div class="db-col db-col--5">
-                <div class="db-block">
-                    <h2 class="db-block__title">
-                        Visitors
-                        <span class="db-block__title__stats"><strong>185 Visitors</strong> (82 unique)</span>
-                    </h2>
-
-                    <!-- CHART -->
-                    <canvas id="js-dashboard-chart" class="dashboard-chart" height="290"></canvas>
-                    <!-- end CHART -->
-                </div>
+        {% if token %}
+            <div class="page-header">
+                <h1>{{ dashboardConfiguration.title }}</h1>
             </div>
-            <!-- end COL -->
 
-            <!-- COL -->
-            <div class="db-col db-col--3">
-                <div class="db-block">
-                    <h2 class="db-block__title">Traffic Source</h2>
-                    <ul class="db-block__list">
-                        <li class="db-block__list__item db-block__list__item--icon db-block__list__item--icon-direct">
-                            <p class="db-block__text">Direct</p>
-                            <p class="db-block__stats">
-                                <span class="db-block__stats--enlarged">82%</span>
-                                157
-                            </p>
-                        </li>
-                        <li class="db-block__list__item db-block__list__item--icon db-block__list__item--icon-referral">
-                            <p class="db-block__text">Referrals</p>
-                            <p class="db-block__stats">
-                                <span class="db-block__stats--enlarged">15%</span>
-                                28
-                            </p>
-                        </li>
-                        <li class="db-block__list__item db-block__list__item--icon db-block__list__item--icon-search">
-                            <p class="db-block__text">Search Engines</p>
-                            <p class="db-block__stats">
-                                <span class="db-block__stats--enlarged">3%</span>
-                                2
-                            </p>
-                        </li>
-                    </ul>
+            <!-- TABS -->
+            <ul class="db-tabs">
+
+            {% for overview in overviews %}
+                <li class="db-tabs__item">
+                    <a href="#" class="db-tabs__controller">
+                        <h6 class="db-tabs__item__title">{{ overview.title }}</h6>
+                        <p class="db-tabs__item__number">{{ overview.visits }}</p>
+                        <p class="db-tabs__item__subtitle">visitors</p>
+                    </a>
+                </li>
+            {% endfor %}
+
+
+    {#
+                <li class="db-tabs__item db-tabs__item--active">
+                    <a href="#" class="db-tabs__controller">
+                        <h6 class="db-tabs__item__title">Last week</h6>
+                        <p class="db-tabs__item__number">206</p>
+                        <p class="db-tabs__item__subtitle">visitors</p>
+                    </a>
+                </li>
+     #}
+            </ul>
+            <!-- end TABS -->
+
+            <!-- TAB CONTENT -->
+            {% set overview = overviews|first %}
+
+            <section class="db-content">
+
+                <!-- COL -->
+                <div class="db-col db-col--5">
+                    <div class="db-block">
+                        <h2 class="db-block__title">
+                            Visitors
+                            <span class="db-block__title__stats"><strong>{{ overview.visits }} Visitors</strong> {# (82 unique) #}</span>
+                        </h2>
+
+                        <!-- CHART -->
+                        <canvas id="js-dashboard-chart" class="dashboard-chart" height="290"></canvas>
+                        <!-- end CHART -->
+                    </div>
                 </div>
+                <!-- end COL -->
+
+                <!-- COL -->
+                <div class="db-col db-col--3">
+                    <div class="db-block">
+                        <h2 class="db-block__title">Traffic Source</h2>
+                        <ul class="db-block__list">
+                            <li class="db-block__list__item db-block__list__item--icon db-block__list__item--icon-direct">
+                                <p class="db-block__text">Direct</p>
+                                <p class="db-block__stats">
+                                    <span class="db-block__stats--enlarged">{{ overview.trafficDirect }} ({{ overview.getTrafficDirectPercentage }}%)</span>
+                                </p>
+                            </li>
+                            <li class="db-block__list__item db-block__list__item--icon db-block__list__item--icon-referral">
+                                <p class="db-block__text">Referrals</p>
+                                <p class="db-block__stats">
+                                    <span class="db-block__stats--enlarged">{{ overview.trafficReferral }} ({{ overview.getTrafficReferralPercentage }}%)</span>
+                                </p>
+                            </li>
+                            <li class="db-block__list__item db-block__list__item--icon db-block__list__item--icon-search">
+                                <p class="db-block__text">Search Engines</p>
+                                <p class="db-block__stats">
+                                    <span class="db-block__stats--enlarged">{{ overview.trafficSearchEngine }} ({{ overview.getTrafficSearchEnginePercentage }}%)</span>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- end COL -->
+
+                <!-- COL -->
+                <div class="db-col db-col--4">
+                    <div class="db-block db-col__inner">
+                        <h2 class="db-block__title">Top Referrals</h2>
+                        <ul class="db-block__list">
+                            {% if overview.topReferralFirstValue != 0 %}
+                                <li class="db-block__list__item">
+                                    <p class="db-block__text db-block__text--left">{{ overview.topReferralFirst }}</p>
+                                    <p class="db-block__stats db-block__stats--right">{{ overview.topReferralFirstValue }}</p>
+                                </li>
+                                {% if overview.topReferralSecondValue != 0 %}
+                                    <li class="db-block__list__item">
+                                        <p class="db-block__text db-block__text--left">{{ overview.topReferralSecond }}</p>
+                                        <p class="db-block__stats db-block__stats--right">{{ overview.topReferralSecondValue }}</p>
+                                    </li>
+                                {% endif %}
+                                {% if overview.topReferralThirdValue != 0 %}
+                                    <li class="db-block__list__item">
+                                        <p class="db-block__text db-block__text--left">{{ overview.topReferralThird }}</p>
+                                        <p class="db-block__stats db-block__stats--right">{{ overview.topReferralThirdValue }}</p>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                <p class="db-block__text">No data available for Top Referrals</p>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <div class="db-block db-col__inner">
+                        <h2 class="db-block__title">Top Search Terms</h2>
+                        <ul class="db-block__list">
+                            {% if overview.topSearchFirstValue != 0 %}
+                                <li class="db-block__list__item">
+                                    <p class="db-block__text db-block__text--left">{{ overview.topSearchFirst }}</p>
+                                    <p class="db-block__stats db-block__stats--right">{{ overview.topSearchFirstValue }}</p>
+                                </li>
+                                {% if overview.topSearchSecondValue != 0 %}
+                                    <li class="db-block__list__item">
+                                        <p class="db-block__text db-block__text--left">{{ overview.topSearchSecond }}</p>
+                                        <p class="db-block__stats db-block__stats--right">{{ overview.topSearchSecondValue }}</p>
+                                    </li>
+                                {% endif %}
+                                {% if overview.topSearchThirdValue != 0 %}
+                                    <li class="db-block__list__item">
+                                        <p class="db-block__text db-block__text--left">{{ overview.topSearchThird }}</p>
+                                        <p class="db-block__stats db-block__stats--right">{{ overview.topSearchThirdValue }}</p>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                <p class="db-block__text">No data available for Top Search Terms</p>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- end COL -->
+
+            </section>
+            <!-- end TAB CONTENT -->
+
+            <div class="newrelic-iframes">
+                {{ dashboardConfiguration.content | raw }}
             </div>
-            <!-- end COL -->
-
-            <!-- COL -->
-            <div class="db-col db-col--4">
-                <div class="db-block db-col__inner">
-                    <h2 class="db-block__title">Top Referrals</h2>
-                    <ul class="db-block__list">
-                        <li class="db-block__list__item">
-                            <p class="db-block__text db-block__text--left">www.google.be</p>
-                            <p class="db-block__stats db-block__stats--right">13</p>
-                        </li>
-                        <li class="db-block__list__item">
-                            <p class="db-block__text db-block__text--left">gimv.be</p>
-                            <p class="db-block__stats db-block__stats--right">7</p>
-                        </li>
-                        <li class="db-block__list__item">
-                            <p class="db-block__text db-block__text--left">veeltelange-url-die-niet-inhetvakje-gaat-passen.be</p>
-                            <p class="db-block__stats db-block__stats--right">6</p>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="db-block db-col__inner">
-                    <h2 class="db-block__title">Top Search Terms</h2>
-                    <!-- if there's no data available -->
-                    <p class="db-block__text">No data available for Top Search Terms</p>
-                    <!-- -->
-                    <ul class="db-block__list">
-                        <li class="db-block__list__item">
-                            <p class="db-block__text db-block__text--left">Gimv</p>
-                            <p class="db-block__stats db-block__stats--right">20</p>
-                        </li>
-                        <li class="db-block__list__item">
-                            <p class="db-block__text db-block__text--left">investment focus</p>
-                            <p class="db-block__stats db-block__stats--right">14</p>
-                        </li>
-                        <li class="db-block__list__item">
-                            <p class="db-block__text db-block__text--left">consumer2020</p>
-                            <p class="db-block__stats db-block__stats--right">11</p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- end COL -->
-
-        </section>
-        <!-- end TAB CONTENT -->
-
-        <div class="newrelic-iframes">
-            {{ dashboardConfiguration.content | raw }}
-        </div>
+        {% else %}
+            <a class='btn' href='{{ authUrl }}'>Connect a Google Analytics account!</a>
+        {% endif %}
 
     {% else %}
         <div class="page-header">
@@ -157,9 +160,5 @@
         </div>
     {% endif %}
 
-    {% if token %}
 
-    {% else %}
-        <a class='btn' href='{{ authUrl }}'>Connect a Google Analytics account!</a>
-    {% endif %}
 {% endblock %}

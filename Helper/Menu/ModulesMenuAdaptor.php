@@ -31,7 +31,21 @@ class ModulesMenuAdaptor implements MenuAdaptorInterface
             if (stripos($request->attributes->get('_route'), $menuItem->getRoute()) === 0) {
                 $menuItem->setActive(true);
             }
+
+            $subMenuItem = new TopMenuItem($menu);
+            $subMenuItem->setRoute('kunstmaanadminbundle_admin_analyticsoverview');
+            $subMenuItem->setInternalName('Analytics Overviews');
+            $subMenuItem->setParent($menuItem);
+            if (stripos($request->attributes->get('_route'), $subMenuItem->getRoute()) === 0) {
+                $subMenuItem->setActive(true);
+                $menuItem->setActive(true);
+            }
+
+
             $children[] = $menuItem;
+            $subChildren = $menuItem->getChildren();
+            $subChildren[] = $subMenuItem;
+            $menuItem->setChildren($subChildren);
         }
     }
 

@@ -33,5 +33,5 @@
     "autoload": {
         "psr-0": { "Kunstmaan\\AdminBundle": "" }
     },
-    "target-dir": "Kunstmaan/AdminBundle"
+    "target-dir": "Kunstmaan/AdminBundle",
 }

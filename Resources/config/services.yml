@@ -3,6 +3,9 @@ parameters:
     kunstmaan_admin.apply_acl_changeset.listener.class: 'Kunstmaan\AdminBundle\EventListener\ApplyAclChangesetListener'
 
 services:
+    kunstmaan_admin.googleclienthelper:
+        class: "Kunstmaan\AdminBundle\Entity\GoogleClientHelper"
+
     kunstmaan_admin.menubuilder:
         class: "%kunstmaan_admin.menubuilder.class%"
         arguments: ["@translator", "@service_container"]
@@ -119,3 +122,7 @@ services:
         arguments: ["%fos_user.model.user.class%"]
         tags:
             - { name: doctrine.event_listener, event: loadClassMetadata }
+    kunstmaan_admin.command.UpdateAnalyticsOverviewCommand:
+        class: Kunstmaan\AdminBundle\Command\UpdateAnalyticsOverviewCommand
+        tags:
+            -  { name: console.command }

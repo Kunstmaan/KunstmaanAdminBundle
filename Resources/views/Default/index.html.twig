@@ -157,4 +157,9 @@
         </div>
     {% endif %}
 
+    {% if token %}
+
+    {% else %}
+        <a class='btn' href='{{ authUrl }}'>Connect a Google Analytics account!</a>
+    {% endif %}
 {% endblock %}

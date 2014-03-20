@@ -59,48 +59,6 @@ class DefaultController extends Controller
         return $params;
     }
 
-    /**
-     * The update overview action will update the data of the available overviews
-     *
-     * @Route("/updateOverview", name="KunstmaanAdminBundle_homepage_overview")
-     * @Template()
-     *
-     * @return array
-     */
-    public function updateOverviewAction() {
-
-        $clientId       = $this->container->getParameter('google.api.client_id');
-        $clientSecret   = $this->container->getParameter('google.api.client_secret');
-        $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
-        $devKey         = $this->container->getParameter('google.api.dev_key');
-
-        $googleClientHelper = new GoogleClientHelper($clientId, $clientSecret, $redirectUri, $devKey, $this->getDoctrine()->getManager());
-
-        $params = array();
-        $googleClient = $googleClientHelper->getClient();
-        if ($googleClientHelper->tokenIsSet()) {
-            $params['token'] = true;
-            $analyticsHelper = new GoogleAnalyticsHelper($googleClient);
-
-
-
-
-            $results = $analyticsHelper->getResults(1, 'ga:visits,ga:pageviews');
-
-            $rows = $results->getRows();
-
-            echo "<pre>";
-            print_r($rows);
-            echo "</pre>";
-
-        } else {
-            $params['token'] = false;
-            $params['authUrl'] = $googleClient->createAuthUrl();
-        }
-
-        return [];
-    }
-
 
     /**
      * The admin of the index page

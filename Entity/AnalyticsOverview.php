@@ -42,6 +42,13 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     /**
      * @var integer
      *
+     * @ORM\Column(name="start_days_ago", type="integer")
+     */
+    private $startOffset = 0;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="visits", type="integer")
      */
     private $visits = 0;
@@ -417,6 +424,29 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set startOffset
+     *
+     * @param integer $startOffset
+     * @return AnalyticsOverview
+     */
+    public function setStartOffset($startOffset)
+    {
+        $this->startOffset = $startOffset;
+
+        return $this;
+    }
+
+    /**
+     * Get startOffset
+     *
+     * @return integer
+     */
+    public function getStartOffset()
+    {
+        return $this->startOffset;
     }
 
     /**

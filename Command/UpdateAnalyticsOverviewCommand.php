@@ -46,7 +46,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 $output->writeln('Getting data for overview "' .$overview->getTitle(). '"');
 
                 // normal metrics
-                $results = $analyticsHelper->getResults($overview->getTimespan(), 'ga:visits,ga:pageviews');
+                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits,ga:pageviews');
                 $rows = $results->getRows();
 
                     // visits metric
@@ -58,7 +58,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $overview->setPageViews($pageviews);
 
                 // visitor types
-                $results = $analyticsHelper->getResults($overview->getTimespan(), 'ga:visits', ['dimensions' => 'ga:visitorType']);
+                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:visitorType']);
                 $rows = $results->getRows();
 
                     // new visitors
@@ -68,7 +68,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $overview->setReturningVisits($rows[1][1]);
 
                 // traffic sources
-                $results = $analyticsHelper->getResults($overview->getTimespan(), 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
+                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
                 $rows = $results->getRows();
 
                 foreach($rows as $row) {
@@ -92,7 +92,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 }
 
                 // top referral sites
-                $results = $analyticsHelper->getResults($overview->getTimespan(), 'ga:visits', ['dimensions' => 'ga:source', 'sort' => '-ga:visits', 'filters' => 'ga:medium==referral']);
+                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:source', 'sort' => '-ga:visits', 'filters' => 'ga:medium==referral']);
                 $rows = $results->getRows();
 
                     // #1 referral
@@ -108,7 +108,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $overview->setTopReferralThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
 
                 // top searches
-                $results = $analyticsHelper->getResults($overview->getTimespan(), 'ga:searchUniques', ['dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques']);
+                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:searchUniques', ['dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques']);
                 $rows = $results->getRows();
 
                     // #1 search

@@ -32,6 +32,7 @@ class AnalyticsOverviewAdminListConfigurator extends AbstractDoctrineORMAdminLis
     {
         $this->addField('title', 'Title', true);
         $this->addField('timespan', 'Timespan (days)', true);
+        $this->addField('startOffset', 'Start offset (days)', true);
         $this->addField('visits', 'Visits', true);
         $this->addField('pageviews', 'Pageviews', true);
         $this->addField('newVisits', 'New visitors', true);

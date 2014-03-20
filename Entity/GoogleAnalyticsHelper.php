@@ -56,12 +56,12 @@ class GoogleAnalyticsHelper
         }
     }
 
-    public function getResults($timespan, $metrics, $extra=[]) {
+    public function getResults($timespan, $startOffset, $metrics, $extra=[]) {
         $profileId = $this->getFirstProfileId();
          return $this->analytics->data_ga->get(
                  'ga:' . $profileId,
                  $timespan.'daysAgo',
-                 '0daysAgo',
+                 $startOffset.'daysAgo',
                  $metrics,
                  $extra
             );

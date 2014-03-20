@@ -26,6 +26,7 @@ class AnalyticsOverviewAdminType extends AbstractType
     {
         $builder->add('title');
         $builder->add('timespan');
+        $builder->add('startOffset');
     }
 
     /**

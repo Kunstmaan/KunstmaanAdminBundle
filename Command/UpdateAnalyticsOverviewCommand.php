@@ -46,6 +46,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 $output->writeln('Getting data for overview "' .$overview->getTitle(). '"');
 
                 // normal metrics
+                $output->writeln("\t" . 'Fetching metrics..');
                 $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits,ga:pageviews');
                 $rows = $results->getRows();
 
@@ -58,6 +59,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $overview->setPageViews($pageviews);
 
                 // visitor types
+                $output->writeln("\t" . 'Fetching visitor types..');
                 $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:visitorType']);
                 $rows = $results->getRows();
 
@@ -68,6 +70,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $overview->setReturningVisits($rows[1][1]);
 
                 // traffic sources
+                $output->writeln("\t" . 'Fetching traffic sources..');
                 $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
                 $rows = $results->getRows();
 
@@ -92,6 +95,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 }
 
                 // top referral sites
+                $output->writeln("\t" . 'Fetching referral sites..');
                 $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:source', 'sort' => '-ga:visits', 'filters' => 'ga:medium==referral']);
                 $rows = $results->getRows();
 
@@ -108,6 +112,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $overview->setTopReferralThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
 
                 // top searches
+                $output->writeln("\t" . 'Fetching searches..');
                 $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:searchUniques', ['dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques']);
                 $rows = $results->getRows();
 
@@ -124,6 +129,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $overview->setTopSearchThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
 
                 // persist entity back to DB
+                $output->writeln("\t" . 'Writing to DB..');
                 $em->persist($overview);
             }
 

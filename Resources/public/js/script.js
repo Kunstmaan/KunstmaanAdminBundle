@@ -1,4 +1,6 @@
 //Init functions needed on every page
+var chartData = [];
+
 $(document).ready(function (){
     if($('.tree').length > 0) {
         init_tree();
@@ -13,53 +15,12 @@ $(document).ready(function (){
     initModalFocus();
     initSaveKeyListener();
     initSidenavSize();
-    initChart();
+    //initChart();
 });
 
-$(window).resize(function (){
-    initChart();
-});
 
-// Dashboard Chart
-initChart = function() {
-    var url = "getWeekOverview";
-    $.post(url,{}, function(data) {
-        if(data.responseCode==200) {
 
-            console.log(data);
 
-            var barChartData = {
-                labels : ["Today","Yesterday","2 days ago","3 days ago","4 days ago","5 days ago","6 days ago"],
-                datasets : [
-                    {
-                        fillColor : "rgb(41, 151, 206)",
-                        strokeColor : "rgb(41, 151, 206)",
-                        data : [
-                                data.weekoverview.day1,
-                                data.weekoverview.day2,
-                                data.weekoverview.day3,
-                                data.weekoverview.day4,
-                                data.weekoverview.day5,
-                                data.weekoverview.day6,
-                                data.weekoverview.day7
-                                ]
-                    }
-                ]
-            };
-
-            var chartWidth = $('#js-dashboard-chart').parent().width();
-            $('#js-dashboard-chart').attr('width', chartWidth );
-
-            // only use animation in browsers who are not IE8
-            // in IE8 the animation is too slow and jerky
-            if (!$('html').hasClass('ie8')) {
-                var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Bar(barChartData);
-            } else {
-                var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Bar(barChartData, {animation:false});
-            }
-        }
-    });
-};
 
 //JS-tree
 function init_tree() {

@@ -136,11 +136,6 @@ class DefaultController extends Controller
      * @return array
      */
     public function updateOverviewAction() {
-
-        $em = $this->getDoctrine()->getManager();
-        $weekOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsWeek')->getWeekOverview();
-        var_dump($weekOverview);
-
         $clientId       = $this->container->getParameter('google.api.client_id');
         $clientSecret   = $this->container->getParameter('google.api.client_secret');
         $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
@@ -155,7 +150,8 @@ class DefaultController extends Controller
             $analyticsHelper = new GoogleAnalyticsHelper($googleClient);
 
 
-            $results = $analyticsHelper->getResults(3, 2, 'ga:visits');
+            $results = $analyticsHelper->getResults(1, 0, 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
+
 
             $rows = $results->getRows();
 

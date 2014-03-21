@@ -56,25 +56,28 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
             }
 
             // save weekOverview to DB
-            $output->writeln("\t" . 'Writing to DB..');
+            $output->writeln("\t" . 'Persisting..');
             $em->persist($weekOverview);
 
 
             // get data for each overview
             foreach ($overviews as $overview) {
+
                 $output->writeln('Getting data for overview "' .$overview->getTitle(). '"');
 
                 // normal metrics
                 $output->writeln("\t" . 'Fetching metrics..');
-                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits,ga:pageviews');
-                $rows = $results->getRows();
 
                     // visits metric
+                    $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits');
+                    $rows = $results->getRows();
                     $visits = $rows[0][0];
                     $overview->setVisits($visits);
 
                     // pageviews metric
-                    $pageviews = $rows[0][1];
+                    $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:pageviews');
+                    $rows = $results->getRows();
+                    $pageviews = $rows[0][0];
                     $overview->setPageViews($pageviews);
 
                 // visitor types
@@ -92,6 +95,11 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 $output->writeln("\t" . 'Fetching traffic sources..');
                 $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
                 $rows = $results->getRows();
+
+                // resetting default values
+                $overview->setTrafficDirect(0);
+                $overview->setTrafficSearchEngine(0);
+                $overview->setTrafficReferral(0);
 
                 foreach($rows as $row) {
                     switch ($row[0]) {
@@ -148,7 +156,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $overview->setTopSearchThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
 
                 // persist entity back to DB
-                $output->writeln("\t" . 'Writing to DB..');
+                $output->writeln("\t" . 'Persisting..');
                 $em->persist($overview);
             }
 

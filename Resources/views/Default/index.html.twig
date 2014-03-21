@@ -38,7 +38,12 @@
                     <div class="db-block">
                         <h2 class="db-block__title">
                             Visitors
-                            <span class="db-block__title__stats"><strong id="data_overview_visits">{{ overview.visits }} Visitors</strong> {# (82 unique) #}</span>
+                            <span class="db-block__title__stats">
+                                <strong id="data_overview_visits">{{ overview.visits }} Visitors</strong>
+                                <span id="data_overview_pageviews">
+                                    ({{ overview.pageviews }} pageviews)
+                                </span>
+                            </span>
                         </h2>
 
                         <!-- CHART -->
@@ -196,7 +201,9 @@
                     if(data.responseCode==200) {
                         $('.db-tabs__item').removeClass('db-tabs__item--active');
                         $('#tab'+id).addClass('db-tabs__item--active');
+
                         $('#data_overview_visits').html(data.overview.visits + " Visitors");
+                        $('#data_overview_pageviews').html("(" + data.overview.pageviews + " pageviews)");
 
                         $('#data_overview_traffic_direct').html(data.overview.trafficDirect + " (" + data.extra.trafficDirectPercentage + "%)");
                         $('#data_overview_traffic_referral').html(data.overview.trafficReferral + " (" + data.extra.trafficReferralPercentage + "%)");

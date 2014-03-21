@@ -102,6 +102,32 @@ class DefaultController extends Controller
     }
 
     /**
+     * Return an ajax response
+     *
+     * @Route("/getWeekOverview", name="KunstmaanAdminBundle_analytics_weekoverview_ajax")
+     *
+     */
+    public function getWeekOverviewAction(){
+
+        $request = $this->get('request');
+
+        $em = $this->getDoctrine()->getManager();
+        $weekOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsWeek')->getWeekOverview();
+
+        $serializer = new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
+        $json = $serializer->serialize($weekOverview, 'json');
+        $json = json_decode($json);
+
+        $return = [
+                    "responseCode" => 200,
+                    "weekoverview" => $json
+                    ];
+
+       $return = json_encode($return);
+       return new Response($return, 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
      * The update overview action will update the data of the available overviews
      *
      * @Route("/updateOverview", name="KunstmaanAdminBundle_homepage_overview")

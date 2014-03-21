@@ -16,6 +16,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
  * The default controller is used to render the main screen the users see when they log in to the admin
@@ -51,6 +55,7 @@ class DefaultController extends Controller
 
             $params['token'] = true;
             $params['overviews'] = $overviews;
+            $params['overview'] = $overviews[2];
         } else {
             $params['token'] = false;
             $params['authUrl'] = $googleClient->createAuthUrl();
@@ -59,6 +64,42 @@ class DefaultController extends Controller
         return $params;
     }
 
+    /**
+     * Return an ajax response
+     *
+     * @Route("/get", name="KunstmaanAdminBundle_analytics_overview_ajax")
+     *
+     */
+    public function getOverviewAction(){
+
+        $request = $this->get('request');
+        $id = $request->request->get('overviewId');
+
+        if($id) {
+            $em = $this->getDoctrine()->getManager();
+            $overview = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getOverview($id);
+
+            $serializer = new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
+            $json = $serializer->serialize($overview, 'json');
+            $json = json_decode($json);
+            $extra['trafficDirectPercentage'] = $overview->getTrafficDirectPercentage();
+            $extra['trafficReferralPercentage'] = $overview->getTrafficReferralPercentage();
+            $extra['trafficSearchEnginePercentage'] = $overview->getTrafficSearchEnginePercentage();
+
+            $return = [
+                        "responseCode" => 200,
+                        "overview" => $json,
+                        "extra" => $extra
+                        ];
+       } else {
+            $return = [
+                        "responseCode" => 400
+                        ];
+       }
+
+       $return = json_encode($return);
+       return new Response($return, 200, ['Content-Type' => 'application/json']);
+    }
 
     /**
      * The admin of the index page

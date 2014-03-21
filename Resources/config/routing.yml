@@ -35,6 +35,7 @@ KunstmaanAdminBundle_analyticsOverview:
     requirements:
          _locale: %requiredlocales%
 
+
 ###########################
 ## fos_userbundle routes ##
 ###########################
@@ -58,4 +59,6 @@ fos_user_profile:
 fos_user_resetting:
     resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
     prefix: /resetting
+
+
 

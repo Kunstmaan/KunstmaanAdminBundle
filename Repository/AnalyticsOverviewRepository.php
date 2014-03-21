@@ -22,4 +22,18 @@ class AnalyticsOverviewRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function getOverview($id) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('o')
+            ->from('KunstmaanAdminBundle:AnalyticsOverview', 'o')
+            ->where('o.id = :id')
+            ->setParameter('id', $id);
+
+        $results = $qb->getQuery()->getResult();
+        if ($results) return $results[0];
+
+        return false;
+    }
+
 }

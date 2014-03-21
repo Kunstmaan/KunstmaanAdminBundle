@@ -17,32 +17,20 @@
             <!-- TABS -->
             <ul class="db-tabs">
 
-            {% for overview in overviews %}
-                <li class="db-tabs__item">
-                    <a href="#" class="db-tabs__controller">
-                        <h6 class="db-tabs__item__title">{{ overview.title }}</h6>
-                        <p class="db-tabs__item__number">{{ overview.visits }}</p>
+            {% for overviewItem in overviews %}
+                <li class="db-tabs__item {% if overviewItem.id == overview.id %}db-tabs__item--active{% endif %}" id="tab{{ overviewItem.id }}">
+                    <a href="#" class="db-tabs__controller" id="{{ overviewItem.id }}" path="{{path('KunstmaanAdminBundle_analytics_overview_ajax')}}">
+                        <h6 class="db-tabs__item__title">{{ overviewItem.title }}</h6>
+                        <p class="db-tabs__item__number">{{ overviewItem.visits }}</p>
                         <p class="db-tabs__item__subtitle">visitors</p>
                     </a>
                 </li>
             {% endfor %}
 
-
-    {#
-                <li class="db-tabs__item db-tabs__item--active">
-                    <a href="#" class="db-tabs__controller">
-                        <h6 class="db-tabs__item__title">Last week</h6>
-                        <p class="db-tabs__item__number">206</p>
-                        <p class="db-tabs__item__subtitle">visitors</p>
-                    </a>
-                </li>
-     #}
             </ul>
             <!-- end TABS -->
 
             <!-- TAB CONTENT -->
-            {% set overview = overviews|first %}
-
             <section class="db-content">
 
                 <!-- COL -->
@@ -50,7 +38,7 @@
                     <div class="db-block">
                         <h2 class="db-block__title">
                             Visitors
-                            <span class="db-block__title__stats"><strong>{{ overview.visits }} Visitors</strong> {# (82 unique) #}</span>
+                            <span class="db-block__title__stats"><strong id="data_overview_visits">{{ overview.visits }} Visitors</strong> {# (82 unique) #}</span>
                         </h2>
 
                         <!-- CHART -->
@@ -68,19 +56,25 @@
                             <li class="db-block__list__item db-block__list__item--icon db-block__list__item--icon-direct">
                                 <p class="db-block__text">Direct</p>
                                 <p class="db-block__stats">
-                                    <span class="db-block__stats--enlarged">{{ overview.trafficDirect }} ({{ overview.getTrafficDirectPercentage }}%)</span>
+                                    <span class="db-block__stats--enlarged" id="data_overview_traffic_direct">
+                                        {{ overview.trafficDirect }} ({{ overview.getTrafficDirectPercentage }}%)
+                                    </span>
                                 </p>
                             </li>
                             <li class="db-block__list__item db-block__list__item--icon db-block__list__item--icon-referral">
                                 <p class="db-block__text">Referrals</p>
                                 <p class="db-block__stats">
-                                    <span class="db-block__stats--enlarged">{{ overview.trafficReferral }} ({{ overview.getTrafficReferralPercentage }}%)</span>
+                                    <span class="db-block__stats--enlarged" id="data_overview_traffic_referral">
+                                        {{ overview.trafficReferral }} ({{ overview.getTrafficReferralPercentage }}%)
+                                    </span>
                                 </p>
                             </li>
                             <li class="db-block__list__item db-block__list__item--icon db-block__list__item--icon-search">
                                 <p class="db-block__text">Search Engines</p>
                                 <p class="db-block__stats">
-                                    <span class="db-block__stats--enlarged">{{ overview.trafficSearchEngine }} ({{ overview.getTrafficSearchEnginePercentage }}%)</span>
+                                    <span class="db-block__stats--enlarged" id="data_overview_traffic_searchEngine">
+                                        {{ overview.trafficSearchEngine }} ({{ overview.getTrafficSearchEnginePercentage }}%)
+                                    </span>
                                 </p>
                             </li>
                         </ul>
@@ -92,53 +86,83 @@
                 <div class="db-col db-col--4">
                     <div class="db-block db-col__inner">
                         <h2 class="db-block__title">Top Referrals</h2>
-                        <ul class="db-block__list">
-                            {% if overview.topReferralFirstValue != 0 %}
-                                <li class="db-block__list__item">
-                                    <p class="db-block__text db-block__text--left">{{ overview.topReferralFirst }}</p>
-                                    <p class="db-block__stats db-block__stats--right">{{ overview.topReferralFirstValue }}</p>
-                                </li>
-                                {% if overview.topReferralSecondValue != 0 %}
-                                    <li class="db-block__list__item">
-                                        <p class="db-block__text db-block__text--left">{{ overview.topReferralSecond }}</p>
-                                        <p class="db-block__stats db-block__stats--right">{{ overview.topReferralSecondValue }}</p>
-                                    </li>
-                                {% endif %}
-                                {% if overview.topReferralThirdValue != 0 %}
-                                    <li class="db-block__list__item">
-                                        <p class="db-block__text db-block__text--left">{{ overview.topReferralThird }}</p>
-                                        <p class="db-block__stats db-block__stats--right">{{ overview.topReferralThirdValue }}</p>
-                                    </li>
-                                {% endif %}
-                            {% else %}
-                                <p class="db-block__text">No data available for Top Referrals</p>
-                            {% endif %}
+                        <ul class="db-block__list" id="data_top_referral_list">
+
+                            {# error if no referrals #}
+                            <p class="db-block__text" id="data_top_referral_no_data">
+                                {% if overview.topReferralFirstValue == 0 %}No data available for Top Referrals{% endif %}
+                            </p>
+
+                            {# first referral #}
+                            <li class="db-block__list__item">
+                                <p class="db-block__text db-block__text--left" id="data_overview_top_referral_first">
+                                    {% if overview.topReferralFirstValue != 0 %}{{ overview.topReferralFirst }}{% endif %}
+                                </p>
+                                <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_first_value">
+                                   {% if overview.topReferralFirstValue != 0 %}{{ overview.topReferralFirstValue }}{% endif %}
+                                </p>
+                            </li>
+
+                            {# second referral #}
+                            <li class="db-block__list__item">
+                                <p class="db-block__text db-block__text--left" id="data_overview_top_referral_second">
+                                     {% if overview.topReferralSecondValue != 0 %}{{ overview.topReferralSecond }}{% endif %}
+                                </p>
+                                <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_second_value">
+                                     {% if overview.topReferralSecondValue != 0 %}{{ overview.topReferralSecondValue }}{% endif %}
+                                </p>
+                            </li>
+
+                            {# third referral #}
+                            <li class="db-block__list__item">
+                                <p class="db-block__text db-block__text--left" id="data_overview_top_referral_third">
+                                    {% if overview.topReferralThirdValue != 0 %}{{ overview.topReferralThird }}{% endif %}
+                                </p>
+                                <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_third_value">
+                                    {% if overview.topReferralThirdValue != 0 %}{{ overview.topReferralThirdValue }}{% endif %}
+                                </p>
+                            </li>
                         </ul>
                     </div>
 
                     <div class="db-block db-col__inner">
                         <h2 class="db-block__title">Top Search Terms</h2>
                         <ul class="db-block__list">
-                            {% if overview.topSearchFirstValue != 0 %}
-                                <li class="db-block__list__item">
-                                    <p class="db-block__text db-block__text--left">{{ overview.topSearchFirst }}</p>
-                                    <p class="db-block__stats db-block__stats--right">{{ overview.topSearchFirstValue }}</p>
-                                </li>
-                                {% if overview.topSearchSecondValue != 0 %}
-                                    <li class="db-block__list__item">
-                                        <p class="db-block__text db-block__text--left">{{ overview.topSearchSecond }}</p>
-                                        <p class="db-block__stats db-block__stats--right">{{ overview.topSearchSecondValue }}</p>
-                                    </li>
-                                {% endif %}
-                                {% if overview.topSearchThirdValue != 0 %}
-                                    <li class="db-block__list__item">
-                                        <p class="db-block__text db-block__text--left">{{ overview.topSearchThird }}</p>
-                                        <p class="db-block__stats db-block__stats--right">{{ overview.topSearchThirdValue }}</p>
-                                    </li>
-                                {% endif %}
-                            {% else %}
-                                <p class="db-block__text">No data available for Top Search Terms</p>
-                            {% endif %}
+
+                            {# error if no searchs #}
+                            <p class="db-block__text" id="data_top_search_no_data">
+                                {% if overview.topSearchFirstValue == 0 %}No data available for Top Search Terms{% endif %}
+                            </p>
+
+                            {# first search #}
+                            <li class="db-block__list__item">
+                                <p class="db-block__text db-block__text--left" id="data_overview_top_search_first">
+                                    {% if overview.topSearchFirstValue != 0 %}{{ overview.topSearchFirst }}{% endif %}
+                                </p>
+                                <p class="db-block__stats db-block__stats--right" id="data_overview_top_search_first_value">
+                                    {% if overview.topSearchFirstValue != 0 %}{{ overview.topSearchFirstValue }}{% endif %}
+                                </p>
+                            </li>
+
+                            {# second search #}
+                            <li class="db-block__list__item">
+                                <p class="db-block__text db-block__text--left" id="data_overview_top_search_second">
+                                    {% if overview.topSearchSecondValue != 0 %}{{ overview.topSearchSecond }}{% endif %}
+                                </p>
+                                <p class="db-block__stats db-block__stats--right" id="data_overview_top_search_second_value">
+                                    {% if overview.topSearchSecondValue != 0 %}{{ overview.topSearchSecondValue }}{% endif %}
+                                </p>
+                            </li>
+
+                            {# third search #}
+                            <li class="db-block__list__item">
+                                <p class="db-block__text db-block__text--left" id="data_overview_top_search_third">
+                                    {% if overview.topSearchThirdValue != 0 %}{{ overview.topSearchThird }}{% endif %}
+                                </p>
+                                <p class="db-block__stats db-block__stats--right" id="data_overview_top_search_third_value">
+                                    {% if overview.topSearchThirdValue != 0 %}{{ overview.topSearchThirdValue }}{% endif %}
+                                </p>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -160,5 +184,97 @@
         </div>
     {% endif %}
 
+    <script>
+        $(document).ready(function() {
+           //listen for the form beeing submitted
+           $(".db-tabs__controller").click(function(){
+                var id = $(this).attr('id');
+                var url = $(this).attr('path');
+                $.post(url,{
+                    overviewId:id
+                }, function(data) {
+                    if(data.responseCode==200) {
+                        $('.db-tabs__item').removeClass('db-tabs__item--active');
+                        $('#tab'+id).addClass('db-tabs__item--active');
+                        $('#data_overview_visits').html(data.overview.visits + " Visitors");
+
+                        $('#data_overview_traffic_direct').html(data.overview.trafficDirect + " (" + data.extra.trafficDirectPercentage + "%)");
+                        $('#data_overview_traffic_referral').html(data.overview.trafficReferral + " (" + data.extra.trafficReferralPercentage + "%)");
+                        $('#data_overview_traffic_searchEngine').html(data.overview.trafficSearchEngine + " (" + data.extra.trafficSearchEnginePercentage + "%)");
+
+                        if (data.overview.topReferralFirst != 0) {
+                            $('#data_top_referral_no_data').html('');
+
+                            $('#data_overview_top_referral_first').html(data.overview.topReferralFirst);
+                            $('#data_overview_top_referral_first_value').html(data.overview.topReferralFirstValue);
+
+                            if (data.overview.topReferralSecond != 0) {
+                                $('#data_overview_top_referral_second').html(data.overview.topReferralSecond);
+                                $('#data_overview_top_referral_second_value').html(data.overview.topReferralSecondValue);
+                            } else {
+                                $('#data_overview_top_referral_second').html('');
+                                $('#data_overview_top_referral_second_value').html('');
+                            }
+
+                            if (data.overview.topReferralThird != 0) {
+                                $('#data_overview_top_referral_third').html(data.overview.topReferralThird);
+                                $('#data_overview_top_referral_third_value').html(data.overview.topReferralThirdValue);
+                            } else {
+                                $('#data_overview_top_referral_third').html('');
+                                $('#data_overview_top_referral_third_value').html('');
+                            }
+                        } else {
+                            $('#data_top_referral_no_data').html('No data available for Top Referrals');
+
+                            $('#data_overview_top_referral_first').html('');
+                            $('#data_overview_top_referral_first_value').html('');
+
+                            $('#data_overview_top_referral_second').html('');
+                            $('#data_overview_top_referral_second_value').html('');
+
+                            $('#data_overview_top_referral_third').html('');
+                            $('#data_overview_top_referral_third_value').html('');
+                        }
+
+                        if (data.overview.topSearchFirst != 0) {
+                            $('#data_top_search_no_data').html('');
+
+                            $('#data_overview_top_search_first').html(data.overview.topSearchFirst);
+                            $('#data_overview_top_search_first_value').html(data.overview.topSearchFirstValue);
+
+                            if (data.overview.topSearchSecond != 0) {
+                                $('#data_overview_top_search_second').html(data.overview.topSearchSecond);
+                                $('#data_overview_top_search_second_value').html(data.overview.topSearchSecondValue);
+                            } else {
+                                $('#data_overview_top_search_second').html('');
+                                $('#data_overview_top_search_second_value').html('');
+                            }
+
+                            if (data.overview.topSearchThird != 0) {
+                                $('#data_overview_top_search_third').html(data.overview.topSearchThird);
+                                $('#data_overview_top_search_third_value').html(data.overview.topSearchThirdValue);
+                            } else {
+                                $('#data_overview_top_search_third').html('');
+                                $('#data_overview_top_search_third_value').html('');
+                            }
+                        } else {
+                            $('#data_top_search_no_data').html('No data available for Top Search Terms');
+
+                            $('#data_overview_top_search_first').html('');
+                            $('#data_overview_top_search_first_value').html('');
+
+                            $('#data_overview_top_search_second').html('');
+                            $('#data_overview_top_search_second_value').html('');
+
+                            $('#data_overview_top_search_third').html('');
+                            $('#data_overview_top_search_third_value').html('');
+                        }
+
+                    }
+               });
+              return false;
+           });
+        });
+    </script>
 
 {% endblock %}

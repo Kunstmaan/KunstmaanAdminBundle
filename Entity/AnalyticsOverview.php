@@ -26,15 +26,15 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     }
 
     public function getTrafficDirectPercentage() {
-        return ($this->trafficDirect / $this->visits) * 100;
+        return round(($this->trafficDirect / $this->visits) * 100);
     }
 
     public function getTrafficReferralPercentage() {
-        return ($this->trafficReferral / $this->visits) * 100;
+        return round(($this->trafficReferral / $this->visits) * 100);
     }
 
     public function getTrafficSearchEnginePercentage() {
-        return ($this->trafficSearchEngine / $this->visits) * 100;
+        return round(($this->trafficSearchEngine / $this->visits) * 100);
     }
 
     /**

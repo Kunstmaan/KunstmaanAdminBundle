@@ -41,6 +41,25 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
             $em = $this->getContainer()->get('doctrine')->getEntityManager();
             $overviews = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
 
+            // load week overview
+            $weekOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsWeek')->getWeekOverview();
+
+            // get data for the week overview
+            $output->writeln('Getting data for weekoverview');
+            for ($i = 1; $i <= 7; $i++) {
+                $results = $analyticsHelper->getResults($i, $i-1, 'ga:visits');
+                $rows = $results->getRows();
+
+                $day = 'setDay' . $i;
+                if ($rows[0][0]) $weekOverview->{$day}($rows[0][0]);
+                $weekOverview->setDate(new \DateTime("now"));
+            }
+
+            // save weekOverview to DB
+            $output->writeln("\t" . 'Writing to DB..');
+            $em->persist($weekOverview);
+
+
             // get data for each overview
             foreach ($overviews as $overview) {
                 $output->writeln('Getting data for overview "' .$overview->getTitle(). '"');

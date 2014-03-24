@@ -51,7 +51,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 $rows = $results->getRows();
                 foreach ($rows as $row) {
                     $date = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
-                    $data[$date] = $row[1];
+                    $data[] = ['date' => $date, 'data' => $row[1]];
                 }
 
                 // adding data to the AnalyticsDailyOverview object

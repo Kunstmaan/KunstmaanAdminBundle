@@ -67,7 +67,7 @@ class DefaultController extends Controller
     /**
      * Return an ajax response
      *
-     * @Route("/get", name="KunstmaanAdminBundle_analytics_overview_ajax")
+     * @Route("/getOverview", name="KunstmaanAdminBundle_analytics_overview_ajax")
      *
      */
     public function getOverviewAction(){
@@ -128,6 +128,29 @@ class DefaultController extends Controller
     }
 
     /**
+     * Return an ajax response
+     *
+     * @Route("/getDailyOverview", name="KunstmaanAdminBundle_analytics_dailyoverview_ajax")
+     *
+     */
+    public function getDailyOverviewAction(){
+
+        $request = $this->get('request');
+
+        $em = $this->getDoctrine()->getManager();
+        $dailyOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
+
+
+        $return = [
+                    "responseCode" => 200,
+                    "dailyOverview" => json_decode($dailyOverview->getData())
+                    ];
+
+       $return = json_encode($return);
+       return new Response($return, 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
      * The update overview action will update the data of the available overviews
      *
      * @Route("/updateOverview", name="KunstmaanAdminBundle_homepage_overview")
@@ -136,6 +159,16 @@ class DefaultController extends Controller
      * @return array
      */
     public function updateOverviewAction() {
+
+
+        $em = $this->getDoctrine()->getManager();
+        $dailyOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
+        echo "<pre>";
+        print_r(json_decode($dailyOverview->getData()));
+        echo "</pre>";
+exit;
+
+
         $clientId       = $this->container->getParameter('google.api.client_id');
         $clientSecret   = $this->container->getParameter('google.api.client_secret');
         $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
@@ -149,11 +182,9 @@ class DefaultController extends Controller
             $params['token'] = true;
             $analyticsHelper = new GoogleAnalyticsHelper($googleClient);
 
-
-            $results = $analyticsHelper->getResults(1, 0, 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
-
-
+            $results = $analyticsHelper->getResultsByDate(date('Y-m-d', time() - (92 * 24 * 60 * 60)), date('Y-m-d'), 'ga:visits', ['dimensions' => 'ga:date']);
             $rows = $results->getRows();
+
 
             echo "<pre>";
             print_r($rows);

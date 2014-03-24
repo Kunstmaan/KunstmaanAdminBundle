@@ -71,13 +71,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     // visits metric
                     $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits');
                     $rows = $results->getRows();
-                    $visits = $rows[0][0];
+                    $visits = is_numeric($rows[0][0]) ? $rows[0][0] : 0;
                     $overview->setVisits($visits);
 
                     // pageviews metric
                     $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:pageviews');
                     $rows = $results->getRows();
-                    $pageviews = $rows[0][0];
+                    $pageviews = is_numeric($rows[0][0]) ? $rows[0][0] : 0;
                     $overview->setPageViews($pageviews);
 
                 // visitor types
@@ -86,10 +86,12 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 $rows = $results->getRows();
 
                     // new visitors
-                    $overview->setNewVisits($rows[0][1]);
+                    $data = is_numeric($rows[0][1]) ? $rows[0][1] : 0;
+                    $overview->setNewVisits($data);
 
                     // returning visitors
-                    $overview->setReturningVisits($rows[1][1]);
+                    $data = is_numeric($rows[1][1]) ? $rows[1][1] : 0;
+                    $overview->setReturningVisits($data);
 
                 // traffic sources
                 $output->writeln("\t" . 'Fetching traffic sources..');
@@ -101,23 +103,25 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 $overview->setTrafficSearchEngine(0);
                 $overview->setTrafficReferral(0);
 
-                foreach($rows as $row) {
-                    switch ($row[0]) {
+                if (is_array($rows)) {
+                    foreach($rows as $row) {
+                        switch ($row[0]) {
 
-                        case '(none)': // direct traffic
-                            $overview->setTrafficDirect($row[1]);
-                            break;
+                            case '(none)': // direct traffic
+                                $overview->setTrafficDirect($row[1]);
+                                break;
 
-                        case 'organic': // search engine traffic
-                            $overview->setTrafficSearchEngine($row[1]);
-                            break;
+                            case 'organic': // search engine traffic
+                                $overview->setTrafficSearchEngine($row[1]);
+                                break;
 
-                        case 'referral': // referral traffic
-                            $overview->setTrafficReferral($row[1]);
-                            break;
+                            case 'referral': // referral traffic
+                                $overview->setTrafficReferral($row[1]);
+                                break;
 
-                        default: // TODO other referral types? https://developers.google.com/analytics/devguides/reporting/core/dimsmets#view=detail&group=traffic_sources&jump=ga_medium
-                            break;
+                            default: // TODO other referral types? https://developers.google.com/analytics/devguides/reporting/core/dimsmets#view=detail&group=traffic_sources&jump=ga_medium
+                                break;
+                        }
                     }
                 }
 

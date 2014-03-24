@@ -37,28 +37,30 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
             // create API Analytics helper to execute queries
             $analyticsHelper = new GoogleAnalyticsHelper($googleClient);
 
-            // get entitymanager and load all Analytics Overviews
+            // get entitymanager and load all Overviews
             $em = $this->getContainer()->get('doctrine')->getEntityManager();
             $overviews = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
-
-            // load week overview
-            $weekOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsWeek')->getWeekOverview();
+            $dailyOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
 
             // get data for the week overview
-            $output->writeln('Getting data for weekoverview');
-            for ($i = 1; $i <= 7; $i++) {
-                $results = $analyticsHelper->getResults($i, $i-1, 'ga:visits');
+            $output->writeln('Fetching daily visits');
+            $data = [];
+
+                // Fetching daily data for 3 months.
+                $results = $analyticsHelper->getResults(93, 0, 'ga:visits', ['dimensions' => 'ga:date', 'sort' => '-ga:date']);
                 $rows = $results->getRows();
+                foreach ($rows as $row) {
+                    $date = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
+                    $data[$date] = $row[1];
+                }
 
-                $day = 'setDay' . $i;
-                if ($rows[0][0]) $weekOverview->{$day}($rows[0][0]);
-                $weekOverview->setDate(new \DateTime("now"));
-            }
+                // adding data to the AnalyticsDailyOverview object
+                $dailyOverview->setData(json_encode($data));
 
-            // save weekOverview to DB
-            $output->writeln("\t" . 'Persisting..');
-            $em->persist($weekOverview);
-
+                // save dailyOverview to DB
+                $output->writeln("\t" . 'Persisting..');
+                $em->persist($dailyOverview);
+                $em->flush();
 
             // get data for each overview
             foreach ($overviews as $overview) {

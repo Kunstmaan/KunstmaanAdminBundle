@@ -67,6 +67,17 @@ class GoogleAnalyticsHelper
             );
     }
 
+    public function getResultsByDate($from, $to, $metrics, $extra = []) {
+        $profileId = $this->getFirstProfileId();
+        return $this->analytics->data_ga->get(
+            'ga:' . $profileId,
+            $from,
+            $to,
+            $metrics,
+            $extra
+        );
+    }
+
     private function printResults(&$results) {
         echo "<pre>";
         print_r($results);

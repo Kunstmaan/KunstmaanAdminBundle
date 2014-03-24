@@ -38,6 +38,70 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     }
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="day_data", type="json_array")
+     */
+    private $dayData = '';
+
+
+    /**
+     * Set dayData
+     *
+     * @param array $dayData
+     * @return AnalyticsDailyOverview
+     */
+    public function setDayData($dayData)
+    {
+        $this->dayData = $dayData;
+
+        return $this;
+    }
+
+    /**
+     * Get dayData
+     *
+     * @return array
+     */
+    public function getDayData()
+    {
+        return $this->dayData;
+    }
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="use_day_data", type="boolean")
+     */
+    private $useDayData = false;
+
+
+    /**
+     * Set useDayData
+     *
+     * @param array $useDayData
+     * @return AnalyticsDailyOverview
+     */
+    public function setUseDayData($useDayData)
+    {
+        $this->useDayData = $useDayData;
+
+        return $this;
+    }
+
+    /**
+     * Get useDayData
+     *
+     * @return array
+     */
+    public function getUseDayData()
+    {
+        return $this->useDayData;
+    }
+
+
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
@@ -148,7 +212,6 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      * @ORM\Column(name="top_referral_third_value", type="integer")
      */
     private $topReferralThirdValue = 0;
-
 
 
 

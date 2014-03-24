@@ -85,6 +85,7 @@ class DefaultController extends Controller
             $extra['trafficDirectPercentage'] = $overview->getTrafficDirectPercentage();
             $extra['trafficReferralPercentage'] = $overview->getTrafficReferralPercentage();
             $extra['trafficSearchEnginePercentage'] = $overview->getTrafficSearchEnginePercentage();
+            $extra['dayData'] = json_decode($overview->getDayData());
 
             $return = [
                         "responseCode" => 200,
@@ -96,32 +97,6 @@ class DefaultController extends Controller
                         "responseCode" => 400
                         ];
        }
-
-       $return = json_encode($return);
-       return new Response($return, 200, ['Content-Type' => 'application/json']);
-    }
-
-    /**
-     * Return an ajax response
-     *
-     * @Route("/getWeekOverview", name="KunstmaanAdminBundle_analytics_weekoverview_ajax")
-     *
-     */
-    public function getWeekOverviewAction(){
-
-        $request = $this->get('request');
-
-        $em = $this->getDoctrine()->getManager();
-        $weekOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsWeek')->getWeekOverview();
-
-        $serializer = new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
-        $json = $serializer->serialize($weekOverview, 'json');
-        $json = json_decode($json);
-
-        $return = [
-                    "responseCode" => 200,
-                    "weekoverview" => $json
-                    ];
 
        $return = json_encode($return);
        return new Response($return, 200, ['Content-Type' => 'application/json']);
@@ -151,7 +126,33 @@ class DefaultController extends Controller
     }
 
     /**
-     * The update overview action will update the data of the available overviews
+     * Return an ajax response
+     *
+     * @Route("/getDayOverview", name="KunstmaanAdminBundle_analytics_dayoverview_ajax")
+     *
+     */
+    public function getDayOverviewAction(){
+        $request = $this->get('request');
+        $id = $request->request->get('overviewId');
+
+        if($id) {
+            $em = $this->getDoctrine()->getManager();
+            $overview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDayOverview')->getOverview($id);
+
+            $return = [
+                        "responseCode" => 200,
+                        "overview" => json_decode($overview->getData()),
+                        ];
+        } else {
+            $return = [ "responseCode" => 400 ];
+        }
+
+       $return = json_encode($return);
+       return new Response($return, 200, ['Content-Type' => 'application/json']);
+    }
+
+    /**
+     * This is a debug action, will be removed
      *
      * @Route("/updateOverview", name="KunstmaanAdminBundle_homepage_overview")
      * @Template()
@@ -159,15 +160,6 @@ class DefaultController extends Controller
      * @return array
      */
     public function updateOverviewAction() {
-
-
-        $em = $this->getDoctrine()->getManager();
-        $dailyOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
-        echo "<pre>";
-        print_r(json_decode($dailyOverview->getData()));
-        echo "</pre>";
-exit;
-
 
         $clientId       = $this->container->getParameter('google.api.client_id');
         $clientSecret   = $this->container->getParameter('google.api.client_secret');
@@ -182,7 +174,7 @@ exit;
             $params['token'] = true;
             $analyticsHelper = new GoogleAnalyticsHelper($googleClient);
 
-            $results = $analyticsHelper->getResultsByDate(date('Y-m-d', time() - (92 * 24 * 60 * 60)), date('Y-m-d'), 'ga:visits', ['dimensions' => 'ga:date']);
+            $results = $analyticsHelper->getResults(1, 0, 'ga:visits', ['dimensions' => 'ga:hour']);
             $rows = $results->getRows();
 
 

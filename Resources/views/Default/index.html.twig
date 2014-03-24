@@ -214,7 +214,7 @@
                 for (var i = 0; i < data.length; i++) {
                     chartData.push(data[i].data);
                     if (showLabels == true) {
-                        chartLabels.push(data[i].date);
+                        chartLabels.push(data[i].key);
                     } else {
                         chartLabels.push("");
                     }
@@ -343,10 +343,13 @@
                         }
 
                         // set chart
-                        console.log(data.overview);
-                        var showLabels = data.overview.timespan <= 31;
-
-                        setChartData(dailyOverview.slice(data.overview.startOffset,data.overview.timespan), showLabels)
+                        if (data.overview.timespan - data.overview.startOffset > 1) { // if multiple day overview
+                            var showLabels = data.overview.timespan <= 31;
+                            setChartData(dailyOverview.slice(data.overview.startOffset,data.overview.timespan), showLabels)
+                        } else { // if single day overview
+                            var showLabels = true;
+                            setChartData(data.extra.dayData, showLabels);
+                        }
                     }
                });
               return false;

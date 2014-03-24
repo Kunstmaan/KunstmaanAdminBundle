@@ -42,7 +42,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
             $overviews = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
             $dailyOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
 
-            // get data for the week overview
+            // get data for the daily overviews
             $output->writeln('Fetching daily visits');
             $data = [];
 
@@ -51,7 +51,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 $rows = $results->getRows();
                 foreach ($rows as $row) {
                     $date = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
-                    $data[] = ['date' => $date, 'data' => $row[1]];
+                    $data[] = ['key' => $date, 'data' => $row[1]];
                 }
 
                 // adding data to the AnalyticsDailyOverview object
@@ -82,6 +82,23 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $pageviews = is_numeric($rows[0][0]) ? $rows[0][0] : 0;
                     $overview->setPageViews($pageviews);
 
+                // day-specific data
+                if ($overview->getUseDayData()) {
+                    // fetching hourly data
+                    $output->writeln("\t" . 'Fetching day-specific data..');
+                    $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:hour']);
+                    $rows = $results->getRows();
+
+                    $data = [];
+                    foreach ($rows as $row) {
+                        $data[] = ['key' => $row[0].'h', 'data' => $row[1]];
+                    }
+
+                    // adding data to the AnalyticsDailyOverview object
+                    $overview->setDayData(json_encode($data));
+                }
+
+
 
                 if ($overview->getVisits()) { // if there are any visits
                     // visitor types
@@ -90,11 +107,11 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $rows = $results->getRows();
 
                         // new visitors
-                        $data = is_numeric($rows[0][1]) ? $rows[0][1] : 0;
+                        $data = is_array($rows) && isset($rows[0][1]) ? $rows[0][1] : 0;
                         $overview->setNewVisits($data);
 
                         // returning visitors
-                        $data = is_numeric($rows[1][1]) ? $rows[1][1] : 0;
+                        $data = is_array($rows) && isset($rows[1][1]) ? $rows[1][1] : 0;
                         $overview->setReturningVisits($data);
 
                     // traffic sources
@@ -162,9 +179,6 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                         // #3 search
                         $overview->setTopSearchThird(isset($rows[2][0]) ? $rows[2][0] : '');
                         $overview->setTopSearchThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
-
-                    // persist entity back to DB
-                    $output->writeln("\t" . 'Persisting..');
                 } else { // if no visits
                     // clear data
                     $overview->setNewVisits(0);
@@ -186,6 +200,8 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $overview->setTopSearchThirdValue(0);
                     $output->writeln("\t" . 'No visitors');
                 }
+                // persist entity back to DB
+                $output->writeln("\t" . 'Persisting..');
                 $em->persist($overview);
             }
 

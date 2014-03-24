@@ -82,87 +82,110 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     $pageviews = is_numeric($rows[0][0]) ? $rows[0][0] : 0;
                     $overview->setPageViews($pageviews);
 
-                // visitor types
-                $output->writeln("\t" . 'Fetching visitor types..');
-                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:visitorType']);
-                $rows = $results->getRows();
 
-                    // new visitors
-                    $data = is_numeric($rows[0][1]) ? $rows[0][1] : 0;
-                    $overview->setNewVisits($data);
+                if ($overview->getVisits()) { // if there are any visits
+                    // visitor types
+                    $output->writeln("\t" . 'Fetching visitor types..');
+                    $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:visitorType']);
+                    $rows = $results->getRows();
 
-                    // returning visitors
-                    $data = is_numeric($rows[1][1]) ? $rows[1][1] : 0;
-                    $overview->setReturningVisits($data);
+                        // new visitors
+                        $data = is_numeric($rows[0][1]) ? $rows[0][1] : 0;
+                        $overview->setNewVisits($data);
 
-                // traffic sources
-                $output->writeln("\t" . 'Fetching traffic sources..');
-                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
-                $rows = $results->getRows();
+                        // returning visitors
+                        $data = is_numeric($rows[1][1]) ? $rows[1][1] : 0;
+                        $overview->setReturningVisits($data);
 
-                // resetting default values
-                $overview->setTrafficDirect(0);
-                $overview->setTrafficSearchEngine(0);
-                $overview->setTrafficReferral(0);
+                    // traffic sources
+                    $output->writeln("\t" . 'Fetching traffic sources..');
+                    $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
+                    $rows = $results->getRows();
 
-                if (is_array($rows)) {
-                    foreach($rows as $row) {
-                        switch ($row[0]) {
+                    // resetting default values
+                    $overview->setTrafficDirect(0);
+                    $overview->setTrafficSearchEngine(0);
+                    $overview->setTrafficReferral(0);
 
-                            case '(none)': // direct traffic
-                                $overview->setTrafficDirect($row[1]);
-                                break;
+                    if (is_array($rows)) {
+                        foreach($rows as $row) {
+                            switch ($row[0]) {
 
-                            case 'organic': // search engine traffic
-                                $overview->setTrafficSearchEngine($row[1]);
-                                break;
+                                case '(none)': // direct traffic
+                                    $overview->setTrafficDirect($row[1]);
+                                    break;
 
-                            case 'referral': // referral traffic
-                                $overview->setTrafficReferral($row[1]);
-                                break;
+                                case 'organic': // search engine traffic
+                                    $overview->setTrafficSearchEngine($row[1]);
+                                    break;
 
-                            default: // TODO other referral types? https://developers.google.com/analytics/devguides/reporting/core/dimsmets#view=detail&group=traffic_sources&jump=ga_medium
-                                break;
+                                case 'referral': // referral traffic
+                                    $overview->setTrafficReferral($row[1]);
+                                    break;
+
+                                default: // TODO other referral types? https://developers.google.com/analytics/devguides/reporting/core/dimsmets#view=detail&group=traffic_sources&jump=ga_medium
+                                    break;
+                            }
                         }
                     }
+
+                    // top referral sites
+                    $output->writeln("\t" . 'Fetching referral sites..');
+                    $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:source', 'sort' => '-ga:visits', 'filters' => 'ga:medium==referral']);
+                    $rows = $results->getRows();
+
+                        // #1 referral
+                        $overview->setTopReferralFirst(isset($rows[0][0]) ? $rows[0][0] : '');
+                        $overview->setTopReferralFirstValue(isset($rows[0][1]) ? $rows[0][1] : 0);
+
+                        // #2 referral
+                        $overview->setTopReferralSecond(isset($rows[1][0]) ? $rows[1][0] : '');
+                        $overview->setTopReferralSecondValue(isset($rows[1][1]) ? $rows[1][1] : 0);
+
+                        // #3 referral
+                        $overview->setTopReferralThird(isset($rows[2][0]) ? $rows[2][0] : '');
+                        $overview->setTopReferralThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
+
+                    // top searches
+                    $output->writeln("\t" . 'Fetching searches..');
+                    $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:searchUniques', ['dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques']);
+                    $rows = $results->getRows();
+
+                        // #1 search
+                        $overview->setTopSearchFirst(isset($rows[0][0]) ? $rows[0][0] : '');
+                        $overview->setTopSearchFirstValue(isset($rows[0][1]) ? $rows[0][1] : 0);
+
+                        // #2 search
+                        $overview->setTopSearchSecond(isset($rows[1][0]) ? $rows[1][0] : '');
+                        $overview->setTopSearchSecondValue(isset($rows[1][1]) ? $rows[1][1] : 0);
+
+                        // #3 search
+                        $overview->setTopSearchThird(isset($rows[2][0]) ? $rows[2][0] : '');
+                        $overview->setTopSearchThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
+
+                    // persist entity back to DB
+                    $output->writeln("\t" . 'Persisting..');
+                } else { // if no visits
+                    // clear data
+                    $overview->setNewVisits(0);
+                    $overview->setReturningVisits(0);
+                    $overview->setTrafficDirect(0);
+                    $overview->setTrafficSearchEngine(0);
+                    $overview->setTrafficReferral(0);
+                    $overview->setTopReferralFirst('');
+                    $overview->setTopReferralSecond('');
+                    $overview->setTopReferralThird('');
+                    $overview->setTopReferralFirstValue(0);
+                    $overview->setTopReferralSecondValue(0);
+                    $overview->setTopReferralThirdValue(0);
+                    $overview->setTopSearchFirst('');
+                    $overview->setTopSearchSecond('');
+                    $overview->setTopSearchThird('');
+                    $overview->setTopSearchFirstValue(0);
+                    $overview->setTopSearchSecondValue(0);
+                    $overview->setTopSearchThirdValue(0);
+                    $output->writeln("\t" . 'No visitors');
                 }
-
-                // top referral sites
-                $output->writeln("\t" . 'Fetching referral sites..');
-                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:source', 'sort' => '-ga:visits', 'filters' => 'ga:medium==referral']);
-                $rows = $results->getRows();
-
-                    // #1 referral
-                    $overview->setTopReferralFirst(isset($rows[0][0]) ? $rows[0][0] : '');
-                    $overview->setTopReferralFirstValue(isset($rows[0][1]) ? $rows[0][1] : 0);
-
-                    // #2 referral
-                    $overview->setTopReferralSecond(isset($rows[1][0]) ? $rows[1][0] : '');
-                    $overview->setTopReferralSecondValue(isset($rows[1][1]) ? $rows[1][1] : 0);
-
-                    // #3 referral
-                    $overview->setTopReferralThird(isset($rows[2][0]) ? $rows[2][0] : '');
-                    $overview->setTopReferralThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
-
-                // top searches
-                $output->writeln("\t" . 'Fetching searches..');
-                $results = $analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:searchUniques', ['dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques']);
-                $rows = $results->getRows();
-
-                    // #1 search
-                    $overview->setTopSearchFirst(isset($rows[0][0]) ? $rows[0][0] : '');
-                    $overview->setTopSearchFirstValue(isset($rows[0][1]) ? $rows[0][1] : 0);
-
-                    // #2 search
-                    $overview->setTopSearchSecond(isset($rows[1][0]) ? $rows[1][0] : '');
-                    $overview->setTopSearchSecondValue(isset($rows[1][1]) ? $rows[1][1] : 0);
-
-                    // #3 search
-                    $overview->setTopSearchThird(isset($rows[2][0]) ? $rows[2][0] : '');
-                    $overview->setTopSearchThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
-
-                // persist entity back to DB
-                $output->writeln("\t" . 'Persisting..');
                 $em->persist($overview);
             }
 

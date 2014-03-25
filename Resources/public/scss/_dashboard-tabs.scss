@@ -18,11 +18,11 @@
 .db-tabs__item {
     width: 20%;
     float: left;
-    @include single_transition(all, .3s, ease-in-out);
+    @include single_transition(all, .2s, ease-out);
     text-align: center;
-    padding: 10px;
     border: 1px solid transparent;
     border-bottom-color: $hr-color;
+    padding-bottom: 10px;
     &:first-child {
         margin-left: -1px; // to avoid double border
         width: -webkit-calc(20% + 1px);
@@ -40,6 +40,11 @@
         padding-bottom: 20px;
     }
 }
+
+.db-tabs__item > a {
+    padding: 10px;
+}
+
 .db-tabs__item--active {
     background-color: #fff;
     border: 1px solid $hr-color;

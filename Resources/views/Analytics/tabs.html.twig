@@ -24,11 +24,17 @@
                     $('.db-tabs__item').removeClass('db-tabs__item--active');
                     $('#tab'+id).addClass('db-tabs__item--active');
 
-                    setHeader(data);
-                    setTraffic(data);
-                    setReferrals(data);
-                    setSearches(data);
-                    setChart(data);
+                    $('.db-content').fadeOut(100, function(){
+                        setHeader(data);
+                        setTraffic(data);
+                        setReferrals(data);
+                        setSearches(data);
+                        setChart(data);
+                        $('.db-content').fadeIn(400, function() {
+                            initChart();
+                        });
+                    });
+
                 }
            });
        });

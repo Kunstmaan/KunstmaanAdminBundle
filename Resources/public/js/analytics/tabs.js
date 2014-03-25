@@ -1,4 +1,3 @@
-
     $(document).ready(function() {
         // Tab switcher
         $(".db-tabs__controller").click(function(){
@@ -13,6 +12,8 @@
                     $('#tab'+id).addClass('db-tabs__item--active');
 
                     $('.db-content').fadeOut(100, function(){
+                        // add functions here to add component behaviour
+                        // these functions are declared in a per-template js file (public/js/analytics/)
                         setHeader(data);
                         setTraffic(data);
                         setReferrals(data);
@@ -22,7 +23,6 @@
                             initChart();
                         });
                     });
-
                 }
            });
        });

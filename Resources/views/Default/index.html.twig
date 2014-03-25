@@ -61,3 +61,17 @@
     {% endif %}
 
 {% endblock %}
+
+{% block extrajavascript %}
+    {% javascripts
+        '@KunstmaanAdminBundle/Resources/public/js/analytics/chart.js'
+        '@KunstmaanAdminBundle/Resources/public/js/analytics/header.js'
+        '@KunstmaanAdminBundle/Resources/public/js/analytics/referrals.js'
+        '@KunstmaanAdminBundle/Resources/public/js/analytics/searches.js'
+        '@KunstmaanAdminBundle/Resources/public/js/analytics/tabs.js'
+        '@KunstmaanAdminBundle/Resources/public/js/analytics/traffic.js'
+        output='generated-js/scripts_bottom.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

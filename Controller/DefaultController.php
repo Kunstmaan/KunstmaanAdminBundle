@@ -166,52 +166,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Return an ajax response
-     *
-     * @Route("/getDayOverview", name="KunstmaanAdminBundle_analytics_dayoverview_ajax")
-     *
-     */
-    public function getDayOverviewAction(){
-        $request = $this->get('request');
-        $id = $request->request->get('overviewId');
-
-        if($id) {
-            $em = $this->getDoctrine()->getManager();
-            $overview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDayOverview')->getOverview($id);
-
-            $return = [
-                        "responseCode" => 200,
-                        "overview" => json_decode($overview->getData()),
-                        ];
-        } else {
-            $return = [ "responseCode" => 400 ];
-        }
-
-       $return = json_encode($return);
-       return new Response($return, 200, ['Content-Type' => 'application/json']);
-    }
-
-    /**
-     * This is a debug action, will be removed
-     *
-     * @Route("/updateOverview", name="KunstmaanAdminBundle_homepage_overview")
-     * @Template()
-     *
-     * @return array
-     */
-    public function updateOverviewAction() {
-            $data = json_decode('
-                [{"key":"00h","data":"4"},{"key":"01h","data":"6"},{"key":"02h","data":"1"},{"key":"03h","data":"0"},{"key":"04h","data":"0"},{"key":"05h","data":"0"},{"key":"06h","data":"1"},{"key":"07h","data":"1"},{"key":"08h","data":"1"},{"key":"09h","data":"1"},{"key":"10h","data":"1"},{"key":"11h","data":"8"},{"key":"12h","data":"3"},{"key":"13h","data":"2"},{"key":"14h","data":"2"},{"key":"15h","data":"9"},{"key":"16h","data":"4"},{"key":"17h","data":"8"},{"key":"18h","data":"3"},{"key":"19h","data":"3"},{"key":"20h","data":"11"},{"key":"21h","data":"6"},{"key":"22h","data":"5"},{"key":"23h","data":"2"}]
-            ');
-            echo "<pre>";
-            var_dump($data);
-            echo "</pre>";
-
-        return [];
-    }
-
-
-    /**
      * The admin of the index page
      *
      * @Route("/adminindex", name="KunstmaanAdminBundle_homepage_admin")

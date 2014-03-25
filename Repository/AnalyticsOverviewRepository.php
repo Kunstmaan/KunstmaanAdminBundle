@@ -14,6 +14,11 @@ use Kunstmaan\AdminBundle\Entity\AnalyticsOverview;
  */
 class AnalyticsOverviewRepository extends EntityRepository
 {
+    /**
+     * Get all overviews
+     *
+     * @return array $results A collection of AnalyticOverview objects
+     */
     public function getAll()
     {
         $query = $this->getEntityManager()->createQuery(
@@ -23,7 +28,15 @@ class AnalyticsOverviewRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getOverview($id) {
+    /**
+     * Get all overviews
+     *
+     * @param int $id
+     *
+     * @return AnalyticOverview $result
+     */
+    public function getOverview($id)
+    {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('o')
             ->from('KunstmaanAdminBundle:AnalyticsOverview', 'o')

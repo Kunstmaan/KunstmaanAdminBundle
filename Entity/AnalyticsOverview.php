@@ -13,26 +13,51 @@ use Doctrine\ORM\Mapping as ORM;
 class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
 {
 
+    /**
+     * Get a string representation of the top referrals
+     *
+     * @return string
+     */
     public function getTopReferrals() {
         return  $this->getTopReferralFirst() . ': ' . $this->getTopReferralFirstValue() . "\r\n" .
                 $this->getTopReferralSecond() . ': ' . $this->getTopReferralSecondValue() . "\r\n" .
                 $this->getTopReferralThird() . ': ' . $this->getTopReferralThirdValue() . "\r\n";
     }
 
+    /**
+     * Get a string representation of the top searches
+     *
+     * @return string
+     */
     public function getTopSearches() {
         return  $this->getTopSearchFirst() . ': ' . $this->getTopSearchFirstValue() . "\r\n" .
                 $this->getTopSearchSecond() . ': ' . $this->getTopSearchSecondValue() . "\r\n" .
                 $this->getTopSearchThird() . ': ' . $this->getTopSearchThirdValue() . "\r\n";
     }
 
+    /**
+     * Get percentage of direct traffic
+     *
+     * @return int
+     */
     public function getTrafficDirectPercentage() {
         return $this->visits ? round(($this->trafficDirect / $this->visits) * 100) : 0;
     }
 
+    /**
+     * Get percentage of referral traffic
+     *
+     * @return int
+     */
     public function getTrafficReferralPercentage() {
         return $this->visits ? round(($this->trafficReferral / $this->visits) * 100) : 0;
     }
 
+    /**
+     * Get percentage of search engine traffic
+     *
+     * @return int
+     */
     public function getTrafficSearchEnginePercentage() {
         return $this->visits ? round(($this->trafficSearchEngine / $this->visits) * 100) : 0;
     }

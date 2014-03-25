@@ -10,17 +10,29 @@ use GoogleApi\Contrib\apiAnalyticsService;
  */
 class GoogleAnalyticsHelper
 {
-
+    /** @var apiAnalyticsService $analytics */
     private $analytics;
+    /** @var GoogleClientHelper $clientHelper */
     private $clientHelper;
 
-    public function __construct(Client $googleClient, $clientHelper) {
+    /**
+     * Constructor
+     *
+     * @param Client $googleClient
+     * @param GoogleClientHelper $clientHelper
+     */
+    public function __construct(Client $googleClient, GoogleClientHelper $clientHelper) {
         $this->analytics = new apiAnalyticsService($googleClient);
         $this->clientHelper = $clientHelper;
     }
 
-
-    public function getFirstProfileId() {
+    /**
+     * Get the profile ID
+     *
+     * @throws Exception if no accounts, webproperties or views are found
+     */
+    public function getProfileId()
+    {
         $accounts = $this->analytics->management_accounts->listManagementAccounts();
         if (count($accounts->getItems()) > 0) {
             $items = $accounts->getItems();
@@ -30,8 +42,6 @@ class GoogleAnalyticsHelper
 
             if (count($webproperties->getItems()) > 0) {
                 $items = $webproperties->getItems();
-                //$firstWebpropertyId = $items[$this->clientHelper->getPropertyId()]->getId();
-
                 $profiles = $this->analytics->management_profiles->listManagementProfiles($this->clientHelper->getAccountId(), $this->clientHelper->getPropertyId());
 
                 if (count($profiles->getItems()) > 0) {
@@ -49,10 +59,15 @@ class GoogleAnalyticsHelper
         }
     }
 
-    public function getProperties() {
+    /**
+     * Get a list of all available properties for a Google Account
+     *
+     * @return array $data A list of all properties
+     */
+    public function getProperties()
+    {
         $data = [];
         $accounts = $this->analytics->management_accounts->listManagementAccounts()->getItems();
-
 
         foreach ($accounts as $account) {
             $webproperties = $this->analytics->management_webproperties->listManagementWebproperties($account->getId());
@@ -64,19 +79,41 @@ class GoogleAnalyticsHelper
         return $data;
     }
 
-    public function getResults($timespan, $startOffset, $metrics, $extra=[]) {
-        $profileId = $this->getFirstProfileId();
-         return $this->analytics->data_ga->get(
-                 'ga:' . $profileId,
-                 $timespan.'daysAgo',
-                 $startOffset.'daysAgo',
-                 $metrics,
-                 $extra
-            );
+    /**
+     * Constructs a Google API query and returns the result
+     *
+     * @param int timespan      Timespan for the data to query in days
+     * @param int startOffset   An offset in days
+     * @param string metrics    The needed metrics
+     * @param array extra       Extra options suchs as dimentions, sort data, filter data,..
+     *
+     * @return GaData result    A data object containing the queried data
+     */
+    public function getResults($timespan, $startOffset, $metrics, $extra=[])
+    {
+        $profileId = $this->getProfileId();
+        return $this->analytics->data_ga->get(
+            'ga:' . $profileId,
+            $timespan.'daysAgo',
+            $startOffset.'daysAgo',
+            $metrics,
+            $extra
+        );
     }
 
-    public function getResultsByDate($from, $to, $metrics, $extra = []) {
-        $profileId = $this->getFirstProfileId();
+    /**
+     * Constructs a Google API query and returns the result
+     *
+     * @param Date from         Start date for the data to query
+     * @param Date to           End date in the past
+     * @param string metrics    The needed metrics
+     * @param array extra       Extra options suchs as dimentions, sort data, filter data,..
+     *
+     * @return GaData result    A data object containing the queried data
+     */
+    public function getResultsByDate($from, $to, $metrics, $extra = [])
+    {
+        $profileId = $this->getProfileId();
         return $this->analytics->data_ga->get(
             'ga:' . $profileId,
             $from,
@@ -84,25 +121,6 @@ class GoogleAnalyticsHelper
             $metrics,
             $extra
         );
-    }
-
-    private function printResults(&$results) {
-        echo "<pre>";
-        print_r($results);
-        echo "</pre>";
-
-
-        if (count($results->getRows()) > 0) {
-            $profileName = $results->getProfileInfo()->getProfileName();
-            $rows = $results->getRows();
-            $visits = $rows[0][0];
-
-            print "<p>First view (profile) found: $profileName</p>";
-            print "<p>Total visits: $visits</p>";
-
-        } else {
-            print '<p>No results found.</p>';
-        }
     }
 
 }

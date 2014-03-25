@@ -13,7 +13,14 @@ use Kunstmaan\AdminBundle\Entity\AnalyticsDailyOverview;
  */
 class AnalyticsDailyOverviewRepository extends EntityRepository
 {
-    public function getOverview() {
+
+    /**
+     * Get the daily overview data from the database, creates a new entry if the propertyId doesn't exist yet
+     *
+     * @return AnalyticsDailyOverview $overview
+     */
+    public function getOverview()
+    {
         $em = $this->getEntityManager();
         $query = $em->createQuery(
           'SELECT c FROM KunstmaanAdminBundle:AnalyticsDailyOverview c'

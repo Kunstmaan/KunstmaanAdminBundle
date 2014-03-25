@@ -13,7 +13,13 @@ use Kunstmaan\AdminBundle\Entity\AnalyticsProperty;
  */
 class AnalyticsPropertyRepository extends EntityRepository
 {
-    public function getProperty() {
+    /**
+     * Get the propertyId from the database, creates a new entry if the propertyId doesn't exist yet
+     *
+     * @return string $propertyId
+     */
+    public function getProperty()
+    {
         $em = $this->getEntityManager();
         $query = $em->createQuery(
           'SELECT c FROM KunstmaanAdminBundle:AnalyticsProperty c'

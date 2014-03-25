@@ -10,16 +10,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Kunstmaan\AdminBundle\Entity\GoogleClientHelper;
 use Kunstmaan\AdminBundle\Entity\GoogleAnalyticsHelper;
 
+/**
+ * Symfony CLI command to update the analytics data using app/console kuma:ga:update
+ */
+class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
+{
 
-class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
-
+    /** @var GoogleClientHelper $googleClientHelper */
     private $googleClientHelper;
+    /** @var Client $googleClient */
     private $googleClient;
+    /** @var GoogleAnalyticsHelper $analyticsHelper */
     private $analyticsHelper;
+    /** @var EntityManager $em */
     private $em;
+    /** @var OutputInterface $output */
     private $output;
 
-
+    /**
+     * Configures the current command.
+     */
     protected function configure()
     {
         $this
@@ -28,7 +38,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
         ;
     }
 
-    private function init($output) {
+    /**
+     * Inits instance variables for global usage.
+     *
+     * @param OutputInterface $output The output
+     */
+    private function init($output)
+    {
         $this->output = $output;
 
         // get API client credentials
@@ -45,6 +61,14 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
         $this->em = $this->getContainer()->get('doctrine')->getEntityManager();
     }
 
+    /**
+     * Executes the current command.
+     *
+     * @param InputInterface  $input  The input
+     * @param OutputInterface $output The output
+     *
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->init($output);
@@ -97,8 +121,11 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
 
     }
 
-    private function getDaily() {
-        // get data for the daily overviews
+    /**
+     * Fetch data for daily overviews
+     */
+    private function getDaily()
+    {
         $this->output->writeln('Fetching daily visits');
         $dailyOverview = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
         $data = [];
@@ -120,8 +147,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
             $this->em->flush();
     }
 
-    private function getMetrics(&$overview) {
-        // normal metrics
+    /**
+     * Fetch normal metric data and set it for the overview
+     *
+     * @param AnalyticsOverview $overview The overview
+     */
+    private function getMetrics(&$overview)
+    {
         $this->output->writeln("\t" . 'Fetching metrics..');
 
             // visits metric
@@ -137,8 +169,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
             $overview->setPageViews($pageviews);
     }
 
-    private function getDayData(&$overview) {
-        // fetching hourly data
+    /**
+     * Fetch day-specific data and set it for the overview
+     *
+     * @param AnalyticsOverview $overview The overview
+     */
+    private function getDayData(&$overview)
+    {
         $this->output->writeln("\t" . 'Fetching day-specific data..');
         $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:hour']);
         $rows = $results->getRows();
@@ -152,7 +189,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
         $overview->setDayData(json_encode($data, JSON_UNESCAPED_SLASHES));
     }
 
-    private function getVisitorTypes(&$overview) {
+    /**
+     * Fetch visitor type data and set it for the overview
+     *
+     * @param AnalyticsOverview $overview The overview
+     */
+    private function getVisitorTypes(&$overview)
+    {
          // visitor types
         $this->output->writeln("\t" . 'Fetching visitor types..');
         $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:visitorType']);
@@ -167,7 +210,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
             $overview->setReturningVisits($data);
     }
 
-    private function getTrafficSources(&$overview) {
+    /**
+     * Fetch traffic source data and set it for the overview
+     *
+     * @param AnalyticsOverview $overview The overview
+     */
+    private function getTrafficSources(&$overview)
+    {
         // traffic sources
         $this->output->writeln("\t" . 'Fetching traffic sources..');
         $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
@@ -201,7 +250,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
         }
     }
 
-    private function getTopReferrals(&$overview) {
+    /**
+     * Fetch referral data and set it for the overview
+     *
+     * @param AnalyticsOverview $overview The overview
+     */
+    private function getTopReferrals(&$overview)
+    {
         // top referral sites
         $this->output->writeln("\t" . 'Fetching referral sites..');
         $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:source', 'sort' => '-ga:visits', 'filters' => 'ga:medium==referral']);
@@ -220,7 +275,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
             $overview->setTopReferralThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
     }
 
-    private function getTopSearches(&$overview) {
+    /**
+     * Fetch search terms data and set it for the overview
+     *
+     * @param AnalyticsOverview $overview The overview
+     */
+    private function getTopSearches(&$overview)
+    {
         // top searches
         $this->output->writeln("\t" . 'Fetching searches..');
         $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:searchUniques', ['dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques']);
@@ -239,7 +300,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
             $overview->setTopSearchThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
     }
 
-    private function reset(&$overview) {
+    /**
+     * Reset the data for the overview
+     *
+     * @param AnalyticsOverview $overview The overview
+     */
+    private function reset(&$overview)
+    {
         // reset overview
         $overview->setNewVisits(0);
         $overview->setReturningVisits(0);

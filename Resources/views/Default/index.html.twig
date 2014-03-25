@@ -180,7 +180,10 @@
                 {{ dashboardConfiguration.content | raw }}
             </div>
         {% else %}
-            <a class='btn' href='{{ authUrl }}'>Connect a Google Analytics account!</a>
+            <h2>Step 1</h2>
+            <p>Connect a Google Analytics account.</p>
+            <br/>
+            <a class='btn btn-primary' href='{{ authUrl }}'>Connect!</a>
         {% endif %}
 
     {% else %}
@@ -211,15 +214,15 @@
             function setChartData(data, showLabels) {
                 chartData = [];
                 chartLabels = [];
+
                 for (var i = 0; i < data.length; i++) {
-                    chartData.push(data[i].data);
-                    if (showLabels == true) {
+                    chartData.push(parseInt(data[i].data));
+                    if (showLabels == true || i % 5 == 0) {
                         chartLabels.push(data[i].key);
                     } else {
                         chartLabels.push("");
                     }
                 }
-
                 initChart();
             }
 
@@ -233,13 +236,15 @@
 
             // inits the chart
             initChart = function() {
+
                 var barChartData = {
                     labels : chartLabels,
                     datasets : [
                         {
-                            fillColor : "rgb(41, 151, 206)",
+                            fillColor : "rgba(41, 151, 206,0.5)",
                             strokeColor : "rgb(41, 151, 206)",
-                            data : chartData
+                            data : chartData,
+                            scaleShowLabels : true
                         }
                     ]
                 };
@@ -249,9 +254,9 @@
                 // only use animation in browsers who are not IE8
                 // in IE8 the animation is too slow and jerky
                 if (!$('html').hasClass('ie8')) {
-                    var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Bar(barChartData);
+                    var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Line(barChartData);
                 } else {
-                    var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Bar(barChartData, {animation:false});
+                    var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Line(barChartData, {animation:false});
                 }
             };
 
@@ -260,6 +265,7 @@
            $(".db-tabs__controller").click(function(){
                 var id = $(this).attr('id');
                 var url = $(this).attr('path');
+
                 $.post(url,{
                     overviewId:id
                 }, function(data) {
@@ -341,7 +347,6 @@
                             $('#data_overview_top_search_third').html('');
                             $('#data_overview_top_search_third_value').html('');
                         }
-
                         // set chart
                         if (data.overview.timespan - data.overview.startOffset > 1) { // if multiple day overview
                             var showLabels = data.overview.timespan <= 31;

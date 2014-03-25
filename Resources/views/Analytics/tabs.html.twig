@@ -1,0 +1,36 @@
+<ul class="db-tabs">
+    {% for overviewItem in overviews %}
+        <li class="db-tabs__item {% if overviewItem.id == overview.id %}db-tabs__item--active{% endif %}" id="tab{{ overviewItem.id }}">
+            <a href="#" class="db-tabs__controller" id="{{ overviewItem.id }}" path="{{path('KunstmaanAdminBundle_analytics_overview_ajax')}}">
+                <h6 class="db-tabs__item__title">{{ overviewItem.title }}</h6>
+                <p class="db-tabs__item__number">{{ overviewItem.visits }}</p>
+                <p class="db-tabs__item__subtitle">visitors</p>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+<script>
+    $(document).ready(function() {
+        // Tab switcher
+        $(".db-tabs__controller").click(function(){
+            var id = $(this).attr('id');
+            var url = $(this).attr('path');
+
+            $.post(url,{
+                overviewId:id
+            }, function(data) {
+                if(data.responseCode==200) {
+                    $('.db-tabs__item').removeClass('db-tabs__item--active');
+                    $('#tab'+id).addClass('db-tabs__item--active');
+
+                    setHeader(data);
+                    setTraffic(data);
+                    setReferrals(data);
+                    setSearches(data);
+                    setChart(data);
+                }
+           });
+       });
+    });
+</script>

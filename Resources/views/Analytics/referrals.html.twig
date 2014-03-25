@@ -1,0 +1,78 @@
+<div class="db-block db-col__inner">
+    <h2 class="db-block__title">Top Referrals</h2>
+    <ul class="db-block__list" id="data_top_referral_list">
+
+        {# error if no referrals #}
+        <p class="db-block__text" id="data_top_referral_no_data">
+            {% if overview.topReferralFirstValue == 0 %}No data available for Top Referrals{% endif %}
+        </p>
+
+        {# first referral #}
+        <li class="db-block__list__item">
+            <p class="db-block__text db-block__text--left" id="data_overview_top_referral_first">
+                {% if overview.topReferralFirstValue != 0 %}{{ overview.topReferralFirst }}{% endif %}
+            </p>
+            <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_first_value">
+               {% if overview.topReferralFirstValue != 0 %}{{ overview.topReferralFirstValue }}{% endif %}
+            </p>
+        </li>
+
+        {# second referral #}
+        <li class="db-block__list__item">
+            <p class="db-block__text db-block__text--left" id="data_overview_top_referral_second">
+                 {% if overview.topReferralSecondValue != 0 %}{{ overview.topReferralSecond }}{% endif %}
+            </p>
+            <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_second_value">
+                 {% if overview.topReferralSecondValue != 0 %}{{ overview.topReferralSecondValue }}{% endif %}
+            </p>
+        </li>
+
+        {# third referral #}
+        <li class="db-block__list__item">
+            <p class="db-block__text db-block__text--left" id="data_overview_top_referral_third">
+                {% if overview.topReferralThirdValue != 0 %}{{ overview.topReferralThird }}{% endif %}
+            </p>
+            <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_third_value">
+                {% if overview.topReferralThirdValue != 0 %}{{ overview.topReferralThirdValue }}{% endif %}
+            </p>
+        </li>
+    </ul>
+</div>
+
+<script>
+    function setReferrals(data) {
+        if (data.overview.topReferralFirst != 0) {
+            $('#data_top_referral_no_data').html('');
+
+            $('#data_overview_top_referral_first').html(data.overview.topReferralFirst);
+            $('#data_overview_top_referral_first_value').html(data.overview.topReferralFirstValue);
+
+            if (data.overview.topReferralSecond != 0) {
+                $('#data_overview_top_referral_second').html(data.overview.topReferralSecond);
+                $('#data_overview_top_referral_second_value').html(data.overview.topReferralSecondValue);
+            } else {
+                $('#data_overview_top_referral_second').html('');
+                $('#data_overview_top_referral_second_value').html('');
+            }
+
+            if (data.overview.topReferralThird != 0) {
+                $('#data_overview_top_referral_third').html(data.overview.topReferralThird);
+                $('#data_overview_top_referral_third_value').html(data.overview.topReferralThirdValue);
+            } else {
+                $('#data_overview_top_referral_third').html('');
+                $('#data_overview_top_referral_third_value').html('');
+            }
+        } else {
+            $('#data_top_referral_no_data').html('No data available for Top Referrals');
+
+            $('#data_overview_top_referral_first').html('');
+            $('#data_overview_top_referral_first_value').html('');
+
+            $('#data_overview_top_referral_second').html('');
+            $('#data_overview_top_referral_second_value').html('');
+
+            $('#data_overview_top_referral_third').html('');
+            $('#data_overview_top_referral_third_value').html('');
+        }
+    }
+</script>

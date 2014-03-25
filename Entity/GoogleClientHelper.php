@@ -153,6 +153,7 @@ class GoogleClientHelper
      */
     public function tokenIsSet()
     {
+        // return false;
         return $this->getToken() && '' !== $this->getToken();
     }
 

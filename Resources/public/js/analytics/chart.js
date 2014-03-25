@@ -21,12 +21,14 @@
         chartData = [];
         chartLabels = [];
 
-        for (var i = 0; i < data.length; i++) {
-            chartData.push(parseInt(data[i].data));
-            if (showLabels == true || i % 5 == 0) {
-                chartLabels.push(data[i].key);
-            } else {
-                chartLabels.push("");
+        if (data != null) {
+            for (var i = 0; i < data.length; i++) {
+                chartData.push(parseInt(data[i].data));
+                if (showLabels == true || i % 5 == 0) {
+                    chartLabels.push(data[i].key);
+                } else {
+                    chartLabels.push("");
+                }
             }
         }
         initChart();

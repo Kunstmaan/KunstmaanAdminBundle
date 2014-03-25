@@ -16,7 +16,7 @@ class AnalyticsDailyOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntit
     /**
      * @var array
      *
-     * @ORM\Column(name="data", type="json_array")
+     * @ORM\Column(name="data", type="text")
      */
     private $data = '';
 

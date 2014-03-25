@@ -49,19 +49,58 @@ class DefaultController extends Controller
         $googleClientHelper = new GoogleClientHelper($clientId, $clientSecret, $redirectUri, $devKey, $this->getDoctrine()->getManager());
         $googleClient = $googleClientHelper->getClient();
 
-        if ($googleClientHelper->tokenIsSet()) {
+
+        if ($googleClientHelper->tokenIsSet() && $googleClientHelper->propertyIsSet()) {
             $em = $this->getDoctrine()->getManager();
             $overviews = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
 
             $params['token'] = true;
             $params['overviews'] = $overviews;
             $params['overview'] = $overviews[2];
+        } else if ($googleClientHelper->tokenIsSet()) {
+            return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
         } else {
             $params['token'] = false;
             $params['authUrl'] = $googleClient->createAuthUrl();
         }
 
         return $params;
+    }
+
+    /**
+     *
+     *
+     * @Route("/selectWebsite", name="KunstmaanAdminBundle_PropertySelection")
+     * @Template()
+     *
+     * @return array
+     */
+    public function propertySelectionAction()
+    {
+        if (isset($_POST['properties'])) {
+            $em = $this->getDoctrine()->getManager();
+            $property = $em->getRepository('KunstmaanAdminBundle:AnalyticsProperty')->getProperty();
+
+            $parts = explode("::", $_POST['properties']);
+            $property->setPropertyId($parts[0]);
+            $property->setAccountId($parts[1]);
+
+            $em->persist($property);
+            $em->flush();
+            return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
+        }
+
+        $clientId       = $this->container->getParameter('google.api.client_id');
+        $clientSecret   = $this->container->getParameter('google.api.client_secret');
+        $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
+        $devKey         = $this->container->getParameter('google.api.dev_key');
+
+        $googleClientHelper = new GoogleClientHelper($clientId, $clientSecret, $redirectUri, $devKey, $this->getDoctrine()->getManager());
+        $googleClient = $googleClientHelper->getClient();
+        $analyticsHelper = new GoogleAnalyticsHelper($googleClient, $googleClientHelper);
+        $properties = $analyticsHelper->getProperties();
+
+        return ['properties' => $properties];
     }
 
     /**
@@ -85,6 +124,7 @@ class DefaultController extends Controller
             $extra['trafficDirectPercentage'] = $overview->getTrafficDirectPercentage();
             $extra['trafficReferralPercentage'] = $overview->getTrafficReferralPercentage();
             $extra['trafficSearchEnginePercentage'] = $overview->getTrafficSearchEnginePercentage();
+
             $extra['dayData'] = json_decode($overview->getDayData());
 
             $return = [
@@ -160,32 +200,12 @@ class DefaultController extends Controller
      * @return array
      */
     public function updateOverviewAction() {
-
-        $clientId       = $this->container->getParameter('google.api.client_id');
-        $clientSecret   = $this->container->getParameter('google.api.client_secret');
-        $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
-        $devKey         = $this->container->getParameter('google.api.dev_key');
-
-        $googleClientHelper = new GoogleClientHelper($clientId, $clientSecret, $redirectUri, $devKey, $this->getDoctrine()->getManager());
-
-        $params = array();
-        $googleClient = $googleClientHelper->getClient();
-        if ($googleClientHelper->tokenIsSet()) {
-            $params['token'] = true;
-            $analyticsHelper = new GoogleAnalyticsHelper($googleClient);
-
-            $results = $analyticsHelper->getResults(1, 0, 'ga:visits', ['dimensions' => 'ga:hour']);
-            $rows = $results->getRows();
-
-
+            $data = json_decode('
+                [{"key":"00h","data":"4"},{"key":"01h","data":"6"},{"key":"02h","data":"1"},{"key":"03h","data":"0"},{"key":"04h","data":"0"},{"key":"05h","data":"0"},{"key":"06h","data":"1"},{"key":"07h","data":"1"},{"key":"08h","data":"1"},{"key":"09h","data":"1"},{"key":"10h","data":"1"},{"key":"11h","data":"8"},{"key":"12h","data":"3"},{"key":"13h","data":"2"},{"key":"14h","data":"2"},{"key":"15h","data":"9"},{"key":"16h","data":"4"},{"key":"17h","data":"8"},{"key":"18h","data":"3"},{"key":"19h","data":"3"},{"key":"20h","data":"11"},{"key":"21h","data":"6"},{"key":"22h","data":"5"},{"key":"23h","data":"2"}]
+            ');
             echo "<pre>";
-            print_r($rows);
+            var_dump($data);
             echo "</pre>";
-
-        } else {
-            $params['token'] = false;
-            $params['authUrl'] = $googleClient->createAuthUrl();
-        }
 
         return [];
     }

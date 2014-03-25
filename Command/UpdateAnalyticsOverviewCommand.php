@@ -35,7 +35,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
 
         if ($googleClientHelper->tokenIsSet()) {
             // create API Analytics helper to execute queries
-            $analyticsHelper = new GoogleAnalyticsHelper($googleClient);
+            $analyticsHelper = new GoogleAnalyticsHelper($googleClient, $googleClientHelper);
 
             // get entitymanager and load all Overviews
             $em = $this->getContainer()->get('doctrine')->getEntityManager();
@@ -55,7 +55,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 }
 
                 // adding data to the AnalyticsDailyOverview object
-                $dailyOverview->setData(json_encode($data));
+                $dailyOverview->setData(json_encode($data, JSON_UNESCAPED_SLASHES));
 
                 // save dailyOverview to DB
                 $output->writeln("\t" . 'Persisting..');
@@ -95,7 +95,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                     }
 
                     // adding data to the AnalyticsDailyOverview object
-                    $overview->setDayData(json_encode($data));
+                    $overview->setDayData(json_encode($data, JSON_UNESCAPED_SLASHES));
                 }
 
 
@@ -203,6 +203,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand {
                 // persist entity back to DB
                 $output->writeln("\t" . 'Persisting..');
                 $em->persist($overview);
+                $em->flush();
             }
 
             $em->flush();

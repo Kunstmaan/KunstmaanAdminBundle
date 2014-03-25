@@ -40,7 +40,7 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     /**
      * @var array
      *
-     * @ORM\Column(name="day_data", type="json_array")
+     * @ORM\Column(name="day_data", type="text")
      */
     private $dayData = '';
 

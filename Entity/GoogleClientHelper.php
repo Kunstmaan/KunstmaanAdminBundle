@@ -14,6 +14,8 @@ class GoogleClientHelper
 
     private $path;
     private $token = false;
+    private $propertyId = false;
+    private $accountId = false;
     private $client;
     private $em;
 
@@ -69,12 +71,42 @@ class GoogleClientHelper
         $this->em->flush();
     }
 
+    public function getPropertyId() {
+        if ($this->propertyId === false) {
+            $query = $this->em->createQuery(
+              'SELECT c FROM KunstmaanAdminBundle:AnalyticsProperty c'
+            );
+            if ($query->getResult()) $this->propertyId = $query->getResult()[0]->getPropertyId();
+        }
+        return $this->propertyId;
+    }
+    public function getAccountId() {
+        if ($this->accountId === false) {
+            $query = $this->em->createQuery(
+              'SELECT c FROM KunstmaanAdminBundle:AnalyticsProperty c'
+            );
+            if ($query->getResult()) $this->accountId = $query->getResult()[0]->getAccountId();
+        }
+        return $this->accountId;
+    }
+
+    public function savePropertyId($id) {
+        $entity = new AnalyticsProperty();
+        $entity->setPropertyId($id);
+        $this->em->persist($entity);
+        $this->em->flush();
+    }
+
     public function getClient() {
         return $this->client;
     }
 
     public function tokenIsSet() {
         return $this->getToken() && '' !== $this->getToken();
+    }
+
+    public function propertyIsSet() {
+        return false !== $this->getPropertyId() && '' !== $this->getPropertyId();
     }
 
 }

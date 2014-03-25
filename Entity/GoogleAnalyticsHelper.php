@@ -12,16 +12,11 @@ class GoogleAnalyticsHelper
 {
 
     private $analytics;
+    private $clientHelper;
 
-    public function __construct(Client $googleClient) {
+    public function __construct(Client $googleClient, $clientHelper) {
         $this->analytics = new apiAnalyticsService($googleClient);
-
-        $profileId = $this->getFirstProfileId();
-        if (isset($profileId)) {
-            // TODO: DB convertion
-            // $results = $this->getResults($analytics, $profileId);
-            // $this->printResults($results);
-        }
+        $this->clientHelper = $clientHelper;
     }
 
 
@@ -31,15 +26,13 @@ class GoogleAnalyticsHelper
             $items = $accounts->getItems();
             $firstAccountId = $items[0]->getId();
 
-            $webproperties = $this->analytics->management_webproperties
-                    ->listManagementWebproperties($firstAccountId);
+            $webproperties = $this->analytics->management_webproperties->listManagementWebproperties($firstAccountId);
 
             if (count($webproperties->getItems()) > 0) {
                 $items = $webproperties->getItems();
-                $firstWebpropertyId = $items[0]->getId();
+                //$firstWebpropertyId = $items[$this->clientHelper->getPropertyId()]->getId();
 
-                $profiles = $this->analytics->management_profiles
-                        ->listManagementProfiles($firstAccountId, $firstWebpropertyId);
+                $profiles = $this->analytics->management_profiles->listManagementProfiles($this->clientHelper->getAccountId(), $this->clientHelper->getPropertyId());
 
                 if (count($profiles->getItems()) > 0) {
                     $items = $profiles->getItems();
@@ -54,6 +47,21 @@ class GoogleAnalyticsHelper
         } else {
             throw new \Exception('No accounts found for this user.');
         }
+    }
+
+    public function getProperties() {
+        $data = [];
+        $accounts = $this->analytics->management_accounts->listManagementAccounts()->getItems();
+
+
+        foreach ($accounts as $account) {
+            $webproperties = $this->analytics->management_webproperties->listManagementWebproperties($account->getId());
+            foreach ($webproperties->getItems() as $property) {
+                $data[] = ['propertyId' => $property->getId(), 'propertyName' => $property->getName(), 'accountId' => $account->getId()];
+            }
+        }
+
+        return $data;
     }
 
     public function getResults($timespan, $startOffset, $metrics, $extra=[]) {

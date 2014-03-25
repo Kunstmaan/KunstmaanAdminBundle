@@ -79,7 +79,7 @@ button, a, .btn{
 }
 
 //CDEditor
-.cke_skin_BootstrapCK-Skin, .CKEditor, .cke_skin_kCK{
+.cke_skin_BootstrapCK-Skin, .CKEditor, .cke_skin_kCK, .cke_chrome{
     overflow: hidden;
 }
 
@@ -355,6 +355,7 @@ header{
                 background-color: #2997CE;
                 text-shadow: none;
                 position: relative;
+                z-index: 3;
                 color: #FFF;
                 font-weight: bold;
                 height: 40px;
@@ -391,6 +392,8 @@ header{
         margin: 10px 10px 0 0;
     }
     .nav {
+        position: relative;
+        z-index: 2;
         > li{
             &:first-child{
                 a{
@@ -622,6 +625,7 @@ header{
     input[type=checkbox]{
         min-width: 0;
         margin: 9px 0 5px;
+        width: auto; //17/03/2014 added for IE9 to align checkbox to the left
     }
 
     .input-small {
@@ -1507,13 +1511,18 @@ h1, h2, h3, h4, h5, h6{
 
 
 
-//TEMPORARY FIX POPUP
-//UPDATE by Kevin on 05/03/14 - media chooser popup : file list didn't scroll
+// TEMPORARY FIX POPUP
+// UPDATE by Kevin on 05/03/14 - media chooser popup : file list didn't scroll
+// UPDATE by Indri on 21/03/14 - image chooser popup IE9 : not scrollable nor resizable
+.overflow-scroll {
+    overflow: auto; // 21032014
+}
 .media_popup_temp{
-//    overflow: hidden;
+//    overflow: hidden; // 05032014
     height: 100%;
+    overflow: auto;
     .container-fluid{
-//        height: 100%;
+//        height: 100%; // 05032014
         .sidebar{
             padding-top: 0px;
             h2{
@@ -1526,7 +1535,7 @@ h1, h2, h3, h4, h5, h6{
         }
         .content{
             padding-top: 20px;
-            height: 100%;
+            // height: 100%; // 21032014
             h1{
                 float: left;
                 line-height: 100%;
@@ -1551,9 +1560,8 @@ h1, h2, h3, h4, h5, h6{
             }
 
             .thumbnails{
-                height: 100%;
-                overflow: scroll;
-
+                //height: 100%; // 21032014
+                //overflow: scroll; // 21032014
             }
         }
     }

@@ -68,7 +68,6 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         $this->init($output);
         if ($this->googleClientHelper->tokenIsSet()) {
             // create API Analytics helper to execute queries
-            $this->analyticsHelper = new GoogleAnalyticsHelper($this->googleClient, $this->googleClientHelper);
             $this->analyticsHelper = $this->getContainer()->get('kunstmaan_admin.googleanalyticshelper');
             $this->analyticsHelper->init($this->googleClientHelper);
 

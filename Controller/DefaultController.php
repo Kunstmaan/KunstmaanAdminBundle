@@ -41,14 +41,8 @@ class DefaultController extends Controller
         $dashboardConfiguration = $this->getDoctrine()->getManager()->getRepository('KunstmaanAdminBundle:DashboardConfiguration')->findOneBy(array());
         $params         = array('dashboardConfiguration' => $dashboardConfiguration);
 
-        $clientId       = $this->container->getParameter('google.api.client_id');
-        $clientSecret   = $this->container->getParameter('google.api.client_secret');
-        $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
-        $devKey         = $this->container->getParameter('google.api.dev_key');
-
-        $googleClientHelper = new GoogleClientHelper($clientId, $clientSecret, $redirectUri, $devKey, $this->getDoctrine()->getManager());
-        $googleClient = $googleClientHelper->getClient();
-
+        // get API client
+        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
 
         if ($googleClientHelper->tokenIsSet() && $googleClientHelper->propertyIsSet()) {
             $em = $this->getDoctrine()->getManager();
@@ -61,6 +55,7 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
         } else {
             $params['token'] = false;
+            $googleClient = $googleClientHelper->getClient();
             $params['authUrl'] = $googleClient->createAuthUrl();
         }
 
@@ -90,14 +85,11 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
         }
 
-        $clientId       = $this->container->getParameter('google.api.client_id');
-        $clientSecret   = $this->container->getParameter('google.api.client_secret');
-        $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
-        $devKey         = $this->container->getParameter('google.api.dev_key');
-
-        $googleClientHelper = new GoogleClientHelper($clientId, $clientSecret, $redirectUri, $devKey, $this->getDoctrine()->getManager());
+        // get Helper
+        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
         $googleClient = $googleClientHelper->getClient();
-        $analyticsHelper = new GoogleAnalyticsHelper($googleClient, $googleClientHelper);
+        $analyticsHelper = $this->container->get('kunstmaan_admin.googleanalyticshelper');
+        $analyticsHelper->init($googleClientHelper);
         $properties = $analyticsHelper->getProperties();
 
         return array('properties' => $properties);

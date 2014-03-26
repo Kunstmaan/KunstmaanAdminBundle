@@ -21,9 +21,19 @@ class GoogleAnalyticsHelper
      * @param Client $googleClient
      * @param GoogleClientHelper $clientHelper
      */
-    public function __construct(Client $googleClient, GoogleClientHelper $clientHelper) {
-        $this->analytics = new apiAnalyticsService($googleClient);
+    public function __construct()
+    {
+    }
+
+    /**
+     * Initialize the clientHelper and analyticsService
+     *
+     * @param GoogleClientHelper $clientHelper
+     */
+    public function init(GoogleClientHelper $clientHelper)
+    {
         $this->clientHelper = $clientHelper;
+        $this->analytics = new apiAnalyticsService($this->clientHelper->getClient());
     }
 
     /**

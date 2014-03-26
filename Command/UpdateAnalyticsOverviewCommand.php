@@ -47,14 +47,8 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
     {
         $this->output = $output;
 
-        // get API client credentials
-        $clientId       = $this->getContainer()->getParameter('google.api.client_id');
-        $clientSecret   = $this->getContainer()->getParameter('google.api.client_secret');
-        $redirectUri    = $this->getContainer()->getParameter('google.api.redirect_uri');
-        $devKey         = $this->getContainer()->getParameter('google.api.dev_key');
-
-        // create API client
-        $this->googleClientHelper = new GoogleClientHelper($clientId, $clientSecret, $redirectUri, $devKey, $this->getContainer()->get('doctrine')->getEntityManager());
+        // get API client
+        $this->googleClientHelper = $this->getContainer()->get('kunstmaan_admin.googleclienthelper');
         $this->googleClient = $this->googleClientHelper->getClient();
 
         // setup entity manager
@@ -75,6 +69,8 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         if ($this->googleClientHelper->tokenIsSet()) {
             // create API Analytics helper to execute queries
             $this->analyticsHelper = new GoogleAnalyticsHelper($this->googleClient, $this->googleClientHelper);
+            $this->analyticsHelper = $this->getContainer()->get('kunstmaan_admin.googleanalyticshelper');
+            $this->analyticsHelper->init($this->googleClientHelper);
 
             // daily data for 3 months
             $this->getDaily();

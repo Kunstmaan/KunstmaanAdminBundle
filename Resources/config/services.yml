@@ -5,6 +5,10 @@ parameters:
 services:
     kunstmaan_admin.googleclienthelper:
         class: "Kunstmaan\AdminBundle\Entity\GoogleClientHelper"
+        arguments: ["%google.api.client_id%", "%google.api.client_secret%", "%google.api.redirect_uri%", "%google.api.dev_key%", "@doctrine.orm.entity_manager"]
+
+    kunstmaan_admin.googleanalyticshelper:
+        class: "Kunstmaan\AdminBundle\Entity\GoogleAnalyticsHelper"
 
     kunstmaan_admin.menubuilder:
         class: "%kunstmaan_admin.menubuilder.class%"

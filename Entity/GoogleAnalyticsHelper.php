@@ -2,15 +2,15 @@
 
 namespace Kunstmaan\AdminBundle\Entity;
 
-use GoogleApi\Client;
-use GoogleApi\Contrib\apiAnalyticsService;
+use \Google_Client;
+use \Google_AnalyticsService;
 
 /**
  * This helper will setup a google analytics object
  */
 class GoogleAnalyticsHelper
 {
-    /** @var apiAnalyticsService $analytics */
+    /** @var Google_AnalyticsService $analytics */
     private $analytics;
     /** @var GoogleClientHelper $clientHelper */
     private $clientHelper;
@@ -23,7 +23,7 @@ class GoogleAnalyticsHelper
     public function init(GoogleClientHelper $clientHelper)
     {
         $this->clientHelper = $clientHelper;
-        $this->analytics = new apiAnalyticsService($this->clientHelper->getClient());
+        $this->analytics = new Google_AnalyticsService($this->clientHelper->getClient());
     }
 
     /**

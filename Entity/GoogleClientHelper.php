@@ -4,7 +4,7 @@ namespace Kunstmaan\AdminBundle\Entity;
 
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Dumper;
-use GoogleApi\Client;
+use \Google_Client;
 
 /**
  * This helper will setup a google api client object
@@ -19,7 +19,7 @@ class GoogleClientHelper
     private $propertyId = false;
     /** @var string $accountId */
     private $accountId = false;
-    /** @var Client $client */
+    /** @var Google_Client $client */
     private $client;
     /** @var EntityManager $em */
     private $em;
@@ -43,7 +43,7 @@ class GoogleClientHelper
         $this->em = $em;
         $token = $this->getToken();
 
-        $this->client = new Client();
+        $this->client = new Google_Client();
         $this->client->setApplicationName('Kuma Analytics Dashboard');
         $this->client->setClientId($clientId);
         $this->client->setClientSecret($clientSecret);
@@ -53,9 +53,8 @@ class GoogleClientHelper
         $this->client->setScopes(array('https://www.googleapis.com/auth/analytics.readonly'));
         $this->client->setUseObjects(true);
 
-        if ($this->token && $this->token !== '') {
-            $this->client->setAccessToken($this->token);
-        }
+        // if token is already saved in the database
+        if ($this->token && $this->token !== '') $this->client->setAccessToken($this->token);
     }
 
     /**
@@ -131,7 +130,7 @@ class GoogleClientHelper
     /**
      * Get the client
      *
-     * @return Client $client
+     * @return Google_Client $client
      */
     public function getClient()
     {

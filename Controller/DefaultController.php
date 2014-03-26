@@ -107,13 +107,11 @@ class DefaultController extends Controller
     /**
      * Return an ajax response
      *
-     * @Route("/getOverview", name="KunstmaanAdminBundle_analytics_overview_ajax")
+     * @Route("/getOverview/{id}", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_analytics_overview_ajax")
      *
      */
-    public function getOverviewAction(){
-
+    public function getOverviewAction($id){
         $request = $this->get('request');
-        $id = $request->request->get('overviewId');
 
         if($id) {
             $em = $this->getDoctrine()->getManager();
@@ -150,17 +148,15 @@ class DefaultController extends Controller
      *
      */
     public function getDailyOverviewAction(){
-
         $request = $this->get('request');
-
         $em = $this->getDoctrine()->getManager();
         $dailyOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
 
 
-        $return = [
+        $return = array(
                     "responseCode" => 200,
                     "dailyOverview" => json_decode($dailyOverview->getData())
-                    ];
+                    );
 
        $return = json_encode($return);
        return new Response($return, 200, array('Content-Type' => 'application/json'));

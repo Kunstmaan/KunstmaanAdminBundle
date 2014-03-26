@@ -35,6 +35,10 @@ class GoogleClientHelper
      */
     public function __construct($clientId, $clientSecret, $redirectUri, $devKey, $em)
     {
+        if ($clientId == "" || $clientSecret = "" || $redirectUri = "" || $devKey == "") {
+            throw new \Exception('Google API Parameters not set or incomplete');
+        }
+
         $this->path =  __DIR__ . '/../Resources/config/google.yml';
         $this->em = $em;
         $token = $this->getToken();

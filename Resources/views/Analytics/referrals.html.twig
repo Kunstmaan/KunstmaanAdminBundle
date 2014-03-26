@@ -4,37 +4,21 @@
 
         {# error if no referrals #}
         <p class="db-block__text" id="data_top_referral_no_data">
-            {% if overview.topReferralFirstValue == 0 %}No data available for Top Referrals{% endif %}
+            {% if referrals|length == 0 %}No data available for Top Referrals{% endif %}
         </p>
 
-        {# first referral #}
-        <li class="db-block__list__item">
-            <p class="db-block__text db-block__text--left" id="data_overview_top_referral_first">
-                {% if overview.topReferralFirstValue != 0 %}{{ overview.topReferralFirst }}{% endif %}
-            </p>
-            <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_first_value">
-               {% if overview.topReferralFirstValue != 0 %}{{ overview.topReferralFirstValue }}{% endif %}
-            </p>
-        </li>
+        <div id="referrals">
+            {% for referral in referrals %}
+                <li class="db-block__list__item">
+                    <p class="db-block__text db-block__text--left" id="data_overview_top_referral_first">
+                        {% if referral.visits != 0 %}{{ referral.name }}{% endif %}
+                    </p>
+                    <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_first_value">
+                       {% if referral.visits != 0 %}{{ referral.visits }}{% endif %}
+                    </p>
+                </li>
+            {% endfor %}
+        </div>
 
-        {# second referral #}
-        <li class="db-block__list__item">
-            <p class="db-block__text db-block__text--left" id="data_overview_top_referral_second">
-                 {% if overview.topReferralSecondValue != 0 %}{{ overview.topReferralSecond }}{% endif %}
-            </p>
-            <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_second_value">
-                 {% if overview.topReferralSecondValue != 0 %}{{ overview.topReferralSecondValue }}{% endif %}
-            </p>
-        </li>
-
-        {# third referral #}
-        <li class="db-block__list__item">
-            <p class="db-block__text db-block__text--left" id="data_overview_top_referral_third">
-                {% if overview.topReferralThirdValue != 0 %}{{ overview.topReferralThird }}{% endif %}
-            </p>
-            <p class="db-block__stats db-block__stats--right" id="data_overview_top_referral_third_value">
-                {% if overview.topReferralThirdValue != 0 %}{{ overview.topReferralThirdValue }}{% endif %}
-            </p>
-        </li>
     </ul>
 </div>

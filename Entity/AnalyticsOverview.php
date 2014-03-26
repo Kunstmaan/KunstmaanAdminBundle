@@ -13,6 +13,67 @@ use Doctrine\ORM\Mapping as ORM;
 class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
 {
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="AnalyticsTopReferral", mappedBy="overview", cascade={"persist"})
+     */
+    private $referrals;
+
+    /**
+     * Set referrals
+     *
+     * @param array $referrals
+     * @return AnalyticsDailyOverview
+     */
+    public function setReferrals($referrals)
+    {
+        $this->referrals = $referrals;
+
+        return $this;
+    }
+
+    /**
+     * Get referrals
+     *
+     * @return array
+     */
+    public function getReferrals()
+    {
+        return $this->referrals;
+    }
+
+    /**
+     * @ORM\OneToMany(targetEntity="AnalyticsTopSearch", mappedBy="overview", cascade={"persist"})
+     */
+    private $searches;
+
+    /**
+     * Set searches
+     *
+     * @param array $searches
+     * @return AnalyticsDailyOverview
+     */
+    public function setSearches($searches)
+    {
+        $this->searches = $searches;
+
+        return $this;
+    }
+
+    /**
+     * Get searches
+     *
+     * @return array
+     */
+    public function getSearches()
+    {
+        return $this->searches;
+    }
+
+
+
+
+
     /**
      * Get a string representation of the top referrals
      *

@@ -57,6 +57,8 @@ class DefaultController extends Controller
                     // set the default overview to the middle one
                     $params['overview'] = $overviews[2];
                 }
+                $params['referrals'] = $params['overview']->getReferrals()->toArray();
+                $params['searches'] = $params['overview']->getSearches()->toArray();
             }
         } else if ($googleClientHelper->tokenIsSet()) {
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
@@ -139,18 +141,40 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $overview = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getOverview($id);
 
-            $serializer = new Serializer(array(new GetSetMethodNormalizer()), array('json' => new JsonEncoder()));
-            $json = $serializer->serialize($overview, 'json');
-            $json = json_decode($json);
             $extra['trafficDirectPercentage'] = $overview->getTrafficDirectPercentage();
             $extra['trafficReferralPercentage'] = $overview->getTrafficReferralPercentage();
             $extra['trafficSearchEnginePercentage'] = $overview->getTrafficSearchEnginePercentage();
-
             $extra['dayData'] = json_decode($overview->getDayData());
+
+            $extra['referrals'] = array();
+            foreach ($overview->getReferrals()->toArray() as $key=>$referral) {
+                $extra['referrals'][$key]['visits'] = $referral->getVisits();
+                $extra['referrals'][$key]['name'] = $referral->getName();
+            }
+            $extra['searches'] = array();
+            foreach ($overview->getSearches()->toArray() as $key=>$search) {
+                $extra['searches'][$key]['visits'] = $search->getVisits();
+                $extra['searches'][$key]['name'] = $search->getName();
+            }
+
+            $overviewData = array(
+                'dayData' => $overview->getDayData(),
+                'useDayData' => $overview->getUseDayData(),
+                'title' => $overview->getTitle(),
+                'timespan' => $overview->getTimespan(),
+                'startOffset' => $overview->getStartOffset(),
+                'visits' => $overview->getVisits(),
+                'returningVisits' => $overview->getReturningVisits(),
+                'newVisits' => $overview->getNewVisits(),
+                'pageViews' => $overview->getPageViews(),
+                'trafficDirect' => $overview->getTrafficDirect(),
+                'trafficReferral' => $overview->getTrafficReferral(),
+                'trafficSearchEngine' => $overview->getTrafficSearchEngine(),
+                );
 
             $return = array(
                         "responseCode" => 200,
-                        "overview" => $json,
+                        "overview" => $overviewData,
                         "extra" => $extra
                         );
        } else {

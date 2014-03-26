@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Kunstmaan\AdminBundle\Entity\GoogleClientHelper;
 use Kunstmaan\AdminBundle\Entity\GoogleAnalyticsHelper;
+use Kunstmaan\AdminBundle\Entity\AnalyticsTopReferral;
 
 /**
  * Symfony CLI command to update the analytics data using app/console kuma:ga:update
@@ -257,17 +258,25 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:source', 'sort' => '-ga:visits', 'filters' => 'ga:medium==referral']);
         $rows = $results->getRows();
 
-            // #1 referral
-            $overview->setTopReferralFirst(isset($rows[0][0]) ? $rows[0][0] : '');
-            $overview->setTopReferralFirstValue(isset($rows[0][1]) ? $rows[0][1] : 0);
+            // delete existing entries
+            if (is_array($overview->getReferrals()->toArray())) {
+                foreach ($overview->getReferrals()->toArray() as $referral) {
+                    $this->em->remove($referral);
+                }
+                $this->em->flush();
+            }
 
-            // #2 referral
-            $overview->setTopReferralSecond(isset($rows[1][0]) ? $rows[1][0] : '');
-            $overview->setTopReferralSecondValue(isset($rows[1][1]) ? $rows[1][1] : 0);
-
-            // #3 referral
-            $overview->setTopReferralThird(isset($rows[2][0]) ? $rows[2][0] : '');
-            $overview->setTopReferralThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
+            // load new referrals, max 3
+            if (is_array($rows)) {
+                foreach ($rows as $key=>$row) {
+                    $referral = new AnalyticsTopReferral();
+                    $referral->setName($row[0]);
+                    $referral->setVisits($row[1]);
+                    $referral->setOverview($overview);
+                    $overview->getReferrals()->add($referral);
+                    if ($key > 3) break;
+                }
+            }
     }
 
     /**
@@ -282,17 +291,26 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:searchUniques', ['dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques']);
         $rows = $results->getRows();
 
-            // #1 search
-            $overview->setTopSearchFirst(isset($rows[0][0]) ? $rows[0][0] : '');
-            $overview->setTopSearchFirstValue(isset($rows[0][1]) ? $rows[0][1] : 0);
+            // delete existing entries
+            if (is_array($overview->getSearches()->toArray())) {
+                foreach ($overview->getSearches()->toArray() as $search) {
+                    $this->em->remove($search);
+                }
+                $this->em->flush();
+            }
 
-            // #2 search
-            $overview->setTopSearchSecond(isset($rows[1][0]) ? $rows[1][0] : '');
-            $overview->setTopSearchSecondValue(isset($rows[1][1]) ? $rows[1][1] : 0);
+            // load new searches, max 3
+            if (is_array($rows)) {
+                foreach ($rows as $key=>$row) {
+                    $search = new AnalyticsTopSearch();
+                    $search->setName($row[0]);
+                    $search->setVisits($row[1]);
+                    $search->setOverview($overview);
+                    $overview->getSearches()->add($search);
+                    if ($key > 3) break;
+                }
+            }
 
-            // #3 search
-            $overview->setTopSearchThird(isset($rows[2][0]) ? $rows[2][0] : '');
-            $overview->setTopSearchThirdValue(isset($rows[2][1]) ? $rows[2][1] : 0);
     }
 
     /**

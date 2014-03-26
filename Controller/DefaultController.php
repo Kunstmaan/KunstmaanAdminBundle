@@ -2,13 +2,10 @@
 
 namespace Kunstmaan\AdminBundle\Controller;
 
-
 use Kunstmaan\AdminBundle\Form\DashboardConfigurationType;
 use Kunstmaan\AdminBundle\Entity\DashboardConfiguration;
 use Kunstmaan\AdminBundle\Entity\GoogleClientHelper;
 use Kunstmaan\AdminBundle\Entity\GoogleAnalyticsHelper;
-
-
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -20,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * The default controller is used to render the main screen the users see when they log in to the admin
@@ -49,8 +47,17 @@ class DefaultController extends Controller
             $overviews = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
 
             $params['token'] = true;
-            $params['overviews'] = $overviews;
-            $params['overview'] = $overviews[2];
+            $params['overviews'] = array();
+            if (is_array($overviews)) { // if this is an array with overviews
+                // set the overviews param
+                $params['overviews'] = $overviews;
+                // set the default overview
+                $params['overview'] = $overviews[0];
+                if (sizeof($overviews == 5)) { // if all overviews are present
+                    // set the default overview to the middle one
+                    $params['overview'] = $overviews[2];
+                }
+            }
         } else if ($googleClientHelper->tokenIsSet()) {
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
         } else {
@@ -68,15 +75,17 @@ class DefaultController extends Controller
      * @Route("/selectWebsite", name="KunstmaanAdminBundle_PropertySelection")
      * @Template()
      *
+     * @param Request $request
+     *
      * @return array
      */
-    public function propertySelectionAction()
+    public function propertySelectionAction(Request $request)
     {
-        if (isset($_POST['properties'])) {
+        if (null !== $request->request->get('properties')) {
             $em = $this->getDoctrine()->getManager();
             $property = $em->getRepository('KunstmaanAdminBundle:AnalyticsProperty')->getProperty();
 
-            $parts = explode("::", $_POST['properties']);
+            $parts = explode("::", $request->request->get('properties'));
             $property->setPropertyId($parts[0]);
             $property->setAccountId($parts[1]);
 

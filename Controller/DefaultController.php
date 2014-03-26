@@ -72,6 +72,28 @@ class DefaultController extends Controller
     /**
      *
      *
+     * @Route("/setToken/", name="KunstmaanAdminBundle_setToken")
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function setTokenAction(Request $request)
+    {
+        $code = $request->query->get('code');
+
+        if (isset($code)) {
+            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+            $googleClientHelper->getClient()->authenticate();
+            $googleClientHelper->saveToken($googleClientHelper->getClient()->getAccessToken());
+            return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
+        }
+        return;
+    }
+
+    /**
+     *
+     *
      * @Route("/selectWebsite", name="KunstmaanAdminBundle_PropertySelection")
      * @Template()
      *

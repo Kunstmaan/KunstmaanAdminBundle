@@ -35,7 +35,7 @@ class GoogleClientHelper
      */
     public function __construct($clientId, $clientSecret, $redirectUri, $devKey, $em)
     {
-        if ($clientId == "" || $clientSecret = "" || $redirectUri = "" || $devKey == "") {
+        if ($clientId == "" || $clientSecret == "" || $redirectUri == "" || $devKey == "") {
             throw new \Exception('Google API Parameters not set or incomplete');
         }
 
@@ -48,22 +48,10 @@ class GoogleClientHelper
         $this->client->setClientId($clientId);
         $this->client->setClientSecret($clientSecret);
         $this->client->setRedirectUri($redirectUri);
+
         $this->client->setDeveloperKey($devKey);
         $this->client->setScopes(array('https://www.googleapis.com/auth/analytics.readonly'));
         $this->client->setUseObjects(true);
-
-        if (isset($_GET['code'])) {
-            $this->client->authenticate();
-            $token = $this->client->getAccessToken();
-
-            // save the token
-            $this->saveToken($token);
-
-            $redirect = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-            header('Location: ' . filter_var($redirect, FILTER_SANITIZE_URL));
-            exit;
-        }
-
 
         if ($this->token && $this->token !== '') {
             $this->client->setAccessToken($this->token);
@@ -89,7 +77,7 @@ class GoogleClientHelper
     /**
      * Save the token to the database
      */
-    private function saveToken($token)
+    public function saveToken($token)
     {
         $analyticsToken = new AnalyticsToken();
         $analyticsToken->setToken($token);

@@ -16,16 +16,6 @@ class GoogleAnalyticsHelper
     private $clientHelper;
 
     /**
-     * Constructor
-     *
-     * @param Client $googleClient
-     * @param GoogleClientHelper $clientHelper
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Initialize the clientHelper and analyticsService
      *
      * @param GoogleClientHelper $clientHelper

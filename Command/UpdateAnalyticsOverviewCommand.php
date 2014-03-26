@@ -128,14 +128,14 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
     {
         $this->output->writeln('Fetching daily visits');
         $dailyOverview = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
-        $data = [];
+        $data = array();
 
             // Fetching daily data for 3 months.
-            $results = $this->analyticsHelper->getResults(93, 0, 'ga:visits', ['dimensions' => 'ga:date', 'sort' => '-ga:date']);
+            $results = $this->analyticsHelper->getResults(93, 0, 'ga:visits', array('dimensions' => 'ga:date', 'sort' => '-ga:date'));
             $rows = $results->getRows();
             foreach ($rows as $row) {
                 $date = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
-                $data[] = ['key' => $date, 'data' => $row[1]];
+                $data[] = array('key' => $date, 'data' => $row[1]);
             }
 
             // adding data to the AnalyticsDailyOverview object
@@ -180,9 +180,9 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:hour']);
         $rows = $results->getRows();
 
-        $data = [];
+        $data = array();
         foreach ($rows as $row) {
-            $data[] = ['key' => $row[0].'h', 'data' => $row[1]];
+            $data[] = array('key' => $row[0].'h', 'data' => $row[1]);
         }
 
         // adding data to the AnalyticsDailyOverview object
@@ -219,7 +219,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
     {
         // traffic sources
         $this->output->writeln("\t" . 'Fetching traffic sources..');
-        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:medium', 'sort' => 'ga:medium']);
+        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', array('dimensions' => 'ga:medium', 'sort' => 'ga:medium'));
         $rows = $results->getRows();
 
         // resetting default values

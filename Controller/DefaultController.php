@@ -100,7 +100,7 @@ class DefaultController extends Controller
         $analyticsHelper = new GoogleAnalyticsHelper($googleClient, $googleClientHelper);
         $properties = $analyticsHelper->getProperties();
 
-        return ['properties' => $properties];
+        return array('properties' => $properties);
     }
 
     /**
@@ -127,19 +127,19 @@ class DefaultController extends Controller
 
             $extra['dayData'] = json_decode($overview->getDayData());
 
-            $return = [
+            $return = array(
                         "responseCode" => 200,
                         "overview" => $json,
                         "extra" => $extra
-                        ];
+                        );
        } else {
-            $return = [
+            $return = array(
                         "responseCode" => 400
-                        ];
+                        );
        }
 
        $return = json_encode($return);
-       return new Response($return, 200, ['Content-Type' => 'application/json']);
+       return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     /**
@@ -162,7 +162,7 @@ class DefaultController extends Controller
                     ];
 
        $return = json_encode($return);
-       return new Response($return, 200, ['Content-Type' => 'application/json']);
+       return new Response($return, 200, array('Content-Type' => 'application/json'));
     }
 
     /**

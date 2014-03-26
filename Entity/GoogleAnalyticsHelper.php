@@ -66,13 +66,13 @@ class GoogleAnalyticsHelper
      */
     public function getProperties()
     {
-        $data = [];
+        $data = array();
         $accounts = $this->analytics->management_accounts->listManagementAccounts()->getItems();
 
         foreach ($accounts as $account) {
             $webproperties = $this->analytics->management_webproperties->listManagementWebproperties($account->getId());
             foreach ($webproperties->getItems() as $property) {
-                $data[] = ['propertyId' => $property->getId(), 'propertyName' => $property->getName(), 'accountId' => $account->getId()];
+                $data[] = array('propertyId' => $property->getId(), 'propertyName' => $property->getName(), 'accountId' => $account->getId());
             }
         }
 
@@ -89,7 +89,7 @@ class GoogleAnalyticsHelper
      *
      * @return GaData result    A data object containing the queried data
      */
-    public function getResults($timespan, $startOffset, $metrics, $extra=[])
+    public function getResults($timespan, $startOffset, $metrics, $extra=array())
     {
         $profileId = $this->getProfileId();
         return $this->analytics->data_ga->get(
@@ -111,7 +111,7 @@ class GoogleAnalyticsHelper
      *
      * @return GaData result    A data object containing the queried data
      */
-    public function getResultsByDate($from, $to, $metrics, $extra = [])
+    public function getResultsByDate($from, $to, $metrics, $extra = array())
     {
         $profileId = $this->getProfileId();
         return $this->analytics->data_ga->get(

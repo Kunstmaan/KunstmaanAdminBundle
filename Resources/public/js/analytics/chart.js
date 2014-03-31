@@ -49,8 +49,10 @@
             labels : chartLabels,
             datasets : [
                 {
-                    fillColor : "rgba(41, 151, 206,0.5)",
+                    fillColor : "rgba(41, 151, 206, 0.3)",
                     strokeColor : "rgb(41, 151, 206)",
+                    pointColor : "rgb(41, 151, 206)",
+                    pointStrokeColor : "#fff",
                     data : chartData,
                     scaleShowLabels : true
                 }

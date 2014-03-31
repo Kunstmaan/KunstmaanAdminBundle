@@ -15,7 +15,6 @@ $(document).ready(function (){
     initModalFocus();
     initSaveKeyListener();
     initSidenavSize();
-    //initChart();
 });
 
 

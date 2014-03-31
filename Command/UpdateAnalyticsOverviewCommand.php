@@ -173,7 +173,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
     private function getDayData(&$overview)
     {
         $this->output->writeln("\t" . 'Fetching day-specific data..');
-        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:hour']);
+        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', array('dimensions' => 'ga:hour'));
         $rows = $results->getRows();
 
         $data = array();
@@ -194,7 +194,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
     {
          // visitor types
         $this->output->writeln("\t" . 'Fetching visitor types..');
-        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:visitorType']);
+        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', array('dimensions' => 'ga:visitorType'));
         $rows = $results->getRows();
 
             // new visitors

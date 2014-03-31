@@ -22,7 +22,7 @@ class AnalyticsOverviewFixtures extends AbstractFixture implements OrderedFixtur
     {
         $today = new AnalyticsOverview();
         $today->setTitle('Today');
-        $today->setTimespan(1);
+        $today->setTimespan(0);
         $today->setStartOffset(0);
         $today->setUseDayData(true);
         $em->persist($today);

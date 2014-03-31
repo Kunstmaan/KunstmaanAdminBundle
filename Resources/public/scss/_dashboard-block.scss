@@ -58,7 +58,7 @@
 
 // icons (icomoon icons used as base, made custom)
 .db-block__list__item--icon {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     // Decided we won't use icons after all
 //    &:after {
 //        content: " ";
@@ -73,9 +73,6 @@
 //        margin-top: -16px;
 //        border-radius: 100%;
 //    }
-    &:last-child {
-        margin-bottom: 15px;
-    }
 }
 //.db-block__list__item--icon-direct {
 //    &:after {

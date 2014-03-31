@@ -1,6 +1,6 @@
 <?php
 
-namespace Kunstmaan\AdminBundle\DataFixtures\ORM;
+namespace Kunstmaan\AdminBundle\DataFixtures\ORM\Analytics;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

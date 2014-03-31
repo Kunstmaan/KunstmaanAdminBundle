@@ -5,8 +5,9 @@
 .db-content {
     padding: 20px 0;
     border: 1px solid $hr-color;
-    border-width: 0 1px 1px;
+    border-radius: 0 0 3px 3px;
     margin-bottom: 40px;
+    margin-top: -1px;
     @include clearfix;
     * {
         -moz-box-sizing: border-box;
@@ -19,38 +20,49 @@
     float: left;
     padding: 0 20px;
 }
-.db-col--5 {
-    width: 42%;
+.db-col--6 {
+    width: 55%;
+}
+.db-col--2 {
+    width: 20%;
 }
 .db-col--4 {
-    width: 33%;
-}
-.db-col--3 {
     width: 25%;
 }
 
 .dashboard-chart {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    padding: 0 15px 0 0;
 }
 
 @media(max-width: 1023px) {
-    .db-col--5 {
-        width: 70%;
+    .db-col--6 {
+        width: 75%;
     }
-    .db-col--3 {
-        width: 30%;
+    .db-col--2 {
+        width: 25%;
     }
     .db-col--4 {
         width: 100%;
         @include clearfix;
         .db-col__inner {
-            width: 50%;
+            width: calc(50% - 20px);
             float: left;
-            padding-left: 20px;
+            margin-left: 40px;
             &:first-child {
-                padding-left: 0;
-                padding-right: 20px;
+                margin-left: 0;
             }
         }
     }
 }
+// only necessary when min-width is gone from container
+//@media(max-width: 767px) {
+//    .db-col {
+//        float: none;
+//        width: 100%;
+//        .db-col__inner {
+//            width: 100%;
+//            margin: 0;
+//        }
+//    }
+//}

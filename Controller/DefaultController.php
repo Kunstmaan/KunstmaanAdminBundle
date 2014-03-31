@@ -33,14 +33,29 @@ class DefaultController extends Controller
      *
      * @return array
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         /* @var DashboardConfiguration $dashboardConfiguration */
         $dashboardConfiguration = $this->getDoctrine()->getManager()->getRepository('KunstmaanAdminBundle:DashboardConfiguration')->findOneBy(array());
         $params         = array('dashboardConfiguration' => $dashboardConfiguration);
 
         // get API client
-        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+        try {
+            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+
+            // manually loading is needed because of the check if these params are set, using the serivce to inject them will throw an exception which can't be catched here
+            $clientId       = $this->container->getParameter('google.api.client_id');
+            $clientSecret   = $this->container->getParameter('google.api.client_secret');
+            $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
+            $devKey         = $this->container->getParameter('google.api.dev_key');
+
+            $googleClientHelper->init($clientId, $clientSecret, $redirectUri, $devKey);
+        } catch (\Exception $e) {
+            return $this->render(
+                'KunstmaanAdminBundle:Analytics:error.html.twig',
+                array()
+            );
+        }
 
         if ($googleClientHelper->tokenIsSet() && $googleClientHelper->propertyIsSet()) {
             $em = $this->getDoctrine()->getManager();
@@ -48,7 +63,7 @@ class DefaultController extends Controller
 
             $params['token'] = true;
             $params['overviews'] = array();
-            if (is_array($overviews)) { // if this is an array with overviews
+            if ($overviews) { // if this is an array with overviews
                 // set the overviews param
                 $params['overviews'] = $overviews;
                 // set the default overview
@@ -59,11 +74,20 @@ class DefaultController extends Controller
                 }
                 $params['referrals'] = $params['overview']->getReferrals()->toArray();
                 $params['searches'] = $params['overview']->getSearches()->toArray();
+            } else {
+                // if no overviews are yet configured
+                return $this->render(
+                    'KunstmaanAdminBundle:Analytics:errorOverviews.html.twig',
+                    array()
+                );
             }
         } else if ($googleClientHelper->tokenIsSet()) {
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
         } else {
             $params['token'] = false;
+            $currentRoute = $request->attributes->get('_route');
+            $currentUrl = $this->get('router')->generate($currentRoute, array(), true);
+            $params['url'] = $currentUrl . 'setToken/';
             $googleClient = $googleClientHelper->getClient();
             $params['authUrl'] = $googleClient->createAuthUrl();
         }
@@ -85,7 +109,23 @@ class DefaultController extends Controller
         $code = $request->query->get('code');
 
         if (isset($code)) {
-            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+            // get API client
+            try {
+                $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+                $clientId       = $this->container->getParameter('google.api.client_id');
+                $clientSecret   = $this->container->getParameter('google.api.client_secret');
+                $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
+                $devKey         = $this->container->getParameter('google.api.dev_key');
+
+                $googleClientHelper->init($clientId, $clientSecret, $redirectUri, $devKey);
+            } catch (\Exception $e) {
+                return $this->render(
+                    'KunstmaanAdminBundle:Analytics:error.html.twig',
+                    array()
+                );
+            }
+
+
             $googleClientHelper->getClient()->authenticate();
             $googleClientHelper->saveToken($googleClientHelper->getClient()->getAccessToken());
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
@@ -118,8 +158,23 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
         }
 
+        // get API client
+        try {
+            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+            $clientId       = $this->container->getParameter('google.api.client_id');
+            $clientSecret   = $this->container->getParameter('google.api.client_secret');
+            $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
+            $devKey         = $this->container->getParameter('google.api.dev_key');
+
+            $googleClientHelper->init($clientId, $clientSecret, $redirectUri, $devKey);
+        } catch (\Exception $e) {
+            return $this->render(
+                'KunstmaanAdminBundle:Analytics:error.html.twig',
+                array()
+            );
+        }
+
         // get Helper
-        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
         $googleClient = $googleClientHelper->getClient();
         $analyticsHelper = $this->container->get('kunstmaan_admin.googleanalyticshelper');
         $analyticsHelper->init($googleClientHelper);

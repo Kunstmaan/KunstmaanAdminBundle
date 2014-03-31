@@ -49,8 +49,18 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         $this->output = $output;
 
         // get API client
-        $this->googleClientHelper = $this->getContainer()->get('kunstmaan_admin.googleclienthelper');
-        $this->googleClient = $this->googleClientHelper->getClient();
+        try {
+            $this->googleClientHelper = $this->getContainer()->get('kunstmaan_admin.googleclienthelper');
+            $clientId       = $this->getContainer()->getParameter('google.api.client_id');
+            $clientSecret   = $this->getContainer()->getParameter('google.api.client_secret');
+            $redirectUri    = $this->getContainer()->getParameter('google.api.redirect_uri');
+            $devKey         = $this->getContainer()->getParameter('google.api.dev_key');
+
+            $this->googleClientHelper->init($clientId, $clientSecret, $redirectUri, $devKey);
+            $this->googleClient = $this->googleClientHelper->getClient();
+        } catch (\Exception $e) {
+            $this->output->writeln('Invalid parameters.yml configuration');
+        }
 
         // setup entity manager
         $this->em = $this->getContainer()->get('doctrine')->getEntityManager();

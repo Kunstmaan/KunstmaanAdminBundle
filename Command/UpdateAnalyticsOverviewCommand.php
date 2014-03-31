@@ -49,7 +49,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         $this->output = $output;
 
         // get API client
-        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+        $this->googleClientHelper = $this->getContainer()->get('kunstmaan_admin.googleclienthelper');
 
         // setup entity manager
         $this->em = $this->getContainer()->get('doctrine')->getEntityManager();

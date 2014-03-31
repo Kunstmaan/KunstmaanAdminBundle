@@ -33,16 +33,16 @@ class GoogleClientHelper
      * @param string $devKey
      * @param EntityManager $em
      */
-    public function __construct($em)
+    public function __construct($clientId, $clientSecret, $redirectUri, $devKey, $em)
     {
-        $this->path =  __DIR__ . '/../Resources/config/google.yml';
-        $this->em = $em;
-    }
 
-    public function init($clientId, $clientSecret, $redirectUri, $devKey) {
         if ($clientId == "" || $clientSecret == "" || $redirectUri == "" || $devKey == "") {
             throw new \Exception('Google API Parameters not set or incomplete');
         }
+
+
+        $this->path =  __DIR__ . '/../Resources/config/google.yml';
+        $this->em = $em;
 
         $token = $this->getToken();
 

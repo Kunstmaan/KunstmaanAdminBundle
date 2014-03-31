@@ -40,22 +40,7 @@ class DefaultController extends Controller
         $params         = array('dashboardConfiguration' => $dashboardConfiguration);
 
         // get API client
-        try {
-            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
-
-            // manually loading is needed because of the check if these params are set, using the serivce to inject them will throw an exception which can't be catched here
-            $clientId       = $this->container->getParameter('google.api.client_id');
-            $clientSecret   = $this->container->getParameter('google.api.client_secret');
-            $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
-            $devKey         = $this->container->getParameter('google.api.dev_key');
-
-            $googleClientHelper->init($clientId, $clientSecret, $redirectUri, $devKey);
-        } catch (\Exception $e) {
-            return $this->render(
-                'KunstmaanAdminBundle:Analytics:error.html.twig',
-                array()
-            );
-        }
+        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
 
         if ($googleClientHelper->tokenIsSet() && $googleClientHelper->propertyIsSet()) {
             $em = $this->getDoctrine()->getManager();
@@ -110,27 +95,14 @@ class DefaultController extends Controller
 
         if (isset($code)) {
             // get API client
-            try {
-                $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
-                $clientId       = $this->container->getParameter('google.api.client_id');
-                $clientSecret   = $this->container->getParameter('google.api.client_secret');
-                $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
-                $devKey         = $this->container->getParameter('google.api.dev_key');
-
-                $googleClientHelper->init($clientId, $clientSecret, $redirectUri, $devKey);
-            } catch (\Exception $e) {
-                return $this->render(
-                    'KunstmaanAdminBundle:Analytics:error.html.twig',
-                    array()
-                );
-            }
+            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
 
 
             $googleClientHelper->getClient()->authenticate();
             $googleClientHelper->saveToken($googleClientHelper->getClient()->getAccessToken());
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
         }
-        return;
+        return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
     }
 
     /**
@@ -159,20 +131,7 @@ class DefaultController extends Controller
         }
 
         // get API client
-        try {
-            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
-            $clientId       = $this->container->getParameter('google.api.client_id');
-            $clientSecret   = $this->container->getParameter('google.api.client_secret');
-            $redirectUri    = $this->container->getParameter('google.api.redirect_uri');
-            $devKey         = $this->container->getParameter('google.api.dev_key');
-
-            $googleClientHelper->init($clientId, $clientSecret, $redirectUri, $devKey);
-        } catch (\Exception $e) {
-            return $this->render(
-                'KunstmaanAdminBundle:Analytics:error.html.twig',
-                array()
-            );
-        }
+        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
 
         // get Helper
         $googleClient = $googleClientHelper->getClient();
@@ -252,7 +211,6 @@ class DefaultController extends Controller
         $request = $this->get('request');
         $em = $this->getDoctrine()->getManager();
         $dailyOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
-
 
         $return = array(
                     "responseCode" => 200,

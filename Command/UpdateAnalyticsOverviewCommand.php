@@ -254,7 +254,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
     {
         // top referral sites
         $this->output->writeln("\t" . 'Fetching referral sites..');
-        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', ['dimensions' => 'ga:source', 'sort' => '-ga:visits', 'filters' => 'ga:medium==referral']);
+        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:visits', array('dimensions' => 'ga:source', 'sort' => '-ga:visits', 'filters' => 'ga:medium==referral', 'max-results' => '3'));
         $rows = $results->getRows();
 
             // delete existing entries
@@ -265,7 +265,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                 $this->em->flush();
             }
 
-            // load new referrals, max 3
+            // load new referrals
             if (is_array($rows)) {
                 foreach ($rows as $key=>$row) {
                     $referral = new AnalyticsTopReferral();
@@ -273,7 +273,6 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                     $referral->setVisits($row[1]);
                     $referral->setOverview($overview);
                     $overview->getReferrals()->add($referral);
-                    if ($key > 3) break;
                 }
             }
     }
@@ -287,7 +286,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
     {
         // top searches
         $this->output->writeln("\t" . 'Fetching searches..');
-        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:searchUniques', ['dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques']);
+        $results = $this->analyticsHelper->getResults($overview->getTimespan(), $overview->getStartOffset(), 'ga:searchUniques', array('dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques', 'max-results' => '3'));
         $rows = $results->getRows();
 
             // delete existing entries
@@ -298,7 +297,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                 $this->em->flush();
             }
 
-            // load new searches, max 3
+            // load new searches
             if (is_array($rows)) {
                 foreach ($rows as $key=>$row) {
                     $search = new AnalyticsTopSearch();
@@ -306,7 +305,6 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                     $search->setVisits($row[1]);
                     $search->setOverview($overview);
                     $overview->getSearches()->add($search);
-                    if ($key > 3) break;
                 }
             }
 

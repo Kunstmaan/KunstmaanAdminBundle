@@ -61,7 +61,7 @@ class DefaultController extends Controller
                 $params['overviews'] = $overviews;
                 // set the default overview
                 $params['overview'] = $overviews[0];
-                if (sizeof($overviews == 5)) { // if all overviews are present
+                if (sizeof($overviews) == 5) { // if all overviews are present
                     // set the default overview to the middle one
                     $params['overview'] = $overviews[2];
                 }

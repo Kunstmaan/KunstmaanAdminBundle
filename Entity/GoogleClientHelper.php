@@ -11,8 +11,6 @@ use \Google_Client;
  */
 class GoogleClientHelper
 {
-    /** @var string $path */
-    private $path;
     /** @var string $token */
     private $token = false;
     /** @var string $accountId */
@@ -35,15 +33,11 @@ class GoogleClientHelper
      */
     public function __construct($clientId, $clientSecret, $redirectUri, $devKey, $em)
     {
-
         if ($clientId == "" || $clientSecret == "" || $redirectUri == "" || $devKey == "") {
             throw new \Exception('Google API Parameters not set or incomplete');
         }
 
-
-        $this->path =  __DIR__ . '/../Resources/config/google.yml';
         $this->em = $em;
-
         $token = $this->getToken();
 
         $this->client = new Google_Client();

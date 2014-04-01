@@ -40,7 +40,11 @@ class DefaultController extends Controller
         $params         = array('dashboardConfiguration' => $dashboardConfiguration);
 
         // get API client
-        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+        try {
+            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+        } catch (\Exception $e) {
+            return $this->render('KunstmaanAdminBundle:Analytics:error.html.twig', array());
+        }
 
         if ($googleClientHelper->tokenIsSet() && $googleClientHelper->propertyIsSet()) {
             $em = $this->getDoctrine()->getManager();
@@ -95,8 +99,11 @@ class DefaultController extends Controller
 
         if (isset($code)) {
             // get API client
-            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
-
+            try {
+                $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+            } catch (\Exception $e) {
+                return $this->render('KunstmaanAdminBundle:Analytics:error.html.twig', array());
+            }
 
             $googleClientHelper->getClient()->authenticate();
             $googleClientHelper->saveToken($googleClientHelper->getClient()->getAccessToken());
@@ -131,7 +138,11 @@ class DefaultController extends Controller
         }
 
         // get API client
-        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+        try {
+            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+        } catch (\Exception $e) {
+            return $this->render('KunstmaanAdminBundle:Analytics:error.html.twig', array());
+        }
 
         // get Helper
         $googleClient = $googleClientHelper->getClient();

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AnalyticsToken
  *
- * @ORM\Table(name="kumaga_analytics_token")
+ * @ORM\Table(name="kuma_analytics_token")
  * @ORM\Entity
  */
 class AnalyticsToken extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
@@ -19,20 +19,6 @@ class AnalyticsToken extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      */
     private $token;
 
-
-    /**
-     * Set token
-     *
-     * @param string $token
-     * @return AnalyticsToken
-     */
-    public function setToken($token)
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
     /**
      * Get token
      *
@@ -41,5 +27,19 @@ class AnalyticsToken extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     *
+     * @return AnalyticsToken
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
     }
 }

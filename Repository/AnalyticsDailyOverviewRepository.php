@@ -21,7 +21,7 @@ class AnalyticsDailyOverviewRepository extends EntityRepository
      */
     public function getOverview()
     {
-        $em = $this->getEntityManager();
+        $em    = $this->getEntityManager();
         $query = $em->createQuery(
           'SELECT c FROM KunstmaanAdminBundle:AnalyticsDailyOverview c'
         );

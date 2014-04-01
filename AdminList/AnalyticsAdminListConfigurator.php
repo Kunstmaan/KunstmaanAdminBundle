@@ -3,11 +3,10 @@
 namespace Kunstmaan\AdminBundle\AdminList;
 
 use Doctrine\ORM\EntityManager;
-
 use Kunstmaan\AdminBundle\Form\AnalyticsAdminType;
-use Kunstmaan\AdminListBundle\AdminList\FilterType\ORM;
-use Kunstmaan\AdminListBundle\AdminList\Configurator\AbstractDoctrineORMAdminListConfigurator;
 use Kunstmaan\AdminBundle\Helper\Security\Acl\AclHelper;
+use Kunstmaan\AdminListBundle\AdminList\Configurator\AbstractDoctrineORMAdminListConfigurator;
+use Kunstmaan\AdminListBundle\AdminList\FilterType\ORM;
 
 /**
  * The admin list configurator for Analytics

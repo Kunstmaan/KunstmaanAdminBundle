@@ -11,39 +11,47 @@ class GoogleClientHelper
 {
     /** @var string $token */
     private $token = false;
+
     /** @var string $accountId */
     private $propertyId = false;
+
     /** @var string $accountId */
     private $accountId = false;
+
     /** @var Google_Client $client */
     private $client;
+
     /** @var EntityManager $em */
     private $em;
+
     /** @var string $clientId */
     private $clientId;
+
     /** @var string $clientSecret */
     private $clientSecret;
+
     /** @var string $redirectUri */
     private $redirectUri;
+
     /** @var string $devKey */
     private $devKey;
 
     /**
      * Constructor
      *
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $redirectUrl
-     * @param string $devKey
+     * @param string        $clientId
+     * @param string        $clientSecret
+     * @param string        $redirectUrl
+     * @param string        $devKey
      * @param EntityManager $em
      */
-    public function __construct($clientId='', $clientSecret='', $redirectUri='', $devKey='', $em)
+    public function __construct($clientId = '', $clientSecret = '', $redirectUri = '', $devKey = '', $em)
     {
-        $this->clientId = $clientId;
+        $this->clientId     = $clientId;
         $this->clientSecret = $clientSecret;
-        $this->redirectUri = $redirectUri;
-        $this->devKey = $devKey;
-        $this->em = $em;
+        $this->redirectUri  = $redirectUri;
+        $this->devKey       = $devKey;
+        $this->em           = $em;
 
         $this->init();
     }
@@ -53,7 +61,8 @@ class GoogleClientHelper
      *
      * @throws Exception when API parameters are not set or incomplete
      */
-    public function init() {
+    public function init()
+    {
         if ($this->clientId == "" || $this->clientSecret == "" || $this->redirectUri == "" || $this->devKey == "") {
             throw new \Exception('Google API Parameters not set or incomplete');
         }
@@ -71,7 +80,9 @@ class GoogleClientHelper
         $this->client->setUseObjects(true);
 
         // if token is already saved in the database
-        if ($this->token && $this->token !== '') $this->client->setAccessToken($this->token);
+        if ($this->token && $this->token !== '') {
+            $this->client->setAccessToken($this->token);
+        }
     }
 
 
@@ -86,8 +97,11 @@ class GoogleClientHelper
             $query = $this->em->createQuery(
               'SELECT c FROM KunstmaanAdminBundle:AnalyticsToken c'
             );
-            if ($query->getResult()) $this->token = $query->getResult()[0]->getToken();
+            if ($query->getResult()) {
+                $this->token = $query->getResult()[0]->getToken();
+            }
         }
+
         return $this->token;
     }
 
@@ -100,22 +114,6 @@ class GoogleClientHelper
         $analyticsToken->setToken($token);
         $this->em->persist($analyticsToken);
         $this->em->flush();
-    }
-
-    /**
-     * Get the propertyId from the database
-     *
-     * @return string $propertyId
-     */
-    public function getPropertyId()
-    {
-        if ($this->propertyId === false) {
-            $query = $this->em->createQuery(
-              'SELECT c FROM KunstmaanAdminBundle:AnalyticsProperty c'
-            );
-            if ($query->getResult()) $this->propertyId = $query->getResult()[0]->getPropertyId();
-        }
-        return $this->propertyId;
     }
 
     /**
@@ -140,8 +138,11 @@ class GoogleClientHelper
             $query = $this->em->createQuery(
               'SELECT c FROM KunstmaanAdminBundle:AnalyticsProperty c'
             );
-            if ($query->getResult()) $this->accountId = $query->getResult()[0]->getAccountId();
+            if ($query->getResult()) {
+                $this->accountId = $query->getResult()[0]->getAccountId();
+            }
         }
+
         return $this->accountId;
     }
 
@@ -174,6 +175,25 @@ class GoogleClientHelper
     public function propertyIsSet()
     {
         return false !== $this->getPropertyId() && '' !== $this->getPropertyId();
+    }
+
+    /**
+     * Get the propertyId from the database
+     *
+     * @return string $propertyId
+     */
+    public function getPropertyId()
+    {
+        if ($this->propertyId === false) {
+            $query = $this->em->createQuery(
+              'SELECT c FROM KunstmaanAdminBundle:AnalyticsProperty c'
+            );
+            if ($query->getResult()) {
+                $this->propertyId = $query->getResult()[0]->getPropertyId();
+            }
+        }
+
+        return $this->propertyId;
     }
 
 }

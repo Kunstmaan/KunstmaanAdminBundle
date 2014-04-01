@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AnalyticsDailyOverview
  *
- * @ORM\Table(name="kumaga_analytics_daily_overview")
+ * @ORM\Table(name="kuma_analytics_daily_overview")
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Kunstmaan\AdminBundle\Repository\AnalyticsDailyOverviewRepository")
  */
@@ -20,20 +20,6 @@ class AnalyticsDailyOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntit
      */
     private $data = '';
 
-
-    /**
-     * Set data
-     *
-     * @param array $data
-     * @return AnalyticsDailyOverview
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
     /**
      * Get data
      *
@@ -42,5 +28,19 @@ class AnalyticsDailyOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntit
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * Set data
+     *
+     * @param array $data
+     *
+     * @return AnalyticsDailyOverview
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
     }
 }

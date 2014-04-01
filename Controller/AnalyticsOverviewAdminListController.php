@@ -22,6 +22,16 @@ class AnalyticsOverviewAdminListController extends AdminListController
     private $configurator;
 
     /**
+     * The index action
+     *
+     * @Route("/", name="kunstmaanadminbundle_admin_analyticsoverview")
+     */
+    public function indexAction()
+    {
+        return parent::doIndexAction($this->getAdminListConfigurator());
+    }
+
+    /**
      * @return AdminListConfiguratorInterface
      */
     public function getAdminListConfigurator()
@@ -31,16 +41,6 @@ class AnalyticsOverviewAdminListController extends AdminListController
         }
 
         return $this->configurator;
-    }
-
-    /**
-     * The index action
-     *
-     * @Route("/", name="kunstmaanadminbundle_admin_analyticsoverview")
-     */
-    public function indexAction()
-    {
-        return parent::doIndexAction($this->getAdminListConfigurator());
     }
 
     /**

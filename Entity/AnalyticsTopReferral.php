@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AnalyticsTopReferrals
  *
- * @ORM\Table(name="kumaga_analytics_top_referral")
+ * @ORM\Table(name="kuma_analytics_top_referral")
  * @ORM\Entity(repositoryClass="Kunstmaan\AdminBundle\Repository\AnalyticsTopReferralsRepository")
  */
 class AnalyticsTopReferral extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
@@ -32,20 +32,6 @@ class AnalyticsTopReferral extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      */
     private $visits;
 
-
-    /**
-     * Set overview
-     *
-     * @param integer $overview
-     * @return AnalyticsTopReferrals
-     */
-    public function setOverview($overview)
-    {
-        $this->overview = $overview;
-
-        return $this;
-    }
-
     /**
      * Get overview
      *
@@ -56,16 +42,16 @@ class AnalyticsTopReferral extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
         return $this->overview;
     }
 
-
     /**
-     * Set name
+     * Set overview
      *
-     * @param string $name
+     * @param integer $overview
+     *
      * @return AnalyticsTopReferrals
      */
-    public function setName($name)
+    public function setOverview($overview)
     {
-        $this->name = $name;
+        $this->overview = $overview;
 
         return $this;
     }
@@ -81,14 +67,15 @@ class AnalyticsTopReferral extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     }
 
     /**
-     * Set visits
+     * Set name
      *
-     * @param integer $visits
+     * @param string $name
+     *
      * @return AnalyticsTopReferrals
      */
-    public function setVisits($visits)
+    public function setName($name)
     {
-        $this->visits = $visits;
+        $this->name = $name;
 
         return $this;
     }
@@ -101,5 +88,19 @@ class AnalyticsTopReferral extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     public function getVisits()
     {
         return $this->visits;
+    }
+
+    /**
+     * Set visits
+     *
+     * @param integer $visits
+     *
+     * @return AnalyticsTopReferrals
+     */
+    public function setVisits($visits)
+    {
+        $this->visits = $visits;
+
+        return $this;
     }
 }

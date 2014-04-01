@@ -43,10 +43,14 @@ class DefaultController extends Controller
         try {
             $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
         } catch (\Exception $e) {
-            return $this->render('KunstmaanAdminBundle:Analytics:error.html.twig', array());
+            // catch exception thrown by the googleClientHelper if one or more parameters in parameters.yml is not set
+            $currentRoute = $request->attributes->get('_route');
+            $currentUrl = $this->get('router')->generate($currentRoute, array(), true);
+            $params['url'] = $currentUrl . 'setToken/';
+            return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
         }
 
-        if ($googleClientHelper->tokenIsSet() && $googleClientHelper->propertyIsSet()) {
+        if ($googleClientHelper->tokenIsSet() && $googleClientHelper->propertyIsSet()) { // if setup is complete
             $em = $this->getDoctrine()->getManager();
             $overviews = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
 
@@ -70,23 +74,23 @@ class DefaultController extends Controller
                     array()
                 );
             }
-        } else if ($googleClientHelper->tokenIsSet()) {
+        } else if ($googleClientHelper->tokenIsSet()) { // if token is set but property not yet
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
-        } else {
-            $params['token'] = false;
+        } else { // if token isn't set yet
             $currentRoute = $request->attributes->get('_route');
             $currentUrl = $this->get('router')->generate($currentRoute, array(), true);
             $params['url'] = $currentUrl . 'setToken/';
+
             $googleClient = $googleClientHelper->getClient();
             $params['authUrl'] = $googleClient->createAuthUrl();
+
+            return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
         }
 
         return $params;
     }
 
     /**
-     *
-     *
      * @Route("/setToken/", name="KunstmaanAdminBundle_setToken")
      *
      * @param Request $request
@@ -102,7 +106,11 @@ class DefaultController extends Controller
             try {
                 $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
             } catch (\Exception $e) {
-                return $this->render('KunstmaanAdminBundle:Analytics:error.html.twig', array());
+                // catch exception thrown by the googleClientHelper if one or more parameters in parameters.yml is not set
+                $currentRoute = $request->attributes->get('_route');
+                $currentUrl = $this->get('router')->generate($currentRoute, array(), true);
+                $params['url'] = $currentUrl . 'setToken/';
+                return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
             }
 
             $googleClientHelper->getClient()->authenticate();
@@ -113,10 +121,7 @@ class DefaultController extends Controller
     }
 
     /**
-     *
-     *
      * @Route("/selectWebsite", name="KunstmaanAdminBundle_PropertySelection")
-     * @Template()
      *
      * @param Request $request
      *
@@ -141,7 +146,11 @@ class DefaultController extends Controller
         try {
             $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
         } catch (\Exception $e) {
-            return $this->render('KunstmaanAdminBundle:Analytics:error.html.twig', array());
+            // catch exception thrown by the googleClientHelper if one or more parameters in parameters.yml is not set
+            $currentRoute = $request->attributes->get('_route');
+            $currentUrl = $this->get('router')->generate($currentRoute, array(), true);
+            $params['url'] = $currentUrl . 'setToken/';
+            return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
         }
 
         // get Helper
@@ -150,7 +159,7 @@ class DefaultController extends Controller
         $analyticsHelper->init($googleClientHelper);
         $properties = $analyticsHelper->getProperties();
 
-        return array('properties' => $properties);
+        return $this->render('KunstmaanAdminBundle:Analytics:propertySelection.html.twig', array('properties' => $properties));
     }
 
     /**

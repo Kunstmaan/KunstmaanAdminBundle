@@ -2,8 +2,6 @@
 
 namespace Kunstmaan\AdminBundle\Entity;
 
-use Symfony\Component\Yaml\Parser;
-use Symfony\Component\Yaml\Dumper;
 use \Google_Client;
 
 /**

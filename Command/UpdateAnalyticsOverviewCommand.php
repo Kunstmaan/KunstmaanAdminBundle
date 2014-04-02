@@ -323,18 +323,6 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         $overview->setTrafficDirect(0);
         $overview->setTrafficSearchEngine(0);
         $overview->setTrafficReferral(0);
-        $overview->setTopReferralFirst('');
-        $overview->setTopReferralSecond('');
-        $overview->setTopReferralThird('');
-        $overview->setTopReferralFirstValue(0);
-        $overview->setTopReferralSecondValue(0);
-        $overview->setTopReferralThirdValue(0);
-        $overview->setTopSearchFirst('');
-        $overview->setTopSearchSecond('');
-        $overview->setTopSearchThird('');
-        $overview->setTopSearchFirstValue(0);
-        $overview->setTopSearchSecondValue(0);
-        $overview->setTopSearchThirdValue(0);
     }
 
 

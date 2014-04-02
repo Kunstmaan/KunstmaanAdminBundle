@@ -39,12 +39,14 @@ class AnalyticsOverviewRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('o')
-            ->from('KunstmaanAdminBundle:AnalyticsOverview', 'o')
-            ->where('o.id = :id')
-            ->setParameter('id', $id);
+          ->from('KunstmaanAdminBundle:AnalyticsOverview', 'o')
+          ->where('o.id = :id')
+          ->setParameter('id', $id);
 
         $results = $qb->getQuery()->getResult();
-        if ($results) return $results[0];
+        if ($results) {
+            return $results[0];
+        }
 
         return false;
     }

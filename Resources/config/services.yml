@@ -3,14 +3,12 @@ parameters:
     kunstmaan_admin.apply_acl_changeset.listener.class: 'Kunstmaan\AdminBundle\EventListener\ApplyAclChangesetListener'
 
 services:
-
     kunstmaan_admin.googleclienthelper:
-        class: "Kunstmaan\AdminBundle\Entity\GoogleClientHelper"
+        class: "Kunstmaan\AdminBundle\Helper\GoogleClientHelper"
         arguments: ["%google.api.client_id%", "%google.api.client_secret%", "%google.api.redirect_uri%", "%google.api.dev_key%", "@doctrine.orm.entity_manager"]
 
-
     kunstmaan_admin.googleanalyticshelper:
-        class: "Kunstmaan\AdminBundle\Entity\GoogleAnalyticsHelper"
+        class: "Kunstmaan\AdminBundle\Helper\GoogleAnalyticsHelper"
 
     kunstmaan_admin.menubuilder:
         class: "%kunstmaan_admin.menubuilder.class%"
@@ -62,11 +60,11 @@ services:
 
     kunstmaan_admin.acl.helper:
         class: Kunstmaan\AdminBundle\Helper\Security\Acl\AclHelper
-        arguments: ["@doctrine.orm.entity_manager", "@security.context"]
+        arguments: ["@doctrine.orm.entity_manager", "@security.context", "@security.role_hierarchy"]
 
     kunstmaan_admin.acl.native.helper:
         class: Kunstmaan\AdminBundle\Helper\Security\Acl\AclNativeHelper
-        arguments: ["@doctrine.orm.entity_manager", "@security.context"]
+        arguments: ["@doctrine.orm.entity_manager", "@security.context", "@security.role_hierarchy"]
 
     kunstmaan_admin.permissionadmin:
         class: Kunstmaan\AdminBundle\Helper\Security\Acl\Permission\PermissionAdmin
@@ -128,6 +126,7 @@ services:
         arguments: ["%fos_user.model.user.class%"]
         tags:
             - { name: doctrine.event_listener, event: loadClassMetadata }
+
     kunstmaan_admin.command.UpdateAnalyticsOverviewCommand:
         class: Kunstmaan\AdminBundle\Command\UpdateAnalyticsOverviewCommand
         tags:

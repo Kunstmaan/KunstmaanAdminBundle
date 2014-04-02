@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AnalyticsProperty
  *
- * @ORM\Table(name="kumaga_analytics_property")
+ * @ORM\Table(name="kuma_analytics_property")
  * @ORM\Entity(repositoryClass="Kunstmaan\AdminBundle\Repository\AnalyticsPropertyRepository")
  */
 class AnalyticsProperty extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
@@ -18,20 +18,12 @@ class AnalyticsProperty extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      * @ORM\Column(name="property_id", type="string", nullable=true)
      */
     private $propertyId = null;
-
-
     /**
-     * Set propertyId
+     * @var string
      *
-     * @param string $propertyId
-     * @return AnalyticsProperty
+     * @ORM\Column(name="account_id", type="string", nullable=true)
      */
-    public function setPropertyId($propertyId)
-    {
-        $this->propertyId = $propertyId;
-
-        return $this;
-    }
+    private $accountId = null;
 
     /**
      * Get propertyId
@@ -42,23 +34,17 @@ class AnalyticsProperty extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     {
         return $this->propertyId;
     }
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="account_id", type="string", nullable=true)
-     */
-    private $accountId = null;
-
 
     /**
-     * Set accountId
+     * Set propertyId
      *
-     * @param string $accountId
+     * @param string $propertyId
+     *
      * @return AnalyticsProperty
      */
-    public function setAccountId($accountId)
+    public function setPropertyId($propertyId)
     {
-        $this->accountId = $accountId;
+        $this->propertyId = $propertyId;
 
         return $this;
     }
@@ -71,5 +57,19 @@ class AnalyticsProperty extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     public function getAccountId()
     {
         return $this->accountId;
+    }
+
+    /**
+     * Set accountId
+     *
+     * @param string $accountId
+     *
+     * @return AnalyticsProperty
+     */
+    public function setAccountId($accountId)
+    {
+        $this->accountId = $accountId;
+
+        return $this;
     }
 }

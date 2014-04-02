@@ -17,10 +17,6 @@ $(document).ready(function (){
     initSidenavSize();
 });
 
-
-
-
-
 //JS-tree
 function init_tree() {
     var topLevelTreeElements = "";
@@ -35,10 +31,10 @@ function init_tree() {
             "icons" : true
         },
         "core": {
-                    "animation": 0,
-                    "open_parents": true,
-                    "initially_open": [topLevelTreeElements]
-                },
+            "animation": 0,
+            "open_parents": true,
+            "initially_open": [topLevelTreeElements]
+        },
         "types" : {
             "types" : {
                 //Page
@@ -117,10 +113,10 @@ function init_tree() {
             "dots" : true,
             "icons" : true
         },"core": {
-                    "animation": 0,
-                    "open_parents": true,
-                    "initially_open": [topLevelTreeElements]
-                },
+            "animation": 0,
+            "open_parents": true,
+            "initially_open": [topLevelTreeElements]
+        },
         "types" : {
             "types" : {
                 //Page

@@ -40,8 +40,6 @@ class AnalyticsOverviewAdminListConfigurator extends AbstractDoctrineORMAdminLis
         $this->addField('trafficDirect', 'Direct visitors', true);
         $this->addField('trafficReferral', 'Visitors from referrals', true);
         $this->addField('trafficSearchEngine', 'Visitors from search engines', true);
-        $this->addField('getTopReferrals', 'Top referrals', true);
-        $this->addField('getTopSearches', 'Top searches', true);
     }
 
     /**

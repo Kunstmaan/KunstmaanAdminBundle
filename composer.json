@@ -21,7 +21,8 @@
         "sensio/framework-extra-bundle": "*",
         "kunstmaan/adminlist-bundle": "self.version",
         "kunstmaan/utilities-bundle": "self.version",
-        "guzzle/guzzle": "3.7.*@dev"
+        "guzzle/guzzle": "3.7.*@dev",
+        "google/api-client": "dev-master"
     },
     "require-dev": {
         "doctrine/data-fixtures": "1.0.*@dev",

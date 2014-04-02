@@ -1,17 +1,17 @@
 KunstmaanAdminBundle_default:
     resource: "@KunstmaanAdminBundle/Controller/DefaultController.php"
     type:     annotation
-    prefix:   /admin  
+    prefix:   /admin
 
 KunstmaanAdminBundle_modules:
     resource: "@KunstmaanAdminBundle/Controller/ModulesController.php"
     type:     annotation
     prefix:   /admin/modules
-        
+
 KunstmaanAdminBundle_settings:
     resource: "@KunstmaanAdminBundle/Controller/SettingsController.php"
     type:     annotation
-    prefix:   /admin/settings      
+    prefix:   /admin/settings
 
 KunstmaanAdminBundle_user_settings:
     resource: "@KunstmaanAdminBundle/Controller/UsersController.php"
@@ -28,6 +28,11 @@ KunstmaanAdminBundle_role_settings:
     type:     annotation
     prefix:   /admin/settings/roles
 
+KunstmaanAdminBundle_analyticsOverview:
+    resource: "@KunstmaanAdminBundle/Controller/AnalyticsOverviewAdminListController.php"
+    type:     annotation
+    prefix:   /admin/analyticsoverview
+
 ###########################
 ## fos_userbundle routes ##
 ###########################
@@ -39,7 +44,7 @@ fos_user_security_login:
 fos_user_security_check:
     pattern: /login_check
     defaults: { _controller: FOSUserBundle:Security:check }
-        
+
 fos_user_security_logout:
     pattern: /logout
     defaults: { _controller: FOSUserBundle:Security:logout }
@@ -50,5 +55,4 @@ fos_user_profile:
 
 fos_user_resetting:
     resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
-    prefix: /resetting  
-         
+    prefix: /resetting

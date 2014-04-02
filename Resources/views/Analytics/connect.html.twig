@@ -1,0 +1,45 @@
+{% extends 'KunstmaanAdminBundle:Default:layout.html.twig' %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+<h2>Dashboard setup</h2>
+<h3>Step 1: Google Developers Console setup</h3>
+<p>
+    To setup the dashboard, you'll have to connect a Google account with Google Analytics data. You'll also have to configure an OAuth client ID and an API key in the <a href="http://cloud.google.com/console">Google Devlopers Console</a> with a Google account (this can be the same or a different account).
+<br/>
+    In the console, create a new project and open it. Go to the APIs &amp; Auth/Credentials menu. Start by creating a client ID (create new client ID): choose a web application and add the redirect URI ( {{ url }} ).
+    Next up is to create a new API key (create new key) and choose browser key.
+</p>
+
+<h3>Step 2: parameters.yml config</h3>
+<p>
+    Once your credentials are created, go to the parameters.yml file of this application and add them there:
+    <ul>
+        <li>
+            <strong>google.api.client_id: ''</strong> The client ID from the OAuth 2.0 Credentials in the Google Developers console.
+        </li>
+
+        <li>
+            <strong>google.api.client_secret: ''</strong> The client secret from the OAuth 2.0 Credentials in the Google Developers console.
+        </li>
+
+        <li>
+            <strong>google.api.redirect_uri: ''</strong> The redirect URI from the OAuth 2.0 Credentials in the Google Developers console.
+        </li>
+
+        <li>
+            <strong>google.api.dev_key: ''</strong> The API key from the public API Credentials in the Google Developers console.
+        </li>
+    </ul>
+</p>
+{% if authUrl is defined %}
+    <h3>Step 3: connect your Google Analytics account</h3>
+    <a class='btn btn-primary' href='{{ authUrl }}'>here</a>
+{% else %}
+    <p>
+        Now you can refresh this page.
+    </p>
+{% endif %}
+
+{% endblock %}

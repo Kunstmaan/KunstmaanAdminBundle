@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AnalyticsOverview
  *
- * @ORM\Table(name="kumaga_analytics_overview")
+ * @ORM\Table(name="kuma_analytics_overview")
  * @ORM\Entity(repositoryClass="Kunstmaan\AdminBundle\Repository\AnalyticsOverviewRepository")
  */
 class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity

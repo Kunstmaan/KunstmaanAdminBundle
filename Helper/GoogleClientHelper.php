@@ -3,6 +3,7 @@
 namespace Kunstmaan\AdminBundle\Helper;
 
 use \Google_Client;
+use Kunstmaan\AdminBundle\Entity\AnalyticsToken;
 
 /**
  * This helper will setup a google api client object

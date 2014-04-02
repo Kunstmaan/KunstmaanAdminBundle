@@ -3,8 +3,8 @@
 namespace Kunstmaan\AdminBundle\Command;
 
 use Kunstmaan\AdminBundle\Entity\AnalyticsTopReferral;
-use Kunstmaan\AdminBundle\Entity\GoogleAnalyticsHelper;
-use Kunstmaan\AdminBundle\Entity\GoogleClientHelper;
+use Kunstmaan\AdminBundle\Helper\GoogleAnalyticsHelper;
+use Kunstmaan\AdminBundle\Helper\GoogleClientHelper;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

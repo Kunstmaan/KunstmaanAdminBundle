@@ -1,6 +1,6 @@
 <?php
 
-namespace Kunstmaan\AdminBundle\Entity;
+namespace Kunstmaan\AdminBundle\Helper;
 
 use \Google_Client;
 use \Google_AnalyticsService;

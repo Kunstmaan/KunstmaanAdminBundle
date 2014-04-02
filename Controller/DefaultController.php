@@ -4,8 +4,8 @@ namespace Kunstmaan\AdminBundle\Controller;
 
 use Kunstmaan\AdminBundle\Form\DashboardConfigurationType;
 use Kunstmaan\AdminBundle\Entity\DashboardConfiguration;
-use Kunstmaan\AdminBundle\Entity\GoogleClientHelper;
-use Kunstmaan\AdminBundle\Entity\GoogleAnalyticsHelper;
+use Kunstmaan\AdminBundle\Helper\GoogleClientHelper;
+use Kunstmaan\AdminBundle\Helper\GoogleAnalyticsHelper;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

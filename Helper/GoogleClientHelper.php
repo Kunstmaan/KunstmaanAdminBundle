@@ -25,18 +25,6 @@ class GoogleClientHelper
     /** @var EntityManager $em */
     private $em;
 
-    /** @var string $clientId */
-    private $clientId;
-
-    /** @var string $clientSecret */
-    private $clientSecret;
-
-    /** @var string $redirectUri */
-    private $redirectUri;
-
-    /** @var string $devKey */
-    private $devKey;
-
     /**
      * Constructor
      *
@@ -46,12 +34,9 @@ class GoogleClientHelper
      * @param string        $devKey
      * @param EntityManager $em
      */
-    public function __construct($clientId = '', $clientSecret = '', $redirectUri = '', $devKey = '', $em)
+    public function __construct($googleClient, $em)
     {
-        $this->clientId     = $clientId;
-        $this->clientSecret = $clientSecret;
-        $this->redirectUri  = $redirectUri;
-        $this->devKey       = $devKey;
+        $this->client       = $googleClient;
         $this->em           = $em;
 
         $this->init();
@@ -64,28 +49,11 @@ class GoogleClientHelper
      */
     public function init()
     {
-        if ($this->clientId == "" || $this->clientSecret == "" || $this->redirectUri == "" || $this->devKey == "") {
-            throw new \Exception('Google API Parameters not set or incomplete');
-        }
-
-        $token = $this->getToken();
-
-        $this->client = new Google_Client();
-        $this->client->setApplicationName('Kuma Analytics Dashboard');
-        $this->client->setClientId($this->clientId);
-        $this->client->setClientSecret($this->clientSecret);
-        $this->client->setRedirectUri($this->redirectUri);
-
-        $this->client->setDeveloperKey($this->devKey);
-        $this->client->setScopes(array('https://www.googleapis.com/auth/analytics.readonly'));
-        $this->client->setUseObjects(true);
-
         // if token is already saved in the database
-        if ($this->token && $this->token !== '') {
+        if ($this->getToken() && '' !== $this->getToken()) {
             $this->client->setAccessToken($this->token);
         }
     }
-
 
     /**
      * Get the token from the database

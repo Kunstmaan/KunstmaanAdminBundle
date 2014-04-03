@@ -10,6 +10,7 @@ If you’re starting a new project with the Kunstmaan bundles, everything is alr
 
 Updating an existing website
     (needs to be tested)
+
     `composer install`
     `app/console doctrine:migrations:diff & app/console doctrine:migrations:migrate`
     `app/console doctrine:fixtures:load --fixtures=vendor/kunstmaan/admin-bundle/Kunstmaan/AdminBundle/DataFixtures/ORM/Analytics/ --append`
@@ -27,7 +28,7 @@ Now go to the Credentials tab in the APIs & Auth section. You’ll have to creat
 *Google analytics*
 Next up is a Google Analytics (GA) account. You can use the same account as used in the developers console, create a new one, or use an existing one. If you’ve already got a GA account and a web property set up, you can skip this step.
 
-In GA, set up a new property: go to the admin section, open the dropdown in the “property” column and create a new one. After filling in all the required fields, press the “get tracking ID” button. You’ll see a code snippet with some javascript, this has to be copied into the <head> section of your app.
+In GA, set up a new property: go to the admin section, open the dropdown in the “property” column and create a new one. After filling in all the required fields, press the “get tracking ID” button. You’ll see a code snippet with some javascript, this has to be copied into the section of your app.
 
 *App setup*
 Navigate to the backend of your app. ( /app_dev.php/en/admin/ or something familiar). Log in (admin-admin or another account). You’ll see a short summary on how to set up the console credentials, search for the redirect URI between brackets in step 1. You’ll have to insert it into the developers console, so go back there, and edit the settings of the client ID you created in the first step. In the section “Authorized redirect URI”, you can paste this link. (...../admin/setToken/). Note that you can add multiple redirect URIs if you’re using the same account for multiple apps, by just entering a new line for each.

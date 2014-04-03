@@ -104,26 +104,14 @@ analytics:
   visitors: Visitors
   pageviews: pageviews
   dashboard:
-    setup: Dashboard Setup
-    step1:
-      title: Step 1: Google Developers Console setup
-      content:
-        1: "To setup the dashboard, you'll have to connect a Google account with Google Analytics data. You'll also have to configure an OAuth client ID and an API key in the"
-        2: with a Google account (this can be the same or a different account).
-        3: "In the console, create a new project and open it. Go to the APIs & Auth/Credentials menu. Start by creating a client ID (create new client ID): choose a web application and add the redirect URI"
-        4: Next up is to create a new API key (create new key) and choose browser key.
-    step2:
-      title: Step 2: parameters.yml config
-      content:
-        1: "Once your credentials are created, go to the parameters.yml file of this application and add them there"
-        2: The client ID from the OAuth 2.0 Credentials in the Google Developers console.
-        3: The client secret from the OAuth 2.0 Credentials in the Google Developers console.
-        4: The redirect URI from the OAuth 2.0 Credentials in the Google Developers console.
-        5: The API key from the public API Credentials in the Google Developers console.
-    step3:
-      title: Step 3: connect your Google Analytics account
+    setup:
+      title: Dashboard Setup
+      content: "To setup the dashboard, visit"
+      docs: the documentation
+      refresh: "Once everything is set up, refresh this page."
+      connect: Connect your Google Account.
     step4:
-      title: Step 4: Select a website to track
+      title: Select a website to track
       content: Select a domain registered in your Google Analytics account.
     confirm: Here
     refresh: You can now refresh this page

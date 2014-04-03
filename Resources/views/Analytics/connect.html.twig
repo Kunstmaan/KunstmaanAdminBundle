@@ -3,42 +3,16 @@
 {% block header %}{% endblock %}
 
 {% block content %}
-<h2>{{ 'analytics.dashboard.setup' | trans }}</h2>
-<h3>{{ 'analytics.dashboard.step1.title' | trans }}</h3>
+<h2>{{ 'analytics.dashboard.setup.title' | trans }}</h2>
 <p>
-    {{ 'analytics.dashboard.step1.content.1' | trans }} <a href="http://cloud.google.com/console">Google Devlopers Console</a> {{ 'analytics.dashboard.step1.content.2' | trans }}
-<br/>
-    {{ 'analytics.dashboard.step1.content.3' | trans }} ( {{ url }} ).
-    {{ 'analytics.dashboard.step1.content.4' | trans }}
-</p>
-
-<h3>{{ 'analytics.dashboard.step2.title' | trans }}</h3>
-<p>
-    {{ 'analytics.dashboard.step2.content.1' | trans }}
-    <ul>
-        <li>
-            <strong>google.api.client_id: ''</strong> {{ 'analytics.dashboard.step2.content.2' | trans }}
-        </li>
-
-        <li>
-            <strong>google.api.client_secret: ''</strong> {{ 'analytics.dashboard.step2.content.3' | trans }}
-        </li>
-
-        <li>
-            <strong>google.api.redirect_uri: ''</strong> {{ 'analytics.dashboard.step2.content.4' | trans }}
-        </li>
-
-        <li>
-            <strong>google.api.dev_key: ''</strong> {{ 'analytics.dashboard.step2.content.5' | trans }}
-        </li>
-    </ul>
+    {{ 'analytics.dashboard.setup.content' | trans }} <a href="https://github.com/Kunstmaan/KunstmaanAdminBundle/blob/issue14713-newdashboard/Resources/doc/SetupAnalyticsDashboard.md">{{ 'analytics.dashboard.setup.docs' | trans }}</a>.
 </p>
 {% if authUrl is defined %}
-    <h3>{{ 'analytics.dashboard.step3.title' | trans }}</h3>
+    <h3>{{ 'analytics.dashboard.setup.connect' | trans }}</h3>
     <a class='btn btn-primary' href='{{ authUrl }}'>{{ 'analytics.dashboard.confirm' | trans }}</a>
 {% else %}
     <p>
-        {{ 'analytics.dashboard.refresh' | trans }}
+        {{ 'analytics.dashboard.setup.refresh' | trans }}
     </p>
 {% endif %}
 

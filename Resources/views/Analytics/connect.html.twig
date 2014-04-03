@@ -3,42 +3,42 @@
 {% block header %}{% endblock %}
 
 {% block content %}
-<h2>Dashboard setup</h2>
-<h3>Step 1: Google Developers Console setup</h3>
+<h2>{{ 'analytics.dashboard.setup' | trans }}</h2>
+<h3>{{ 'analytics.dashboard.step1.title' | trans }}</h3>
 <p>
-    To setup the dashboard, you'll have to connect a Google account with Google Analytics data. You'll also have to configure an OAuth client ID and an API key in the <a href="http://cloud.google.com/console">Google Devlopers Console</a> with a Google account (this can be the same or a different account).
+    {{ 'analytics.dashboard.step1.content.1' | trans }} <a href="http://cloud.google.com/console">Google Devlopers Console</a> {{ 'analytics.dashboard.step1.content.2' | trans }}
 <br/>
-    In the console, create a new project and open it. Go to the APIs &amp; Auth/Credentials menu. Start by creating a client ID (create new client ID): choose a web application and add the redirect URI ( {{ url }} ).
-    Next up is to create a new API key (create new key) and choose browser key.
+    {{ 'analytics.dashboard.step1.content.3' | trans }} ( {{ url }} ).
+    {{ 'analytics.dashboard.step1.content.4' | trans }}
 </p>
 
-<h3>Step 2: parameters.yml config</h3>
+<h3>{{ 'analytics.dashboard.step2.title' | trans }}</h3>
 <p>
-    Once your credentials are created, go to the parameters.yml file of this application and add them there:
+    {{ 'analytics.dashboard.step2.content.1' | trans }}
     <ul>
         <li>
-            <strong>google.api.client_id: ''</strong> The client ID from the OAuth 2.0 Credentials in the Google Developers console.
+            <strong>google.api.client_id: ''</strong> {{ 'analytics.dashboard.step2.content.2' | trans }}
         </li>
 
         <li>
-            <strong>google.api.client_secret: ''</strong> The client secret from the OAuth 2.0 Credentials in the Google Developers console.
+            <strong>google.api.client_secret: ''</strong> {{ 'analytics.dashboard.step2.content.3' | trans }}
         </li>
 
         <li>
-            <strong>google.api.redirect_uri: ''</strong> The redirect URI from the OAuth 2.0 Credentials in the Google Developers console.
+            <strong>google.api.redirect_uri: ''</strong> {{ 'analytics.dashboard.step2.content.4' | trans }}
         </li>
 
         <li>
-            <strong>google.api.dev_key: ''</strong> The API key from the public API Credentials in the Google Developers console.
+            <strong>google.api.dev_key: ''</strong> {{ 'analytics.dashboard.step2.content.5' | trans }}
         </li>
     </ul>
 </p>
 {% if authUrl is defined %}
-    <h3>Step 3: connect your Google Analytics account</h3>
-    <a class='btn btn-primary' href='{{ authUrl }}'>here</a>
+    <h3>{{ 'analytics.dashboard.step3.title' | trans }}</h3>
+    <a class='btn btn-primary' href='{{ authUrl }}'>{{ 'analytics.dashboard.confirm' | trans }}</a>
 {% else %}
     <p>
-        Now you can refresh this page.
+        {{ 'analytics.dashboard.refresh' | trans }}
     </p>
 {% endif %}
 

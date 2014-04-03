@@ -1,11 +1,11 @@
 <div class="db-block db-col__inner">
-    <h2 class="db-block__title">Top Search Terms</h2>
+    <h2 class="db-block__title">{{ 'analytics.searches.title' | trans }}</h2>
     <ul class="db-block__list">
 
 
         {# error if no searches #}
         <p class="db-block__text" id="data_top_search_no_data">
-            {% if searches|length == 0 %}No data available for Top Referrals{% endif %}
+            {% if searches|length == 0 %}{{ 'analytics.searches.unavailable' | trans }}{% endif %}
         </p>
 
 

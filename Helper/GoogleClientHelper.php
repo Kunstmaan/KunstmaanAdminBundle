@@ -63,37 +63,10 @@ class GoogleClientHelper
     private function getToken()
     {
         if (!$this->token) {
-            $query = $this->em->createQuery(
-              'SELECT c FROM KunstmaanAdminBundle:AnalyticsToken c'
-            );
-            if ($query->getResult()) {
-                $this->token = $query->getResult()[0]->getToken();
-            }
+            $this->token = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->getConfig()->getToken();
         }
 
         return $this->token;
-    }
-
-    /**
-     * Save the token to the database
-     */
-    public function saveToken($token)
-    {
-        $analyticsToken = new AnalyticsToken();
-        $analyticsToken->setToken($token);
-        $this->em->persist($analyticsToken);
-        $this->em->flush();
-    }
-
-    /**
-     * Save the token to the database
-     */
-    public function savePropertyId($id)
-    {
-        $entity = new AnalyticsProperty();
-        $entity->setPropertyId($id);
-        $this->em->persist($entity);
-        $this->em->flush();
     }
 
     /**
@@ -103,16 +76,52 @@ class GoogleClientHelper
      */
     public function getAccountId()
     {
-        if ($this->accountId === false) {
-            $query = $this->em->createQuery(
-              'SELECT c FROM KunstmaanAdminBundle:AnalyticsProperty c'
-            );
-            if ($query->getResult()) {
-                $this->accountId = $query->getResult()[0]->getAccountId();
-            }
+        if (!$this->accountId) {
+            $this->accountId = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->getConfig()->getAccountId();
         }
 
         return $this->accountId;
+    }
+
+    /**
+     * Get the propertyId from the database
+     *
+     * @return string $propertyId
+     */
+    public function getPropertyId()
+    {
+        if (!$this->propertyId) {
+            $this->propertyId = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->getConfig()->getPropertyId();
+        }
+
+        return $this->propertyId;
+    }
+
+    /**
+     * Save the token to the database
+     */
+    public function saveToken($token)
+    {
+        $this->token = $token;
+        $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->saveToken($token);
+    }
+
+    /**
+     * Save the accountId to the database
+     */
+    public function saveAccountId($accountId)
+    {
+        $this->accountId = $accountId;
+        $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->saveAccountId($accountId);
+    }
+
+    /**
+     * Save the propertyId to the database
+     */
+    public function savePropertyId($propertyId)
+    {
+        $this->propertyId = $propertyId;
+        $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->savePropertyId($propertyId);
     }
 
     /**
@@ -143,25 +152,6 @@ class GoogleClientHelper
     public function propertyIsSet()
     {
         return false !== $this->getPropertyId() && '' !== $this->getPropertyId();
-    }
-
-    /**
-     * Get the propertyId from the database
-     *
-     * @return string $propertyId
-     */
-    public function getPropertyId()
-    {
-        if ($this->propertyId === false) {
-            $query = $this->em->createQuery(
-              'SELECT c FROM KunstmaanAdminBundle:AnalyticsProperty c'
-            );
-            if ($query->getResult()) {
-                $this->propertyId = $query->getResult()[0]->getPropertyId();
-            }
-        }
-
-        return $this->propertyId;
     }
 
 }

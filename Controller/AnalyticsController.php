@@ -35,7 +35,7 @@ class AnalyticsController extends Controller
                 // catch exception thrown by the googleClientHelper if one or more parameters in parameters.yml is not set
                 $currentRoute  = $request->attributes->get('_route');
                 $currentUrl    = $this->get('router')->generate($currentRoute, array(), true);
-                $params['url'] = $currentUrl . 'setToken/';
+                $params['url'] = $currentUrl . 'analytics/setToken/';
 
                 return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
             }
@@ -58,20 +58,6 @@ class AnalyticsController extends Controller
      */
     public function propertySelectionAction(Request $request)
     {
-        if (null !== $request->request->get('properties')) {
-            $em       = $this->getDoctrine()->getManager();
-            $property = $em->getRepository('KunstmaanAdminBundle:AnalyticsProperty')->getProperty();
-
-            $parts = explode("::", $request->request->get('properties'));
-            $property->setPropertyId($parts[0]);
-            $property->setAccountId($parts[1]);
-
-            $em->persist($property);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
-        }
-
         // get API client
         try {
             $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
@@ -79,14 +65,20 @@ class AnalyticsController extends Controller
             // catch exception thrown by the googleClientHelper if one or more parameters in parameters.yml is not set
             $currentRoute  = $request->attributes->get('_route');
             $currentUrl    = $this->get('router')->generate($currentRoute, array(), true);
-            $params['url'] = $currentUrl . 'setToken/';
+            $params['url'] = $currentUrl . 'analytics/setToken/';
 
             return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
         }
 
-        /**
-         * @var GoogleClientHelper $googleClient
-         */
+        if (null !== $request->request->get('properties')) {
+            $parts = explode("::", $request->request->get('properties'));
+            $googleClientHelper->saveAccountId($parts[1]);
+            $googleClientHelper->savePropertyId($parts[0]);
+
+            return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
+        }
+
+        /** @var GoogleClientHelper $googleClient */
         $googleClient    = $googleClientHelper->getClient();
         $analyticsHelper = $this->container->get('kunstmaan_admin.googleanalyticshelper');
         $analyticsHelper->init($googleClientHelper);

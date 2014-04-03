@@ -5,13 +5,20 @@ namespace Kunstmaan\AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AnalyticsProperty
+ * AnalyticsToken
  *
- * @ORM\Table(name="kuma_analytics_property")
- * @ORM\Entity(repositoryClass="Kunstmaan\AdminBundle\Repository\AnalyticsPropertyRepository")
+ * @ORM\Table(name="kuma_analytics_config")
+ * @ORM\Entity(repositoryClass="Kunstmaan\AdminBundle\Repository\AnalyticsConfigRepository")
  */
-class AnalyticsProperty extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
+class AnalyticsConfig extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
 {
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="text", nullable=true)
+     */
+    private $token = null;
+
     /**
      * @var string
      *
@@ -24,6 +31,30 @@ class AnalyticsProperty extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      * @ORM\Column(name="account_id", type="string", nullable=true)
      */
     private $accountId = null;
+
+    /**
+     * Get token
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     *
+     * @return AnalyticsToken
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
 
     /**
      * Get propertyId

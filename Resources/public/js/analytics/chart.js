@@ -5,7 +5,7 @@
     });
 
     // load dashboard data
-    var url = "getDailyOverview";
+    var url = "analytics/getDailyOverview";
     var chartData = [];
     var chartLabels = [];
     var dailyOverview = [];

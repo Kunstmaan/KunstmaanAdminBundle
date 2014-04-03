@@ -28,6 +28,11 @@ KunstmaanAdminBundle_role_settings:
     type:     annotation
     prefix:   /admin/settings/roles
 
+KunstmaanAdminBundle_analytics:
+    resource: "@KunstmaanAdminBundle/Controller/AnalyticsController.php"
+    type:     annotation
+    prefix:   /admin/analytics
+
 KunstmaanAdminBundle_analyticsOverview:
     resource: "@KunstmaanAdminBundle/Controller/AnalyticsOverviewAdminListController.php"
     type:     annotation

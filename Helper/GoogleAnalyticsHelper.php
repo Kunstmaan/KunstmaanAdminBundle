@@ -81,34 +81,36 @@ class GoogleAnalyticsHelper
      */
     public function getProfileId()
     {
+        // get accounts
         $accounts = $this->analytics->management_accounts->listManagementAccounts();
-        if (count($accounts->getItems()) > 0) {
-            $items          = $accounts->getItems();
-            $firstAccountId = $items[0]->getId();
-
-            $webproperties = $this->analytics->management_webproperties->listManagementWebproperties($firstAccountId);
-
-            if (count($webproperties->getItems()) > 0) {
-                $items    = $webproperties->getItems();
-                $profiles = $this->analytics->management_profiles->listManagementProfiles(
-                  $this->clientHelper->getAccountId(),
-                  $this->clientHelper->getPropertyId()
-                );
-
-                if (count($profiles->getItems()) > 0) {
-                    $items = $profiles->getItems();
-
-                    return $items[0]->getId();
-
-                } else {
-                    throw new \Exception('No views (profiles) found for this user.');
-                }
-            } else {
-                throw new \Exception('No webproperties found for this user.');
-            }
-        } else {
+        // no accounts
+        if (count($accounts->getItems()) == 0) {
             throw new \Exception('No accounts found for this user.');
         }
+
+        // get properties
+        $items          = $accounts->getItems();
+        $firstAccountId = $items[0]->getId();
+        $webproperties = $this->analytics->management_webproperties->listManagementWebproperties($firstAccountId);
+        // no properties
+        if (count($webproperties->getItems()) == 0) {
+            throw new \Exception('No webproperties found for this user.');
+        }
+
+        // get views
+        $profiles = $this->analytics->management_profiles->listManagementProfiles(
+          $this->clientHelper->getAccountId(),
+          $this->clientHelper->getPropertyId()
+        );
+        // no views
+        if (count($profiles->getItems()) == 0) {
+            throw new \Exception('No views (profiles) found for this user.');
+        }
+
+        // get item
+        $items = $profiles->getItems();
+        return $items[0]->getId();
+
     }
 
     /**

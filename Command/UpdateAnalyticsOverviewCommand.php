@@ -47,54 +47,56 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->init($output);
-        if ($this->googleClientHelper->tokenIsSet()) {
-            // create API Analytics helper to execute queries
-            $this->analyticsHelper = $this->getContainer()->get('kunstmaan_admin.googleanalyticshelper');
-            $this->analyticsHelper->init($this->googleClientHelper);
 
-            // daily data for 3 months
-            $this->getDaily();
-
-            // get data for each overview
-            $overviews = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
-            foreach ($overviews as $overview) {
-                $this->output->writeln('Getting data for overview "' . $overview->getTitle() . '"');
-
-                // metric data
-                $this->getMetrics($overview);
-
-                // day-specific data
-                if ($overview->getUseDayData()) {
-                    $this->getDayData($overview);
-                }
-
-                if ($overview->getVisits()) { // if there are any visits
-                    // visitor types
-                    $this->getVisitorTypes($overview);
-
-                    // traffic sources
-                    $this->getTrafficSources($overview);
-
-                    // top referrals
-                    $this->getTopReferrals($overview);
-
-                    // top searches
-                    $this->getTopSearches($overview);
-                } else { // if no visits
-                    // reset overview
-                    $this->reset($overview);
-                    $this->output->writeln("\t" . 'No visitors');
-                }
-                // persist entity back to DB
-                $this->output->writeln("\t" . 'Persisting..');
-                $this->em->persist($overview);
-                $this->em->flush();
-            }
-            $this->output->writeln('Google Analytics data succesfully updated'); // done
-        } else {
-            $this->output->writeln('You haven\'t configured a Google account yet, or the token is invalid'); // error
+        // if no token set yet
+        if (!$this->googleClientHelper->tokenIsSet()) {
+            $this->output->writeln('You haven\'t configured a Google account yet');
+            return;
         }
 
+        // create API Analytics helper to execute queries
+        $this->analyticsHelper = $this->getContainer()->get('kunstmaan_admin.googleanalyticshelper');
+        $this->analyticsHelper->init($this->googleClientHelper);
+
+        // daily data for 3 months
+        $this->getDaily();
+
+        // get data for each overview
+        $overviews = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
+        foreach ($overviews as $overview) {
+            $this->output->writeln('Getting data for overview "' . $overview->getTitle() . '"');
+
+            // metric data
+            $this->getMetrics($overview);
+
+            // day-specific data
+            if ($overview->getUseDayData()) {
+                $this->getDayData($overview);
+            }
+
+            if ($overview->getVisits()) { // if there are any visits
+                // visitor types
+                $this->getVisitorTypes($overview);
+
+                // traffic sources
+                $this->getTrafficSources($overview);
+
+                // top referrals
+                $this->getTopReferrals($overview);
+
+                // top searches
+                $this->getTopSearches($overview);
+            } else { // if no visits
+                // reset overview
+                $this->reset($overview);
+                $this->output->writeln("\t" . 'No visitors');
+            }
+            // persist entity back to DB
+            $this->output->writeln("\t" . 'Persisting..');
+            $this->em->persist($overview);
+            $this->em->flush();
+        }
+        $this->output->writeln('Google Analytics data succesfully updated'); // done
     }
 
     /**

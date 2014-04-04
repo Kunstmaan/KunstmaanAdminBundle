@@ -48,44 +48,49 @@ class DefaultController extends Controller
             return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
         }
 
-        if ($googleClientHelper->tokenIsSet() && $googleClientHelper->propertyIsSet()) { // if setup is complete
-            $em        = $this->getDoctrine()->getManager();
-            $overviews = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
+        // if token not set
+        if (!$googleClientHelper->tokenIsSet()) {
+            $currentRoute  = $request->attributes->get('_route');
+            $currentUrl    = $this->get('router')->generate($currentRoute, array(), true);
+            $params['url'] = $currentUrl . 'setToken/';
 
-            $params['token']     = true;
-            $params['overviews'] = array();
-            if ($overviews) { // if this is an array with overviews
-                // set the overviews param
-                $params['overviews'] = $overviews;
-                // set the default overview
-                $params['overview'] = $overviews[0];
-                if (sizeof($overviews) == 5) { // if all overviews are present
-                    // set the default overview to the middle one
-                    $params['overview'] = $overviews[2];
-                }
-                $params['referrals'] = $params['overview']->getReferrals()->toArray();
-                $params['searches']  = $params['overview']->getSearches()->toArray();
-            } else {
-                // if no overviews are yet configured
-                return $this->render(
-                  'KunstmaanAdminBundle:Analytics:errorOverviews.html.twig',
-                  array()
-                );
-            }
-        } else {
-            if ($googleClientHelper->tokenIsSet()) { // if token is set but property not yet
-                return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
-            } else { // if token isn't set yet
-                $currentRoute  = $request->attributes->get('_route');
-                $currentUrl    = $this->get('router')->generate($currentRoute, array(), true);
-                $params['url'] = $currentUrl . 'setToken/';
+            $googleClient      = $googleClientHelper->getClient();
+            $params['authUrl'] = $googleClient->createAuthUrl();
 
-                $googleClient      = $googleClientHelper->getClient();
-                $params['authUrl'] = $googleClient->createAuthUrl();
-
-                return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
-            }
+            return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
         }
+
+        // if propertyId not set
+        if (!$googleClientHelper->tokenIsSet()) {
+            return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
+        }
+
+        // if setup is complete
+        $em        = $this->getDoctrine()->getManager();
+        $overviews = $em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
+
+        $params['token']     = true;
+        $params['overviews'] = array();
+
+        // if no overviews are yet configured
+        if (!$overviews) {
+            return $this->render(
+                'KunstmaanAdminBundle:Analytics:errorOverviews.html.twig',
+                array()
+            );
+        }
+
+        // set the overviews param
+        $params['overviews'] = $overviews;
+        // set the default overview
+        $params['overview'] = $overviews[0];
+        if (sizeof($overviews) == 5) { // if all overviews are present
+            // set the default overview to the middle one
+            $params['overview'] = $overviews[2];
+        }
+        $params['referrals'] = $params['overview']->getReferrals()->toArray();
+        $params['searches']  = $params['overview']->getSearches()->toArray();
+
 
         return $params;
     }

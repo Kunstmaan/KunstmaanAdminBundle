@@ -38,7 +38,6 @@ Navigate to the backend of your app. ( /app_dev.php/en/admin/ or something famil
 Now it’s time to configure the parameters.yml file in app/config/parameters.yml. You’ll see four parameters with empty values:
 * **google.api.client_id: ''** The client ID from the OAuth 2.0 Credentials in the Google Developers console.
 * **google.api.client_secret: ''** The client secret from the OAuth 2.0 Credentials in the Google Developers console.
-* **google.api.redirect_uri: ''** The redirect URI from the OAuth 2.0 Credentials in the Google Developers console.
 * **google.api.dev_key: ''** The API key from the public API Credentials in the Google Developers console.
 After you’ve entered these credentials, save the parameters.yml file, and refresh the admin page in the backend. You can now connect your GA account.
 

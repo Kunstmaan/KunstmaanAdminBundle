@@ -4,6 +4,7 @@ namespace Kunstmaan\AdminBundle\Helper;
 
 use \Google_Client;
 use Kunstmaan\AdminBundle\Entity\AnalyticsToken;
+use Symfony\Cmf\Component\Routing\ChainRouter;
 
 /**
  * This helper will setup a google api client object
@@ -53,6 +54,17 @@ class GoogleClientHelper
         if ($this->getToken() && '' !== $this->getToken()) {
             $this->client->setAccessToken($this->token);
         }
+    }
+
+    /**
+     * sets the redirect URI of the API client
+     *
+     * @param ChainRouter $router
+     * @param string $routeName
+     */
+    public function setRedirectUri(ChainRouter $router, $routeName) {
+        $uri = $router->generate($routeName, array(), true);
+        $this->client->setRedirectUri($uri);
     }
 
     /**

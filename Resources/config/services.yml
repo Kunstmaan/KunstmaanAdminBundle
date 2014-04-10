@@ -12,7 +12,6 @@ services:
           - [ "setApplicationName", [ "%google.api.app_name%" ] ]
           - [ "setClientId", [ "%google.api.client_id%" ] ]
           - [ "setClientSecret", [ "%google.api.client_secret%" ] ]
-          - [ "setRedirectUri", [ "%google.api.redirect_uri%" ] ]
           - [ "setDeveloperKey", [ "%google.api.dev_key%" ] ]
           - [ "setScopes", [ 'https://www.googleapis.com/auth/analytics.readonly' ] ]
           - [ "setUseObjects", [ true ] ]
@@ -20,6 +19,8 @@ services:
     kunstmaan_admin.googleclienthelper:
         class: "%kunstmaan_admin.googleclienthelper.class%"
         arguments: ["@kunstmaan_admin.googleclient", "@doctrine.orm.entity_manager"]
+        calls:
+          - [ "setRedirectUri", [ "@router", "KunstmaanAdminBundle_setToken" ] ]
 
     kunstmaan_admin.googleanalyticshelper:
         class: "Kunstmaan\AdminBundle\Helper\GoogleAnalyticsHelper"

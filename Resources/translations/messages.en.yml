@@ -107,6 +107,7 @@ analytics:
     setup:
       title: Dashboard Setup
       content: "To setup the dashboard, visit"
+      redirect: "This is your redirect URI:"
       docs: the documentation
       refresh: "Once everything is set up, refresh this page."
       connect: Connect your Google Account.

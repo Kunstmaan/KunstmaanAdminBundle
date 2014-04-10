@@ -56,6 +56,7 @@ class DefaultController extends Controller
 
             $googleClient      = $googleClientHelper->getClient();
             $params['authUrl'] = $googleClient->createAuthUrl();
+            $params['redirect_uri'] = $this->get('router')->generate('KunstmaanAdminBundle_setToken', array(), true);
 
             return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
         }

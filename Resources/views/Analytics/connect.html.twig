@@ -7,6 +7,9 @@
 <p>
     {{ 'analytics.dashboard.setup.content' | trans }} <a href="https://github.com/Kunstmaan/KunstmaanAdminBundle/blob/issue14713-newdashboard/Resources/doc/SetupAnalyticsDashboard.md">{{ 'analytics.dashboard.setup.docs' | trans }}</a>.
 </p>
+<p>
+{{ 'analytics.dashboard.setup.redirect' | trans }} {{ redirect_uri }}
+</p>
 {% if authUrl is defined %}
     <h3>{{ 'analytics.dashboard.setup.connect' | trans }}</h3>
     <a class='btn btn-primary' href='{{ authUrl }}'>{{ 'analytics.dashboard.confirm' | trans }}</a>

@@ -4,7 +4,7 @@ pages:
   parts: PageParts
   draft: Brouillon
   pagenottranslated: "Cette page n'est pas traduite"
-  copyfrom: Copier à partir de la langue 
+  copyfrom: Copier à partir de la langue
   createemptypage: Créer une page vide
 
 # Modules
@@ -80,7 +80,7 @@ form:
   addfilter: Ajouter un filtre
   choosetypefilter: Filtrer sur
   versions: Versions
-  
+
 omnext:
   home: Accueil
   title: Bienvenue!

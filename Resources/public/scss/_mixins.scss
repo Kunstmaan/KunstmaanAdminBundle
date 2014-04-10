@@ -26,3 +26,12 @@
          -o-transition: $property $duration $ease;
             transition: $property $duration $ease;
 }
+
+@mixin clearfix {
+  &:after {
+    content:"";
+    display:table;
+    clear:both;
+  }
+}
+

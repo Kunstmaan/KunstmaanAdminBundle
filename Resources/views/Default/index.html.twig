@@ -1,18 +1,81 @@
 {% extends 'KunstmaanAdminBundle:Default:layout.html.twig' %}
 
+{% block header %}{% endblock %}
 
 {% block content %}
-{% if is_granted('ROLE_SUPER_ADMIN') %}
-    <a href="{{ path('KunstmaanAdminBundle_homepage_admin') }}" class="btn btn-medium" style="float:right">{{ 'Edit dashboard' | trans }}</a>
-{% endif %}
-{% if dashboardConfiguration %}
-    <div class="page-header">
-        <h1>{{ dashboardConfiguration.title }}</h1>
-    </div>
-    {{ dashboardConfiguration.content | raw }}
-{% else %}
-    <div class="page-header">
-        <h1>{{ 'omnext.welcome' | trans | raw }}</h1>
-    </div>
-{% endif %}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <a href="{{ path('KunstmaanAdminBundle_homepage_admin') }}" class="btn btn-medium" style="float:right">{{ 'Edit dashboard' | trans }}</a>
+    {% endif %}
+
+    {% if dashboardConfiguration %}
+        {% if token %}
+            <div class="page-header">
+                <h1>{{ dashboardConfiguration.title }}</h1>
+            </div>
+
+            <!-- TABS -->
+            {% include 'KunstmaanAdminBundle:Analytics:tabs.html.twig' with {'overviews' : overviews} %}
+            <!-- end TABS -->
+
+            <!-- TAB CONTENT -->
+            <section class="db-content">
+                <!-- COL -->
+                <div class="db-col db-col--6">
+                    <div class="db-block">
+                        <!-- HEADER -->
+                        {% include 'KunstmaanAdminBundle:Analytics:header.html.twig' %}
+                        <!-- end HEADER -->
+
+                        <!-- CHART -->
+                        {% include 'KunstmaanAdminBundle:Analytics:chart.html.twig' %}
+                        <!-- end CHART -->
+                    </div>
+                </div>
+                <!-- end COL -->
+
+                <!-- COL -->
+                <div class="db-col db-col--2">
+                    {% include 'KunstmaanAdminBundle:Analytics:traffic.html.twig' with {'overview' : overview} %}
+                </div>
+                <!-- end COL -->
+
+                <!-- COL -->
+                <div class="db-col db-col--4">
+                    {% include 'KunstmaanAdminBundle:Analytics:referrals.html.twig' with {'overview' : overview} %}
+                    {% include 'KunstmaanAdminBundle:Analytics:searches.html.twig' with {'overview' : overview} %}
+                </div>
+                <!-- end COL -->
+            </section>
+            <!-- end TAB CONTENT -->
+
+            <div class="newrelic-iframes">
+                {{ dashboardConfiguration.content | raw }}
+            </div>
+        {% else %}
+            {% include 'KunstmaanAdminBundle:Analytics:connect.html.twig' with {'authUrl' : authUrl} %}
+        {% endif %}
+    {% else %}
+        <div class="page-header">
+            <h1>{{ 'omnext.welcome' | trans | raw }}</h1>
+        </div>
+    {% endif %}
+
 {% endblock %}
+
+{% block extrajavascript %}
+    {% javascripts
+    '@KunstmaanAdminBundle/Resources/public/js/analytics/chart.js'
+    '@KunstmaanAdminBundle/Resources/public/js/analytics/header.js'
+    '@KunstmaanAdminBundle/Resources/public/js/analytics/referrals.js'
+    '@KunstmaanAdminBundle/Resources/public/js/analytics/searches.js'
+    '@KunstmaanAdminBundle/Resources/public/js/analytics/tabs.js'
+    '@KunstmaanAdminBundle/Resources/public/js/analytics/traffic.js'
+    output='generated-js/scripts_bottom.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{# templates in resources/views/Analytics #}
+{# scripts in resources/public/js/analytics #}
+{# to use a new script, add it in the javascripts list above, and call a function from tabs.js function(data) #}

@@ -4,7 +4,7 @@ pages:
   parts: PageParts
   draft: Draft
   pagenottranslated: This page is not translated
-  copyfrom: Copy from language 
+  copyfrom: Copy from language
   createemptypage: Create as an empty page
 
 # Modules
@@ -73,17 +73,45 @@ form:
   forgot:
     password: Forgot my password.
   permissions: Permissions
-  properties: Properties 
+  properties: Properties
   createdat: Created At
   updatedat: Updated At
   actions: Actions
   addfilter: Add filter
   choosetypefilter: Filter on
   versions: Versions
-  
+
 omnext:
   home: Home
   title: Welcome!
   welcome: Welcome.
   information: <strong>Information.</strong> There are no new notifications.
 
+
+# Analytics
+analytics:
+  traffic:
+    sources: Traffic Sources
+    direct: Direct
+    referrals: Referrals
+    search_engines: Search Engines
+  referrals:
+    title: Top Referrals
+    unavailable: No data available for Top Referrals
+  searches:
+    title: Top Search Terms
+    unavailable: No data available for Top Search Terms
+  visitors: Visitors
+  pageviews: pageviews
+  dashboard:
+    setup:
+      title: Dashboard Setup
+      content: "To setup the dashboard, visit"
+      docs: the documentation
+      refresh: "Once everything is set up, refresh this page."
+      connect: Connect your Google Account.
+    step4:
+      title: Select a website to track
+      content: Select a domain registered in your Google Analytics account.
+    confirm: Here
+    refresh: You can now refresh this page

@@ -22,7 +22,8 @@
         "sensio/framework-extra-bundle": "*",
         "kunstmaan/adminlist-bundle": "2.3.*",
         "kunstmaan/utilities-bundle": "2.3.*",
-        "guzzle/guzzle": "3.8.*"
+        "guzzle/guzzle": "3.8.*",
+        "alchemy/google-plus-api-client": "0.6.5"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "~2.2.0",

@@ -67,12 +67,7 @@
         resizeChart();
 
         // only use animation in browsers who are not IE8
-        // in IE8 the animation is too slow and jerky
-        if (!$('html').hasClass('ie8')) {
-            var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Line(barChartData);
-        } else {
-            var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Line(barChartData, {animation:false});
-        }
+        var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Line(barChartData, {animation:false});
     };
 
     function setChart(data) {

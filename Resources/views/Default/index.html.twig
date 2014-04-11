@@ -46,6 +46,11 @@
                     {% include 'KunstmaanAdminBundle:Analytics:searches.html.twig' with {'overview' : overview} %}
                 </div>
                 <!-- end COL -->
+
+                <div>
+                    {% include 'KunstmaanAdminBundle:Analytics:goals.html.twig' with {'overview' : overview} %}
+                </div>
+
             </section>
             <!-- end TAB CONTENT -->
 
@@ -71,6 +76,7 @@
     '@KunstmaanAdminBundle/Resources/public/js/analytics/searches.js'
     '@KunstmaanAdminBundle/Resources/public/js/analytics/tabs.js'
     '@KunstmaanAdminBundle/Resources/public/js/analytics/traffic.js'
+    '@KunstmaanAdminBundle/Resources/public/js/analytics/goals.js'
     output='generated-js/scripts_bottom.js'
     %}
     <script src="{{ asset_url }}"></script>

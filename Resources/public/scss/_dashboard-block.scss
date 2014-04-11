@@ -56,6 +56,43 @@
     right: 0;
 }
 
+
+// TODO style this
+#goalOverview {
+    display: block;
+    width:100%;
+    clear:both;
+    margin-left:0;
+    margin-right:0;
+}
+
+#goalOverview > li {
+    display: block;
+    width:8%;
+    margin:5px 1%;
+    float:left;
+    height:100px;
+    background: #fcfcfc;
+    border: 1px solid $hr-color;
+    border-radius: 3px;
+    position:relative;
+}
+
+#goalOverview > li > div {
+    width:100%;
+    padding:5px;
+    text-align: center;
+}
+
+#goalOverview > li > span {
+    display: block;
+    width:100%;
+    text-align: center;
+    font-size:3em;
+    position:absolute;
+    bottom:20px;
+}
+
 // icons (icomoon icons used as base, made custom)
 .db-block__list__item--icon {
     margin-bottom: 10px;

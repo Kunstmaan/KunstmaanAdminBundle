@@ -160,6 +160,12 @@ class AnalyticsController extends Controller
                 $extra['searches'][$key]['visits'] = $search->getVisits();
                 $extra['searches'][$key]['name']   = $search->getName();
             }
+            $extra['goals'] = array();
+            foreach ($overview->getGoals()->toArray() as $key => $goal) {
+                $extra['goals'][$key]['name'] = $goal->getName();
+                $extra['goals'][$key]['visits']   = $goal->getVisits();
+            }
+
 
             $overviewData = array(
               'dayData'             => $overview->getDayData(),
@@ -175,6 +181,7 @@ class AnalyticsController extends Controller
               'trafficReferral'     => $overview->getTrafficReferral(),
               'trafficSearchEngine' => $overview->getTrafficSearchEngine(),
             );
+
 
             $return = array(
               'responseCode' => 200,

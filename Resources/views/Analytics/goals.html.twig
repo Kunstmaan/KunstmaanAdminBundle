@@ -1,0 +1,20 @@
+{#
+    TODO: style this
+    public/scss/_dashboard-block.scss (line 60 - ...)
+    public/js/analytics/goals.js (html)
+ #}
+
+<div class="clearfix"></div>
+
+
+<h2 class="">Goals</h2>
+<ul id="goalOverview">
+
+    {% for goal in overview.goals %}
+        <li>
+            <div>{{goal.name}}</div>
+            <span>{{goal.visits}}</span>
+        </li>
+    {% endfor %}
+
+</ul>

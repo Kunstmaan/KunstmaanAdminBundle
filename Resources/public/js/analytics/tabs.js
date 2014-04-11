@@ -23,6 +23,7 @@
                         setReferrals(data);
                         setSearches(data);
                         setChart(data);
+                        setGoals(data);
                         $('.db-content').fadeIn(400, function() {
                             initChart();
                         });

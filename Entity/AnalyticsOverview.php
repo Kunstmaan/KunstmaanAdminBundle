@@ -43,6 +43,34 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     }
 
     /**
+     * @ORM\OneToMany(targetEntity="AnalyticsGoal", mappedBy="overview", cascade={"persist"})
+     */
+    private $goals;
+
+    /**
+     * Set goals
+     *
+     * @param array $goals
+     * @return AnalyticsDailyOverview
+     */
+    public function setGoals($goals)
+    {
+        $this->goals = $goals;
+
+        return $this;
+    }
+
+    /**
+     * Get goals
+     *
+     * @return array
+     */
+    public function getGoals()
+    {
+        return $this->goals;
+    }
+
+    /**
      * @ORM\OneToMany(targetEntity="AnalyticsTopSearch", mappedBy="overview", cascade={"persist"})
      */
     private $searches;

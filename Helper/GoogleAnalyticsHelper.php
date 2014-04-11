@@ -28,6 +28,13 @@ class GoogleAnalyticsHelper
     }
 
     /**
+     * @return Google_AnalyticsService $analytics
+     */
+    public function getAnalytics() {
+        return $this->analytics;
+    }
+
+    /**
      * Get a list of all available properties for a Google Account
      *
      * @return array $data A list of all properties

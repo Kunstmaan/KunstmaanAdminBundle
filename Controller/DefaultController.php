@@ -106,6 +106,30 @@ class DefaultController extends Controller
         return $params;
     }
 
+
+    /**
+     * @Route("/test", name="KunstmaanAdminBundle_homepage_test")
+     * @Template()
+     *
+     * @return array
+     */
+    public function testAction()
+    {
+        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+        $analyticsHelper = $this->container->get('kunstmaan_admin.googleanalyticshelper');
+        $analyticsHelper->init($googleClientHelper);
+
+
+        $results = $analyticsHelper->getResults(
+          5,
+          0,
+          'ga:goal1Completions'
+        );
+
+        var_dump($results->getRows());
+        exit;
+    }
+
     /**
      * The admin of the index page
      *

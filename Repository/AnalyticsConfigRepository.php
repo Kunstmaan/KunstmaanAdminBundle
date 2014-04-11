@@ -37,6 +37,7 @@ class AnalyticsConfigRepository extends EntityRepository
         return $config;
     }
 
+    /** Update the timestamp when data is collected */
     public function setUpdated() {
         $em    = $this->getEntityManager();
         $config = $this->getConfig();
@@ -45,6 +46,11 @@ class AnalyticsConfigRepository extends EntityRepository
         $em->flush();
     }
 
+    /**
+     * saves the token
+     *
+     * @param string $token
+     */
     public function saveToken($token) {
         $em    = $this->getEntityManager();
         $config = $this->getConfig();
@@ -53,6 +59,11 @@ class AnalyticsConfigRepository extends EntityRepository
         $em->flush();
     }
 
+    /**
+     * saves the property id
+     *
+     * @param string $propertyId
+     */
     public function savePropertyId($propertyId) {
         $em    = $this->getEntityManager();
         $config = $this->getConfig();
@@ -61,6 +72,11 @@ class AnalyticsConfigRepository extends EntityRepository
         $em->flush();
     }
 
+    /**
+     * saves the account id
+     *
+     * @param string $accountId
+     */
     public function saveAccountId($accountId) {
         $em    = $this->getEntityManager();
         $config = $this->getConfig();
@@ -69,6 +85,11 @@ class AnalyticsConfigRepository extends EntityRepository
         $em->flush();
     }
 
+    /**
+     * saves the profile id
+     *
+     * @param string $profileId
+     */
     public function saveProfileId($profileId) {
         $em    = $this->getEntityManager();
         $config = $this->getConfig();
@@ -77,6 +98,7 @@ class AnalyticsConfigRepository extends EntityRepository
         $em->flush();
     }
 
+    /** resets the profile id */
     public function resetProfileId() {
         $em    = $this->getEntityManager();
         $config = $this->getConfig();
@@ -85,11 +107,12 @@ class AnalyticsConfigRepository extends EntityRepository
         $em->flush();
     }
 
+    /** resets the  account id, property id and profile id */
     public function resetPropertyId() {
         $em    = $this->getEntityManager();
         $config = $this->getConfig();
-        $config->setProfileId('');
         $config->setAccountId('');
+        $config->setProfileId('');
         $config->setPropertyId('');
         $em->persist($config);
         $em->flush();

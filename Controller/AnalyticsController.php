@@ -91,6 +91,45 @@ class AnalyticsController extends Controller
     }
 
     /**
+     * @Route("/selectProfile", name="KunstmaanAdminBundle_ProfileSelection")
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function profileSelectionAction(Request $request)
+    {
+        // get API client
+        try {
+            $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
+        } catch (\Exception $e) {
+            // catch exception thrown by the googleClientHelper if one or more parameters in parameters.yml is not set
+            $currentRoute  = $request->attributes->get('_route');
+            $currentUrl    = $this->get('router')->generate($currentRoute, array(), true);
+            $params['url'] = $currentUrl . 'analytics/setToken/';
+
+            return $this->render('KunstmaanAdminBundle:Analytics:connect.html.twig', $params);
+        }
+
+        if (null !== $request->request->get('profiles')) {
+            $googleClientHelper->saveProfileId($request->request->get('profiles'));
+
+            return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
+        }
+
+        /** @var GoogleClientHelper $googleClient */
+        $googleClient    = $googleClientHelper->getClient();
+        $analyticsHelper = $this->container->get('kunstmaan_admin.googleanalyticshelper');
+        $analyticsHelper->init($googleClientHelper);
+        $profiles = $analyticsHelper->getProfiles();
+
+        return $this->render(
+          'KunstmaanAdminBundle:Analytics:profileSelection.html.twig',
+          array('profiles' => $profiles)
+        );
+    }
+
+    /**
      * Return an ajax response
      *
      * @Route("/getOverview/{id}", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_analytics_overview_ajax")

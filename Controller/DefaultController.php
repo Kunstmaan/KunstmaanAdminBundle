@@ -62,8 +62,13 @@ class DefaultController extends Controller
         }
 
         // if propertyId not set
-        if (!$googleClientHelper->tokenIsSet()) {
+        if (!$googleClientHelper->propertyIsSet()) {
             return $this->redirect($this->generateUrl('KunstmaanAdminBundle_PropertySelection'));
+        }
+
+        // if profileId not set
+        if (!$googleClientHelper->profileIsSet()) {
+            return $this->redirect($this->generateUrl('KunstmaanAdminBundle_ProfileSelection'));
         }
 
         // if setup is complete

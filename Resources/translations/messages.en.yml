@@ -114,5 +114,8 @@ analytics:
     step4:
       title: Select a website to track
       content: Select a domain registered in your Google Analytics account.
+    step5:
+      title: Select a profile
+      content: Select a profile for the selected website
     confirm: Here
     refresh: You can now refresh this page

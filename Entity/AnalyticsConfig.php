@@ -25,12 +25,20 @@ class AnalyticsConfig extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      * @ORM\Column(name="property_id", type="string", nullable=true)
      */
     private $propertyId = null;
+
     /**
      * @var string
      *
      * @ORM\Column(name="account_id", type="string", nullable=true)
      */
     private $accountId = null;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="profile_id", type="string", nullable=true)
+     */
+    private $profileId = null;
 
     /**
      * Get token
@@ -100,6 +108,30 @@ class AnalyticsConfig extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     public function setAccountId($accountId)
     {
         $this->accountId = $accountId;
+
+        return $this;
+    }
+
+    /**
+     * Get profileId
+     *
+     * @return string
+     */
+    public function getProfileId()
+    {
+        return $this->profileId;
+    }
+
+    /**
+     * Set profileId
+     *
+     * @param string $profileId
+     *
+     * @return AnalyticsProperty
+     */
+    public function setProfileId($profileId)
+    {
+        $this->profileId = $profileId;
 
         return $this;
     }

@@ -51,6 +51,17 @@ class GoogleAnalyticsHelper
         return $data;
     }
 
+    public function getProfiles()
+    {
+        // get views
+        $profiles = $this->analytics->management_profiles->listManagementProfiles(
+            $this->clientHelper->getAccountId(),
+            $this->clientHelper->getPropertyId()
+        );
+
+        return $profiles->getItems();
+    }
+
     /**
      * Constructs a Google API query and returns the result
      *
@@ -107,10 +118,8 @@ class GoogleAnalyticsHelper
             throw new \Exception('No views (profiles) found for this user.');
         }
 
-        // get item
-        $items = $profiles->getItems();
-        return $items[0]->getId();
-
+        // return profile Id
+        return $this->clientHelper->getProfileId();
     }
 
     /**

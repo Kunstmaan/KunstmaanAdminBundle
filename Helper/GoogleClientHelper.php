@@ -20,11 +20,15 @@ class GoogleClientHelper
     /** @var string $accountId */
     private $accountId = false;
 
+    /** @var string $profileId */
+    private $profileId = false;
+
     /** @var Google_Client $client */
     private $client;
 
     /** @var EntityManager $em */
     private $em;
+
 
     /**
      * Constructor
@@ -51,7 +55,8 @@ class GoogleClientHelper
     public function init()
     {
         // if token is already saved in the database
-        if ($this->getToken() && '' !== $this->getToken()) {
+        if ($this->getToken() && '' !== $this->getToken())
+        {
             $this->client->setAccessToken($this->token);
         }
     }
@@ -62,9 +67,14 @@ class GoogleClientHelper
      * @param ChainRouter $router
      * @param string $routeName
      */
-    public function setRedirectUri(ChainRouter $router, $routeName) {
-        $uri = $router->generate($routeName, array(), true);
-        $this->client->setRedirectUri($uri);
+    public function setRedirectUri(ChainRouter $router, $routeName)
+    {
+        try {
+            $uri = $router->generate($routeName, array(), true);
+            $this->client->setRedirectUri($uri);
+        } catch (\Exception $e) {
+            $this->client->setRedirectUri('');
+        }
     }
 
     /**
@@ -110,6 +120,20 @@ class GoogleClientHelper
     }
 
     /**
+     * Get the propertyId from the database
+     *
+     * @return string $propertyId
+     */
+    public function getProfileId()
+    {
+        if (!$this->profileId) {
+            $this->profileId = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->getConfig()->getProfileId();
+        }
+
+        return $this->profileId;
+    }
+
+    /**
      * Save the token to the database
      */
     public function saveToken($token)
@@ -134,6 +158,15 @@ class GoogleClientHelper
     {
         $this->propertyId = $propertyId;
         $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->savePropertyId($propertyId);
+    }
+
+    /**
+     * Save the profileId to the database
+     */
+    public function saveProfileId($profileId)
+    {
+        $this->profileId = $profileId;
+        $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->saveProfileId($profileId);
     }
 
     /**
@@ -163,7 +196,17 @@ class GoogleClientHelper
      */
     public function propertyIsSet()
     {
-        return false !== $this->getPropertyId() && '' !== $this->getPropertyId();
+        return null !== $this->getPropertyId() && '' !== $this->getPropertyId();
+    }
+
+    /**
+     * Check if token is set
+     *
+     * @return boolean $result
+     */
+    public function profileIsSet()
+    {
+        return null !== $this->getProfileId() && '' !== $this->getProfileId();
     }
 
 }

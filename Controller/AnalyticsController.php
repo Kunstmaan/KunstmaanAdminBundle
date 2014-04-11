@@ -205,4 +205,22 @@ class AnalyticsController extends Controller
         return new JsonResponse($return, 200, array('Content-Type' => 'application/json'));
     }
 
+    /**
+     * @Route("/resetProfile", name="KunstmaanAdminBundle_analytics_resetProfile")
+     */
+    public function resetProfileAction() {
+        $em            = $this->getDoctrine()->getManager();
+        $em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->resetProfileId();
+        return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
+    }
+
+    /**
+     * @Route("/resetProperty", name="KunstmaanAdminBundle_analytics_resetProperty")
+     */
+    public function resetPropertyAction() {
+        $em            = $this->getDoctrine()->getManager();
+        $em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->resetPropertyId();
+        return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
+    }
+
 }

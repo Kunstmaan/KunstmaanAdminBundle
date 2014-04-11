@@ -68,4 +68,22 @@ class AnalyticsConfigRepository extends EntityRepository
         $em->persist($config);
         $em->flush();
     }
+
+    public function resetProfileId() {
+        $em    = $this->getEntityManager();
+        $config = $this->getConfig();
+        $config->setProfileId('');
+        $em->persist($config);
+        $em->flush();
+    }
+
+    public function resetPropertyId() {
+        $em    = $this->getEntityManager();
+        $config = $this->getConfig();
+        $config->setProfileId('');
+        $config->setAccountId('');
+        $config->setPropertyId('');
+        $em->persist($config);
+        $em->flush();
+    }
 }

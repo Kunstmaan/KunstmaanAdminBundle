@@ -6,6 +6,17 @@
     <div class="page-header">
         <h1>{{ 'Edit dashboard' | trans | raw }}</h1>
     </div>
+
+    <div>
+        <a href="{{ path('KunstmaanAdminBundle_analytics_resetProfile') }}" class="btn btn-primary">
+            {{ 'analytics.dashboard.reset.profile' | trans }}
+        </a>&nbsp;
+        <a href="{{ path('KunstmaanAdminBundle_analytics_resetProperty') }}" class="btn btn-primary">
+            {{ 'analytics.dashboard.reset.property' | trans }}
+        </a>
+        <br/><br/>
+    </div>
+
     <form class="form-horizontal" action="{{ path('KunstmaanAdminBundle_homepage_admin') }}" method="post" {{ form_enctype(form) }}>
 	    <fieldset>
 	    	{{ form_errors(form) }}

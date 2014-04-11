@@ -119,3 +119,6 @@ analytics:
       content: Select a profile for the selected website
     confirm: Here
     refresh: You can now refresh this page
+    reset:
+      profile: Choose a new Analytics Profile (view)
+      property: Track a new Analytics Website (property)

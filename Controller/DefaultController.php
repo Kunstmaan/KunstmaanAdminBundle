@@ -96,7 +96,12 @@ class DefaultController extends Controller
         }
         $params['referrals'] = $params['overview']->getReferrals()->toArray();
         $params['searches']  = $params['overview']->getSearches()->toArray();
-
+        if (null !== $em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->getConfig()->getLastUpdate()) {
+            $timestamp = $em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->getConfig()->getLastUpdate()->getTimestamp ();
+            $params['lastUpdate'] = date('H:i (d/m)', $timestamp);
+        } else {
+            $params['lastUpdate'] = 'Never updated.';
+        }
 
         return $params;
     }

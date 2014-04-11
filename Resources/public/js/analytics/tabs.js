@@ -25,5 +25,32 @@
                 }
            });
        });
+
+        var updateButtonText = $('#updateButton').html();
+        var updating = false;
+
+        $('#updateButton').mouseenter(function() {
+            if (!updating) {
+                $('#updateButton').html($('#updateButton').attr('data-update-text'));
+                $('#updateButton').attr('style', 'font-weight:bold;');
+            }
+        }).mouseleave(function() {
+            if (!updating) {
+                $('#updateButton').html(updateButtonText);
+                $('#updateButton').attr('style', 'font-weight:normal;');
+            }
+        }).click(function() {
+            if (!updating) {
+                updating = true;
+                $('#updateButton').html($('#updateButton').attr('data-updating-text'));
+                $.get(
+                    "analytics/updateData",
+                    function(data) {
+                        updating = false;
+                        location.reload(true);
+                    }
+                );
+            }
+        });
     });
 

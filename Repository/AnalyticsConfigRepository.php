@@ -37,6 +37,14 @@ class AnalyticsConfigRepository extends EntityRepository
         return $config;
     }
 
+    public function setUpdated() {
+        $em    = $this->getEntityManager();
+        $config = $this->getConfig();
+        $config->setLastUpdate(new \DateTime());
+        $em->persist($config);
+        $em->flush();
+    }
+
     public function saveToken($token) {
         $em    = $this->getEntityManager();
         $config = $this->getConfig();

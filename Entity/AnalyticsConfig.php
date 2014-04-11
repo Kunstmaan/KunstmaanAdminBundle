@@ -41,6 +41,15 @@ class AnalyticsConfig extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     private $profileId = null;
 
     /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="last_update", type="datetime", nullable=true)
+     */
+    private $lastUpdate = null;
+
+
+
+    /**
      * Get token
      *
      * @return string
@@ -132,6 +141,30 @@ class AnalyticsConfig extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     public function setProfileId($profileId)
     {
         $this->profileId = $profileId;
+
+        return $this;
+    }
+
+    /**
+     * Get lastUpdate
+     *
+     * @return DateTime
+     */
+    public function getLastUpdate()
+    {
+        return $this->lastUpdate;
+    }
+
+    /**
+     * Set lastUpdate
+     *
+     * @param DateTime $lastUpdate
+     *
+     * @return AnalyticsProperty
+     */
+    public function setLastUpdate($lastUpdate)
+    {
+        $this->lastUpdate = $lastUpdate;
 
         return $this;
     }

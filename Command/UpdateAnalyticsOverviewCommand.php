@@ -58,6 +58,9 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         $this->analyticsHelper = $this->getContainer()->get('kunstmaan_admin.googleanalyticshelper');
         $this->analyticsHelper->init($this->googleClientHelper);
 
+        // set new update timestamp
+        $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->setUpdated();
+
         // daily data for 3 months
         $this->getDaily();
 
@@ -96,6 +99,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
             $this->em->persist($overview);
             $this->em->flush();
         }
+
         $this->output->writeln('Google Analytics data succesfully updated'); // done
     }
 

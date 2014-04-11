@@ -10,6 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+
+use Kunstmaan\AdminBundle\Command\UpdateAnalyticsOverviewCommand;
 
 /**
  * The analytics controller
@@ -208,7 +212,8 @@ class AnalyticsController extends Controller
     /**
      * @Route("/resetProfile", name="KunstmaanAdminBundle_analytics_resetProfile")
      */
-    public function resetProfileAction() {
+    public function resetProfileAction()
+    {
         $em            = $this->getDoctrine()->getManager();
         $em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->resetProfileId();
         return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
@@ -217,10 +222,25 @@ class AnalyticsController extends Controller
     /**
      * @Route("/resetProperty", name="KunstmaanAdminBundle_analytics_resetProperty")
      */
-    public function resetPropertyAction() {
+    public function resetPropertyAction()
+    {
         $em            = $this->getDoctrine()->getManager();
         $em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->resetPropertyId();
         return $this->redirect($this->generateUrl('KunstmaanAdminBundle_homepage'));
+    }
+
+    /**
+     * @Route("/updateData", name="KunstmaanAdminBundle_analytics_update")
+     */
+    public function runUpdate()
+    {
+      $command = new UpdateAnalyticsOverviewCommand();
+      $command->setContainer($this->container);
+      $input = new ArrayInput(array());
+      $output = new NullOutput();
+      $resultCode = $command->run($input, $output);
+
+      return new JsonResponse(array(), 200, array('Content-Type' => 'application/json'));
     }
 
 }

@@ -13,8 +13,9 @@
                 <h1>{{ dashboardConfiguration.title }}</h1>
             </div>
 
+
             <!-- TABS -->
-            {% include 'KunstmaanAdminBundle:Analytics:tabs.html.twig' with {'overviews' : overviews} %}
+            {% include 'KunstmaanAdminBundle:Analytics:tabs.html.twig' with {'overviews' : overviews, 'lastUpdate' : lastUpdate} %}
             <!-- end TABS -->
 
             <!-- TAB CONTENT -->

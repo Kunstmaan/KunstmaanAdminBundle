@@ -36,6 +36,14 @@
     padding: 0 15px 0 0;
 }
 
+#lastUpdate {
+    float:right;
+}
+
+#updateButton {
+    width:230px;
+}
+
 @media(max-width: 1023px) {
     .db-col--6 {
         width: 75%;

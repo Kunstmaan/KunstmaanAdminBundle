@@ -17,7 +17,12 @@
     });
 
     // sets the chart data
-    function setChartData(data, showLabels) {
+    function setChartData(data, showLabels, isDayData) {
+
+        if (typeof isDayData === 'undefined' || !isDayData) {
+            data = data.reverse();
+        }
+
         chartData = [];
         chartLabels = [];
 
@@ -77,6 +82,6 @@
             setChartData(dailyOverview.slice(data.overview.startOffset,data.overview.timespan), showLabels)
         } else { // if single day overview
             var showLabels = true;
-            setChartData(data.extra.dayData, showLabels);
+            setChartData(data.extra.dayData, showLabels, true);
         }
     }

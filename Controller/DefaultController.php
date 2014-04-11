@@ -90,7 +90,7 @@ class DefaultController extends Controller
         $params['overviews'] = $overviews;
         // set the default overview
         $params['overview'] = $overviews[0];
-        if (sizeof($overviews) == 5) { // if all overviews are present
+        if (sizeof($overviews) >= 3) { // if all overviews are present
             // set the default overview to the middle one
             $params['overview'] = $overviews[2];
         }
@@ -98,9 +98,9 @@ class DefaultController extends Controller
         $params['searches']  = $params['overview']->getSearches()->toArray();
         if (null !== $em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->getConfig()->getLastUpdate()) {
             $timestamp = $em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->getConfig()->getLastUpdate()->getTimestamp ();
-            $params['lastUpdate'] = date('H:i (d/m)', $timestamp);
+            $params['lastUpdate'] = date('H:i (d/m/Y)', $timestamp);
         } else {
-            $params['lastUpdate'] = 'Never updated.';
+            $params['lastUpdate'] = '/';
         }
 
         return $params;

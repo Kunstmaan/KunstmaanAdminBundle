@@ -1,11 +1,16 @@
     $(document).ready(function() {
+        // show first tab
+        // switchTab($('.db-tabs > li:nth-child(3) > a').attr('id'), $('.db-tabs > li:nth-child(3) > a').attr('path'));
+
         // Tab switcher
         $(".db-tabs__controller").click(function(){
             var id = $(this).attr('id');
             var url = $(this).attr('path');
+            switchTab(id, url);
+        });
 
-            $.get(url,
-            function(data) {
+        function switchTab(id, url) {
+            $.get(url, function(data) {
                 if(data.responseCode==200) {
                     $('.db-tabs__item').removeClass('db-tabs__item--active');
                     $('#tab'+id).addClass('db-tabs__item--active');
@@ -23,8 +28,9 @@
                         });
                     });
                 }
-           });
-       });
+            });
+        }
+
 
         var updateButtonText = $('#updateButton').html();
         var updating = false;

@@ -122,6 +122,6 @@ analytics:
     reset:
       profile: Choose a new Analytics Profile (view)
       property: Track a new Analytics Website (property)
-    lastUpdate: Last time updated
+    lastUpdate: Last time updated:
     update: Update now
     updating: Updating.. please wait

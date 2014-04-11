@@ -128,9 +128,9 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         $dailyOverview = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
         $data          = array();
 
-        // Fetching daily data for 3 months.
+        // Fetching daily data for a year.
         $results = $this->analyticsHelper->getResults(
-          93,
+          365,
           0,
           'ga:visits',
           array('dimensions' => 'ga:date', 'sort' => '-ga:date')

@@ -1,18 +1,30 @@
 
+    // get goal data for a specific goal
     function getGoalData(goalOverview) {
+        // get goal id
         var id = goalOverview.attr('data-goal-id');
+
+        // set active button
         $('.active').attr('class', '');
         $('#goal'+id).attr('class', 'active');
 
+        // get data
         $.get('analytics/getGoalGraphData/'+id, function(data) {
-            setGoalChart(data);
+            // render chart
+            setGoalChartData(data, data.graphData.length <= 31);
+
+            // set title in chart overview
             $('#goal_title').html(data.name);
         });
     }
 
+    // create a list of all goals
     function setGoals(data) {
+        // reset the overview list
         $('#goalOverview').html('');
         var html = '';
+
+        // create HTML for each goal
         for(var i = 0; i < data.extra.goals.length; i++) {
             html    +=
                      '<li id="goal'+data.extra.goals[i]['id']+'" data-goal-id="'+data.extra.goals[i]['id']+'" onClick="getGoalData($(this))">'
@@ -25,6 +37,7 @@
                     +'</li>';
         }
 
+        // add the HTML to the list
         $('#goalOverview').html(html);
     }
 
@@ -83,8 +96,3 @@
         resizeGoalChart();
         var chart = new Chart(document.getElementById("js-goal-dashboard-chart").getContext("2d")).Line(barGoalChartData, {animation:false});
     };
-
-
-    function setGoalChart(data) {
-        setGoalChartData(data, data.graphData.length <= 31)
-    }

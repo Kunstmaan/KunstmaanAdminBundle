@@ -59,12 +59,14 @@
 
 // TODO style this
 #goalOverview {
+    margin:0;
 }
 
 #goalOverview > li {
     display: block;
     width:30%;
-    margin:5px 1%;
+    margin:5px 0%;
+    margin-right:2%;
     float:left;
     background: #fcfcfc;
     border: 1px solid $hr-color;

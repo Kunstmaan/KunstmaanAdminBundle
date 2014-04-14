@@ -63,7 +63,7 @@
 
 #goalOverview > li {
     display: block;
-    width:45%;
+    width:30%;
     margin:5px 1%;
     float:left;
     background: #fcfcfc;
@@ -74,6 +74,10 @@
 }
 
 #goalOverview > li:hover {
+    background: #eeeeee;
+}
+
+#goalOverview > li.active {
     background: #eeeeee;
 }
 

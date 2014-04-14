@@ -387,7 +387,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
             // isDaily checks
             $isDaily = $overview->getTimespan() - $overview->getStartOffset() <= 1;
             $dimension =  !$isDaily ? 'ga:date' : 'ga:hour';
-            $sort = !$isDaily ? 'ga:date' : '-ga:hour';
+            $sort = !$isDaily ? 'ga:date' : 'ga:hour';
 
             // delete existing entries
             if (is_array($overview->getGoals()->toArray())) {

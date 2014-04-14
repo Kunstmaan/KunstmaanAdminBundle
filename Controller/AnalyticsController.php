@@ -224,11 +224,13 @@ class AnalyticsController extends Controller
     public function getGoalGraphData($id) {
 
         $em            = $this->getDoctrine()->getManager();
-        $graphData = $em->getRepository('KunstmaanAdminBundle:AnalyticsGoal')->getGoal($id)->getGraphData();
+        $graphData     = $em->getRepository('KunstmaanAdminBundle:AnalyticsGoal')->getGoal($id)->getGraphData();
+        $name          = $em->getRepository('KunstmaanAdminBundle:AnalyticsGoal')->getGoal($id)->getName();
 
         $return = array(
           'responseCode'  => 200,
-          'graphData' => json_decode($graphData)
+          'graphData' => json_decode($graphData),
+          'name' => $name,
         );
 
         return new JsonResponse($return, 200, array('Content-Type' => 'application/json'));

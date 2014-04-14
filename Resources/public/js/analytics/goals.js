@@ -1,9 +1,12 @@
 
     function getGoalData(goalOverview) {
         var id = goalOverview.attr('data-goal-id');
+        $('.active').attr('class', '');
+        $('#goal'+id).attr('class', 'active');
 
         $.get('analytics/getGoalGraphData/'+id, function(data) {
             setGoalChart(data);
+            $('#goal_title').html(data.name);
         });
     }
 
@@ -28,9 +31,16 @@
     var goalChartData = [];
     var goalChartLabels = [];
 
+    // reset the chart
+    function resetGoalChart() {
+        goalChartData = [];
+        goalChartLabels = [];
+        initGoalChart();
+        $('#goal_title').html('');
+    }
+
     // sets the chart data
     function setGoalChartData(data, showLabels, isDayData) {
-        console.log('i');
         goalChartData = [];
         goalChartLabels = [];
         if (data != null) {

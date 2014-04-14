@@ -24,6 +24,7 @@
                         setSearches(data);
                         setChart(data);
                         setGoals(data);
+                        resetGoalChart();
                         $('.db-content').fadeIn(400, function() {
                             initChart();
                         });

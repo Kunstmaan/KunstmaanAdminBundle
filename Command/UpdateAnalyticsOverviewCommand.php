@@ -384,6 +384,11 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
             // goals
             $this->output->writeln("\t" . 'Fetching goals..');
 
+            // isDaily checks
+            $isDaily = $overview->getTimespan() - $overview->getStartOffset() <= 1;
+            $dimension =  !$isDaily ? 'ga:date' : 'ga:hour';
+            $sort = !$isDaily ? 'ga:date' : '-ga:hour';
+
             // delete existing entries
             if (is_array($overview->getGoals()->toArray())) {
                 foreach ($overview->getGoals()->toArray() as $goal) {
@@ -401,21 +406,45 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
             // add new goals
             if (is_array($goals)) {
                 foreach ($goals as $key=>$value) {
-                    $key += 1;
                     $goal = new AnalyticsGoal();
+                    $key += 1;
 
+                    // create the query
                     $results = $this->analyticsHelper->getResults(
                         $overview->getTimespan(),
                         $overview->getStartOffset(),
-                        'ga:goal'.$key.'Completions'
+                        'ga:goal'.$key.'Completions',
+                        array('dimensions' => $dimension, 'sort' => $sort)
                     );
                     $rows    = $results->getRows();
 
-                    $goal->setVisits($rows[0][0]);
+                    // parse the results
+                    $graphData = array();
+                    $visits = 0;
+                    foreach($rows as $row) {
+                        // total visit count
+                        $visits += $row[1];
+
+                        // timestamp for graph data
+                        if (!$isDaily) {
+                            // if date
+                            $timestamp = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
+                        } else {
+                            // if hour
+                            $timestamp = $row[0];
+                        }
+                        $graphData[] = array('timestamp' => $timestamp, 'visits' => $row[1]);
+                    }
+
+                    // set the data
+                    $goal->setVisits($visits);
+                    $goal->setGraphData(json_encode($graphData));
                     $goal->setOverview($overview);
                     $goal->setName($value->name);
                     $goal->setPosition($key);
                     $overview->getGoals()->add($goal);
+
+                    // persist
                     $this->output->writeln("\t\t" . 'Fetching goal '.$key.': "'.$value->name.'"');
                 }
             }

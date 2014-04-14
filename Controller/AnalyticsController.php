@@ -157,40 +157,39 @@ class AnalyticsController extends Controller
             }
             $extra['searches'] = array();
             foreach ($overview->getSearches()->toArray() as $key => $search) {
-                $extra['searches'][$key]['visits'] = $search->getVisits();
-                $extra['searches'][$key]['name']   = $search->getName();
+                $extra['searches'][$key]['visits']  = $search->getVisits();
+                $extra['searches'][$key]['name']    = $search->getName();
             }
             $extra['goals'] = array();
             foreach ($overview->getGoals()->toArray() as $key => $goal) {
-                $extra['goals'][$key]['name'] = $goal->getName();
-                $extra['goals'][$key]['visits']   = $goal->getVisits();
+                $extra['goals'][$key]['name']       = $goal->getName();
+                $extra['goals'][$key]['visits']     = $goal->getVisits();
+                $extra['goals'][$key]['id']         = $goal->getId();
             }
 
-
             $overviewData = array(
-              'dayData'             => $overview->getDayData(),
-              'useDayData'          => $overview->getUseDayData(),
-              'title'               => $overview->getTitle(),
-              'timespan'            => $overview->getTimespan(),
-              'startOffset'         => $overview->getStartOffset(),
-              'visits'              => $overview->getVisits(),
-              'returningVisits'     => $overview->getReturningVisits(),
-              'newVisits'           => $overview->getNewVisits(),
-              'pageViews'           => $overview->getPageViews(),
-              'trafficDirect'       => $overview->getTrafficDirect(),
-              'trafficReferral'     => $overview->getTrafficReferral(),
-              'trafficSearchEngine' => $overview->getTrafficSearchEngine(),
+              'dayData'                             => $overview->getDayData(),
+              'useDayData'                          => $overview->getUseDayData(),
+              'title'                               => $overview->getTitle(),
+              'timespan'                            => $overview->getTimespan(),
+              'startOffset'                         => $overview->getStartOffset(),
+              'visits'                              => $overview->getVisits(),
+              'returningVisits'                     => $overview->getReturningVisits(),
+              'newVisits'                           => $overview->getNewVisits(),
+              'pageViews'                           => $overview->getPageViews(),
+              'trafficDirect'                       => $overview->getTrafficDirect(),
+              'trafficReferral'                     => $overview->getTrafficReferral(),
+              'trafficSearchEngine'                 => $overview->getTrafficSearchEngine(),
             );
 
-
             $return = array(
-              'responseCode' => 200,
-              'overview'     => $overviewData,
-              'extra'        => $extra
+              'responseCode'                        => 200,
+              'overview'                            => $overviewData,
+              'extra'                               => $extra
             );
         } else {
             $return = array(
-              'responseCode' => 400
+              'responseCode'                        => 400
             );
         }
 
@@ -211,6 +210,25 @@ class AnalyticsController extends Controller
         $return = array(
           'responseCode'  => 200,
           'dailyOverview' => json_decode($dailyOverview->getData())
+        );
+
+        return new JsonResponse($return, 200, array('Content-Type' => 'application/json'));
+    }
+
+    /**
+     * Return an ajax response
+     *
+     * @Route("/getGoalGraphData/{id}", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_analytics_goalGraphData_ajax")
+     *
+     */
+    public function getGoalGraphData($id) {
+
+        $em            = $this->getDoctrine()->getManager();
+        $graphData = $em->getRepository('KunstmaanAdminBundle:AnalyticsGoal')->getGoal($id)->getGraphData();
+
+        $return = array(
+          'responseCode'  => 200,
+          'graphData' => json_decode($graphData)
         );
 
         return new JsonResponse($return, 200, array('Content-Type' => 'application/json'));

@@ -12,4 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class AnalyticsGoalRepository extends EntityRepository
 {
+    public function getGoal($id) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('g')
+          ->from('KunstmaanAdminBundle:AnalyticsGoal', 'g')
+          ->where('g.id = :id')
+          ->setParameter('id', $id);
+
+        $results = $qb->getQuery()->getResult();
+        if ($results) {
+            return $results[0];
+        }
+
+        return false;
+    }
 }

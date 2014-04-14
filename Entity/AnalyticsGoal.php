@@ -40,6 +40,13 @@ class AnalyticsGoal extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     private $visits;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="graph_data", type="text")
+     */
+    private $graphData = '';
+
+    /**
      * Get overview
      *
      * @return integer
@@ -62,7 +69,6 @@ class AnalyticsGoal extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
 
         return $this;
     }
-
 
     /**
      * Set position
@@ -131,5 +137,28 @@ class AnalyticsGoal extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     public function getVisits()
     {
         return $this->visits;
+    }
+
+    /**
+     * Set graphData
+     *
+     * @param string $graphData
+     * @return AnalyticsGoal
+     */
+    public function setGraphData($graphData)
+    {
+        $this->graphData = $graphData;
+
+        return $this;
+    }
+
+    /**
+     * Get graphData
+     *
+     * @return string
+     */
+    public function getGraphData()
+    {
+        return $this->graphData;
     }
 }

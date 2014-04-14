@@ -4,17 +4,25 @@
     public/js/analytics/goals.js (html)
  #}
 
-<div class="clearfix"></div>
 
+<div class="db-col db-col--6">
+    <div class="db-block">
+        <h2 class="db-block__title">
+            Goals
+        </h2>
+        <canvas id="js-goal-dashboard-chart" height="290"></canvas>
+    </div>
+</div>
 
-<h2 class="">Goals</h2>
-<ul id="goalOverview">
+<div class="db-col db-col--5">
+    <ul id="goalOverview">
 
-    {% for goal in overview.goals %}
-        <li>
-            <div>{{goal.name}}</div>
-            <span>{{goal.visits}}</span>
-        </li>
-    {% endfor %}
+        {% for goal in overview.goals %}
+            <li id="goal{{goal.id}}" data-goal-id="{{goal.id}}" onClick="getGoalData($(this))">
+                <div>{{goal.name}}</div>
+                <span>{{goal.visits}}</span>
+            </li>
+        {% endfor %}
 
-</ul>
+    </ul>
+</div>

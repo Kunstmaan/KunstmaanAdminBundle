@@ -59,38 +59,32 @@
 
 // TODO style this
 #goalOverview {
-    display: block;
-    width:100%;
-    clear:both;
-    margin-left:0;
-    margin-right:0;
 }
 
 #goalOverview > li {
     display: block;
-    width:8%;
+    width:45%;
     margin:5px 1%;
     float:left;
-    height:100px;
     background: #fcfcfc;
     border: 1px solid $hr-color;
     border-radius: 3px;
-    position:relative;
+    padding:5px;
+    cursor: pointer;
+}
+
+#goalOverview > li:hover {
+    background: #eeeeee;
 }
 
 #goalOverview > li > div {
-    width:100%;
-    padding:5px;
-    text-align: center;
+    float:left;
+    font-weight: bold;
 }
 
 #goalOverview > li > span {
     display: block;
-    width:100%;
-    text-align: center;
-    font-size:3em;
-    position:absolute;
-    bottom:20px;
+    float:right;
 }
 
 // icons (icomoon icons used as base, made custom)

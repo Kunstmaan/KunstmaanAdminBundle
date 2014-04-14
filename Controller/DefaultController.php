@@ -121,9 +121,10 @@ class DefaultController extends Controller
 
 
         $results = $analyticsHelper->getResults(
-          5,
+          50,
           0,
-          'ga:goal1Completions'
+          'ga:goal11Completions',
+          array('dimensions' => 'ga:date')
         );
 
         var_dump($results->getRows());

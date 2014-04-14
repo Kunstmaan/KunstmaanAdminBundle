@@ -87,7 +87,7 @@ class AnalyticsTopSearch extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      */
     public function getVisits()
     {
-        return $this->visits;
+        return number_format($this->visits);
     }
 
     /**

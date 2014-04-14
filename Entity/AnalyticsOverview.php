@@ -466,7 +466,7 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      */
     public function getVisits()
     {
-        return $this->visits;
+        return number_format($this->visits);
     }
 
     /**
@@ -489,7 +489,7 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      */
     public function getPageviews()
     {
-        return $this->pageviews;
+        return number_format($this->pageviews);
     }
 
 }

@@ -8,7 +8,7 @@
     <h3>{{ 'analytics.dashboard.step5.title' | trans }}</h3>
     <p>{{ 'analytics.dashboard.step5.content' | trans }}</p>
 
-    <select name="profiles">
+    <select name="profiles" class="chzn-select">
         {% for profile in profiles %}
             <option value="{{ profile.id }}">{{ profile.name }}</option>
         {% endfor %}

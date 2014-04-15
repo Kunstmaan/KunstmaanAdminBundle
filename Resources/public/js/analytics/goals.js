@@ -63,7 +63,7 @@
         }
 
         if (data.graphData.length > 350) {
-            for (var i = 0; i < data.graphData.length; i+=14) {
+            for (var i = 0; i < data.graphData.length; i+=21) {
                 goalChartData.push(parseInt(data.graphData[i].visits));
                 goalChartLabels.push(data.graphData[i].timestamp);
             }

@@ -35,25 +35,25 @@ class AnalyticsOverviewFixtures extends AbstractFixture implements OrderedFixtur
         $em->persist($yesterday);
 
         $week = new AnalyticsOverview();
-        $week->setTitle('This week');
+        $week->setTitle('Last week');
         $week->setTimespan(7);
         $week->setStartOffset(0);
         $em->persist($week);
 
         $month = new AnalyticsOverview();
-        $month->setTitle('This month');
+        $month->setTitle('Last month');
         $month->setTimespan(31);
         $month->setStartOffset(0);
         $em->persist($month);
 
         $month3 = new AnalyticsOverview();
-        $month3->setTitle('Past 3 months');
+        $month3->setTitle('Last 3 months');
         $month3->setTimespan(93);
         $month3->setStartOffset(0);
         $em->persist($month3);
 
         $year = new AnalyticsOverview();
-        $year->setTitle('This Year');
+        $year->setTitle('Last Year');
         $year->setTimespan(365);
         $year->setStartOffset(0);
         $em->persist($year);

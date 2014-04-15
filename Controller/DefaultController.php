@@ -106,33 +106,6 @@ class DefaultController extends Controller
         return $params;
     }
 
-
-    /**
-     * @Route("/test", name="KunstmaanAdminBundle_homepage_test")
-     * @Template()
-     *
-     * @return array
-     */
-    public function testAction()
-    {
-        $googleClientHelper = $this->container->get('kunstmaan_admin.googleclienthelper');
-        $analyticsHelper = $this->container->get('kunstmaan_admin.googleanalyticshelper');
-        $analyticsHelper->init($googleClientHelper);
-
-
-        $results = $analyticsHelper->getResults(
-          365,
-          0,
-          'ga:visits',
-          array('dimensions' => 'ga:campaign', 'sort' => '-ga:visits')
-        );
-
-
-
-        var_dump($results->getRows());
-        exit;
-    }
-
     /**
      * The admin of the index page
      *

@@ -175,65 +175,33 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     /**
      * @var array
      *
-     * @ORM\Column(name="day_data", type="text")
+     * @ORM\Column(name="chart_data", type="text")
      */
-    private $dayData = '';
+    private $chartData = '';
 
 
     /**
-     * Set dayData
+     * Set chartData
      *
-     * @param array $dayData
+     * @param array $chartData
      * @return AnalyticsDailyOverview
      */
-    public function setDayData($dayData)
+    public function setChartData($chartData)
     {
-        $this->dayData = $dayData;
+        $this->chartData = $chartData;
 
         return $this;
     }
 
     /**
-     * Get dayData
+     * Get chartData
      *
      * @return array
      */
-    public function getDayData()
+    public function getChartData()
     {
-        return $this->dayData;
+        return $this->chartData;
     }
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="use_day_data", type="boolean")
-     */
-    private $useDayData = false;
-
-
-    /**
-     * Set useDayData
-     *
-     * @param array $useDayData
-     * @return AnalyticsDailyOverview
-     */
-    public function setUseDayData($useDayData)
-    {
-        $this->useDayData = $useDayData;
-
-        return $this;
-    }
-
-    /**
-     * Get useDayData
-     *
-     * @return array
-     */
-    public function getUseDayData()
-    {
-        return $this->useDayData;
-    }
-
 
 
     /**

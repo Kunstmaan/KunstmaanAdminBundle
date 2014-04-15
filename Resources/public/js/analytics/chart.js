@@ -17,19 +17,14 @@
     });
 
     // sets the chart data
-    function setChartData(data, showLabels, isDayData) {
-
-        if (typeof isDayData === 'undefined' || !isDayData) {
-            data = data.reverse();
-        }
-
+    function setChartData(data) {
         chartData = [];
         chartLabels = [];
 
         var increment = Math.ceil(data.length / 26);
         for (var i = 0; i < data.length; i+=increment) {
-                chartData.push(parseInt(data[i].data));
-                chartLabels.push(data[i].key);
+                chartData.push(parseInt(data[i].visits));
+                chartLabels.push(data[i].timestamp);
         }
 
         initChart();
@@ -67,12 +62,5 @@
     };
 
     function setChart(data) {
-        // set chart
-        if (data.overview.timespan - data.overview.startOffset > 1) { // if multiple day overview
-            var showLabels = data.overview.timespan <= 31;
-            setChartData(dailyOverview.slice(data.overview.startOffset,data.overview.timespan), showLabels)
-        } else { // if single day overview
-            var showLabels = true;
-            setChartData(data.extra.dayData, showLabels, true);
-        }
+        setChartData(data.overview.chartData);
     }

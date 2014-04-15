@@ -64,9 +64,6 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                 // set new update timestamp
                 $this->em->getRepository('KunstmaanAdminBundle:AnalyticsConfig')->setUpdated();
 
-                // daily data for 3 months
-                $this->getDaily();
-
                 // get data for each overview
                 $overviews = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsOverview')->getAll();
                 foreach ($overviews as $overview) {
@@ -78,12 +75,10 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                     // get goals
                     $this->getGoals($overview);
 
-                    // day-specific data
-                    if ($overview->getUseDayData()) {
-                        $this->getDayData($overview);
-                    }
-
                     if ($overview->getVisits()) { // if there are any visits
+                        // day-specific data
+                        $this->getChartData($overview);
+
                         // visitor types
                         $this->getVisitorTypes($overview);
 
@@ -132,37 +127,6 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         }
 
         /**
-         * Fetch data for daily overviews
-         */
-        private function getDaily()
-        {
-                $this->output->writeln('Fetching daily visits');
-                $dailyOverview = $this->em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
-                $data          = array();
-
-                // Fetching daily data for a year.
-                $results = $this->analyticsHelper->getResults(
-                    365,
-                    0,
-                    'ga:visits',
-                    array('dimensions' => 'ga:date', 'sort' => '-ga:date')
-                );
-                $rows    = $results->getRows();
-                foreach ($rows as $row) {
-                        $date   = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
-                        $data[] = array('key' => $date, 'data' => $row[1]);
-                }
-
-                // adding data to the AnalyticsDailyOverview object
-                $dailyOverview->setData(json_encode($data, JSON_UNESCAPED_SLASHES));
-
-                // save dailyOverview to DB
-                $this->output->writeln("\t" . 'Persisting..');
-                $this->em->persist($dailyOverview);
-                $this->em->flush();
-        }
-
-        /**
          * Fetch normal metric data and set it for the overview
          *
          * @param AnalyticsOverview $overview The overview
@@ -193,28 +157,43 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
         }
 
         /**
-         * Fetch day-specific data and set it for the overview
+         * Fetch chart data and set it for the overview
          *
          * @param AnalyticsOverview $overview The overview
          */
-        private function getDayData(&$overview)
+        private function getChartData(&$overview)
         {
-                $this->output->writeln("\t" . 'Fetching day-specific data..');
-                $results = $this->analyticsHelper->getResults(
-                    $overview->getTimespan(),
-                    $overview->getStartOffset(),
-                    'ga:visits',
-                    array('dimensions' => 'ga:hour')
-                );
-                $rows    = $results->getRows();
+            $this->output->writeln("\t" . 'Fetching chart data..');
 
-                $data = array();
-                foreach ($rows as $row) {
-                        $data[] = array('key' => $row[0] . 'h', 'data' => $row[1]);
+            // isDaily checks
+            $isDaily = $overview->getTimespan() - $overview->getStartOffset() <= 1;
+            $dimension =  !$isDaily ? 'ga:date' : 'ga:hour';
+            $sort = !$isDaily ? 'ga:date' : 'ga:hour';
+
+            // create the query
+            $results = $this->analyticsHelper->getResults(
+                $overview->getTimespan(),
+                $overview->getStartOffset(),
+                'ga:visits',
+                array('dimensions' => $dimension, 'sort' => $sort)
+            );
+            $rows    = $results->getRows();
+
+            $chartData = array();
+            foreach ($rows as $row) {
+                // timestamp for chart data
+                if (!$isDaily) {
+                    // if date
+                    $timestamp = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
+                } else {
+                    // if hour
+                    $timestamp = $row[0];
                 }
+                $chartData[] = array('timestamp' => $timestamp, 'visits' => $row[1]);
+            }
 
-                // adding data to the AnalyticsDailyOverview object
-                $overview->setDayData(json_encode($data, JSON_UNESCAPED_SLASHES));
+            // adding data to the overview
+            $overview->setChartData(json_encode($chartData, JSON_UNESCAPED_SLASHES));
         }
 
         /**

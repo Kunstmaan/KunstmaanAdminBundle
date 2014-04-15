@@ -150,7 +150,6 @@ class AnalyticsController extends Controller
             $extra['trafficSearchEnginePercentage'] = $overview->getTrafficSearchEnginePercentage();
             $extra['returningVisitsPercentage']     = $overview->getReturningVisitsPercentage();
             $extra['newVisitsPercentage']           = $overview->getNewVisitsPercentage();
-            $extra['dayData']                       = json_decode($overview->getDayData());
 
             $extra['referrals'] = array();
             foreach ($overview->getReferrals()->toArray() as $key => $referral) {
@@ -175,8 +174,7 @@ class AnalyticsController extends Controller
             }
 
             $overviewData = array(
-              'dayData'                             => $overview->getDayData(),
-              'useDayData'                          => $overview->getUseDayData(),
+              'chartData'                           => json_decode($overview->getChartData()),
               'title'                               => $overview->getTitle(),
               'timespan'                            => $overview->getTimespan(),
               'startOffset'                         => $overview->getStartOffset(),

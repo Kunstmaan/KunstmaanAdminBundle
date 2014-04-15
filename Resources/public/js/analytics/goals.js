@@ -57,7 +57,17 @@
     function setGoalChartData(data, showLabels, isDayData) {
         goalChartData = [];
         goalChartLabels = [];
-        if (data != null) {
+
+        if (data == null) {
+            return;
+        }
+
+        if (data.graphData.length > 350) {
+            for (var i = 0; i < data.graphData.length; i+=14) {
+                goalChartData.push(parseInt(data.graphData[i].visits));
+                goalChartLabels.push(data.graphData[i].timestamp);
+            }
+        } else {
             for (var i = 0; i < data.graphData.length; i++) {
                 goalChartData.push(parseInt(data.graphData[i].visits));
                 if (showLabels == true || i % 5 == 0) {
@@ -67,6 +77,7 @@
                 }
             }
         }
+
         initGoalChart();
     }
 

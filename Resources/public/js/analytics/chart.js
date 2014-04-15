@@ -26,7 +26,12 @@
         chartData = [];
         chartLabels = [];
 
-        if (data != null) {
+        if (data.length > 350) {
+            for (var i = 0; i < data.length; i+=14) {
+                chartData.push(parseInt(data[i].data));
+                chartLabels.push(data[i].key);
+            }
+        } else {
             for (var i = 0; i < data.length; i++) {
                 chartData.push(parseInt(data[i].data));
                 if (showLabels == true || i % 5 == 0) {

@@ -495,13 +495,13 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                     $rows    = $results->getRows();
 
                     // parse the results
-                    $graphData = array();
+                    $chartData = array();
                     $visits = 0;
                     foreach($rows as $row) {
                         // total visit count
                         $visits += $row[1];
 
-                        // timestamp for graph data
+                        // timestamp for chart data
                         if (!$isDaily) {
                             // if date
                             $timestamp = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
@@ -509,12 +509,12 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                             // if hour
                             $timestamp = $row[0];
                         }
-                        $graphData[] = array('timestamp' => $timestamp, 'visits' => $row[1]);
+                        $chartData[] = array('timestamp' => $timestamp, 'visits' => $row[1]);
                     }
 
                     // set the data
                     $goal->setVisits($visits);
-                    $goal->setGraphData(json_encode($graphData));
+                    $goal->setChartData(json_encode($chartData));
                     $goal->setOverview($overview);
                     $goal->setName($value->name);
                     $goal->setPosition($key);

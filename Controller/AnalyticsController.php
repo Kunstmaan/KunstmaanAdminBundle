@@ -226,18 +226,18 @@ class AnalyticsController extends Controller
     /**
      * Return an ajax response
      *
-     * @Route("/getGoalGraphData/{id}", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_analytics_goalGraphData_ajax")
+     * @Route("/getGoalChartData/{id}", requirements={"id" = "\d+"}, name="KunstmaanAdminBundle_analytics_goalChartData_ajax")
      *
      */
-    public function getGoalGraphData($id) {
+    public function getGoalChartData($id) {
 
         $em            = $this->getDoctrine()->getManager();
-        $graphData     = $em->getRepository('KunstmaanAdminBundle:AnalyticsGoal')->getGoal($id)->getGraphData();
+        $chartData     = $em->getRepository('KunstmaanAdminBundle:AnalyticsGoal')->getGoal($id)->getChartData();
         $name          = $em->getRepository('KunstmaanAdminBundle:AnalyticsGoal')->getGoal($id)->getName();
 
         $return = array(
           'responseCode'  => 200,
-          'graphData' => json_decode($graphData),
+          'chartData' => json_decode($chartData),
           'name' => $name,
         );
 

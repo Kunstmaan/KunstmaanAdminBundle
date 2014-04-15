@@ -42,9 +42,9 @@ class AnalyticsGoal extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     /**
      * @var array
      *
-     * @ORM\Column(name="graph_data", type="text")
+     * @ORM\Column(name="chart_data", type="text")
      */
-    private $graphData = '';
+    private $chartData = '';
 
     /**
      * Get overview
@@ -140,25 +140,25 @@ class AnalyticsGoal extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     }
 
     /**
-     * Set graphData
+     * Set chartData
      *
-     * @param string $graphData
+     * @param string $chartData
      * @return AnalyticsGoal
      */
-    public function setGraphData($graphData)
+    public function setChartData($chartData)
     {
-        $this->graphData = $graphData;
+        $this->chartData = $chartData;
 
         return $this;
     }
 
     /**
-     * Get graphData
+     * Get chartData
      *
      * @return string
      */
-    public function getGraphData()
+    public function getChartData()
     {
-        return $this->graphData;
+        return $this->chartData;
     }
 }

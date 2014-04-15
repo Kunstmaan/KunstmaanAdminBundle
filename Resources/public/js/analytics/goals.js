@@ -13,9 +13,9 @@
         $('#goal'+id).attr('class', 'active');
 
         // get data
-        $.get('analytics/getGoalGraphData/'+id, function(data) {
+        $.get('analytics/getGoalChartData/'+id, function(data) {
             // render chart
-            setGoalChartData(data, data.graphData.length <= 31);
+            setGoalChartData(data, data.chartData.length <= 31);
 
             // set title in chart overview
             $('#goal_title').html(data.name);
@@ -62,10 +62,10 @@
             return;
         }
 
-        var increment = Math.ceil(data.graphData.length / 23);
-        for (var i = 0; i < data.graphData.length; i+=increment) {
-            goalChartData.push(parseInt(data.graphData[i].visits));
-            goalChartLabels.push(data.graphData[i].timestamp);
+        var increment = Math.ceil(data.chartData.length / 23);
+        for (var i = 0; i < data.chartData.length; i+=increment) {
+            goalChartData.push(parseInt(data.chartData[i].visits));
+            goalChartLabels.push(data.chartData[i].timestamp);
         }
 
         initGoalChart();

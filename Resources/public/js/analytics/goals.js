@@ -62,20 +62,10 @@
             return;
         }
 
-        if (data.graphData.length > 350) {
-            for (var i = 0; i < data.graphData.length; i+=21) {
-                goalChartData.push(parseInt(data.graphData[i].visits));
-                goalChartLabels.push(data.graphData[i].timestamp);
-            }
-        } else {
-            for (var i = 0; i < data.graphData.length; i++) {
-                goalChartData.push(parseInt(data.graphData[i].visits));
-                if (showLabels == true || i % 5 == 0) {
-                    goalChartLabels.push(data.graphData[i].timestamp);
-                } else {
-                    goalChartLabels.push("");
-                }
-            }
+        var increment = Math.ceil(data.graphData.length / 23);
+        for (var i = 0; i < data.graphData.length; i+=increment) {
+            goalChartData.push(parseInt(data.graphData[i].visits));
+            goalChartLabels.push(data.graphData[i].timestamp);
         }
 
         initGoalChart();

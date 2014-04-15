@@ -1,4 +1,8 @@
 
+    $(document).ready(function(){
+        resetGoalChart();
+    });
+
     // get goal data for a specific goal
     function getGoalData(goalOverview) {
         // get goal id

@@ -46,10 +46,7 @@
 
     // reset the chart
     function resetGoalChart() {
-        goalChartData = [];
-        goalChartLabels = [];
-        initGoalChart();
-        $('#goal_title').html('');
+        $('#goalOverview li:first-child').trigger("click");
     }
 
     // sets the chart data

@@ -120,19 +120,14 @@ class DefaultController extends Controller
         $analyticsHelper->init($googleClientHelper);
 
 
-        // $results = $analyticsHelper->getResults(
-        //   50,
-        //   0,
-        //   'ga:visits',
-        //   array('dimensions' => 'ga:campaign')
-        // );
-
         $results = $analyticsHelper->getResults(
-          100,
+          365,
           0,
-          'ga:searchVisits',
-          array('dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchVisits')
+          'ga:visits',
+          array('dimensions' => 'ga:campaign', 'sort' => '-ga:visits')
         );
+
+
 
         var_dump($results->getRows());
         exit;

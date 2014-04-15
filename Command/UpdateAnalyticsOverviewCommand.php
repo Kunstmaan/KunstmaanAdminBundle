@@ -300,7 +300,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
             $results = $this->analyticsHelper->getResults(
                 $overview->getTimespan(),
                 $overview->getStartOffset(),
-                'ga:bounces'
+                'ga:visitBounceRate'
             );
             $rows    = $results->getRows();
             $visits  = is_numeric($rows[0][0]) ? $rows[0][0] : 0;

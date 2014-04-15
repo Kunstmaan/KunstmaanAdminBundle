@@ -148,6 +148,8 @@ class AnalyticsController extends Controller
             $extra['trafficDirectPercentage']       = $overview->getTrafficDirectPercentage();
             $extra['trafficReferralPercentage']     = $overview->getTrafficReferralPercentage();
             $extra['trafficSearchEnginePercentage'] = $overview->getTrafficSearchEnginePercentage();
+            $extra['returningVisitsPercentage']     = $overview->getReturningVisitsPercentage();
+            $extra['newVisitsPercentage']           = $overview->getNewVisitsPercentage();
             $extra['dayData']                       = json_decode($overview->getDayData());
 
             $extra['referrals'] = array();
@@ -176,6 +178,7 @@ class AnalyticsController extends Controller
               'visits'                              => $overview->getVisits(),
               'returningVisits'                     => $overview->getReturningVisits(),
               'newVisits'                           => $overview->getNewVisits(),
+              'bounceRate'                          => $overview->getBounceRate(),
               'pageViews'                           => $overview->getPageViews(),
               'trafficDirect'                       => $overview->getTrafficDirect(),
               'trafficReferral'                     => $overview->getTrafficReferral(),

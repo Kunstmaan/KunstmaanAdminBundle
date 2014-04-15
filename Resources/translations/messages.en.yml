@@ -103,6 +103,10 @@ analytics:
     unavailable: No data available for Top Search Terms
   visitors: Visitors
   pageviews: pageviews
+  visits: 'Visits'
+  visits.returning: 'Returning visitors'
+  visits.new: 'New visitors'
+  visits.bounce: 'Bounce rate'
   dashboard:
     setup:
       title: Dashboard Setup

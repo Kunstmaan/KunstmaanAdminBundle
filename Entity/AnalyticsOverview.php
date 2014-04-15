@@ -15,6 +15,34 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
 
 
     /**
+     * @ORM\OneToMany(targetEntity="AnalyticsCampaign", mappedBy="overview", cascade={"persist"})
+     */
+    private $campaigns;
+
+    /**
+     * Set campaigns
+     *
+     * @param array $campaigns
+     * @return AnalyticsDailyOverview
+     */
+    public function setCampaigns($campaigns)
+    {
+        $this->campaigns = $campaigns;
+
+        return $this;
+    }
+
+    /**
+     * Get campaigns
+     *
+     * @return array
+     */
+    public function getCampaigns()
+    {
+        return $this->campaigns;
+    }
+
+    /**
      * @ORM\OneToMany(targetEntity="AnalyticsTopReferral", mappedBy="overview", cascade={"persist"})
      */
     private $referrals;
@@ -124,6 +152,25 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     public function getTrafficSearchEnginePercentage() {
         return $this->visits ? round(($this->trafficSearchEngine / $this->visits) * 100) : 0;
     }
+
+    /**
+     * Get percentage of returning visits
+     *
+     * @return int
+     */
+    public function getReturningVisitsPercentage() {
+        return $this->returningVisits ? round(($this->returningVisits / $this->visits) * 100) : 0;
+    }
+
+    /**
+     * Get percentage of new visits
+     *
+     * @return int
+     */
+    public function getNewVisitsPercentage() {
+        return $this->newVisits ? round(($this->newVisits / $this->visits) * 100) : 0;
+    }
+
 
     /**
      * @var array
@@ -259,6 +306,13 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      */
     private $trafficSearchEngine = 0;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="bounce_rate", type="integer")
+     */
+    private $bounceRate = 0;
+
 
     /**
      * Set trafficSearchEngine
@@ -349,7 +403,7 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      */
     public function getNewVisits()
     {
-        return $this->newVisits;
+        return number_format($this->newVisits);
     }
 
 
@@ -373,7 +427,7 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      */
     public function getReturningVisits()
     {
-        return $this->returningVisits;
+        return number_format($this->returningVisits);
     }
 
 
@@ -490,6 +544,29 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     public function getPageviews()
     {
         return number_format($this->pageviews);
+    }
+
+    /**
+     * Set bounceRate
+     *
+     * @param integer $bounceRate
+     * @return AnalyticsOverview
+     */
+    public function setBounceRate($bounceRate)
+    {
+        $this->bounceRate = $bounceRate;
+
+        return $this;
+    }
+
+    /**
+     * Get bounceRate
+     *
+     * @return integer
+     */
+    public function getBounceRate()
+    {
+        return number_format($this->bounceRate);
     }
 
 }

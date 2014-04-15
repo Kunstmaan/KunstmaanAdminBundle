@@ -44,12 +44,15 @@
                 <div class="db-col db-col--4">
                     {% include 'KunstmaanAdminBundle:Analytics:referrals.html.twig' with {'overview' : overview} %}
                     {% include 'KunstmaanAdminBundle:Analytics:searches.html.twig' with {'overview' : overview} %}
+                    {% include 'KunstmaanAdminBundle:Analytics:visits.html.twig' with {'overview' : overview} %}
                 </div>
                 <!-- end COL -->
 
 
                 <div>
-                    {% include 'KunstmaanAdminBundle:Analytics:goals.html.twig' with {'overview' : overview} %}
+                    {% if overview.getGoals | length > 0 %}
+                        {% include 'KunstmaanAdminBundle:Analytics:goals.html.twig' with {'overview' : overview} %}
+                    {% endif %}
                 </div>
             </section>
             <!-- end TAB CONTENT -->
@@ -77,6 +80,7 @@
     '@KunstmaanAdminBundle/Resources/public/js/analytics/tabs.js'
     '@KunstmaanAdminBundle/Resources/public/js/analytics/traffic.js'
     '@KunstmaanAdminBundle/Resources/public/js/analytics/goals.js'
+    '@KunstmaanAdminBundle/Resources/public/js/analytics/visits.js'
     output='generated-js/scripts_bottom.js'
     %}
     <script src="{{ asset_url }}"></script>

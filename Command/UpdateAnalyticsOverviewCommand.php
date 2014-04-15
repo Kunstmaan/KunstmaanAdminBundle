@@ -89,6 +89,9 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                         // traffic sources
                         $this->getTrafficSources($overview);
 
+                        // bounce rate
+                        $this->getBounceRate($overview);
+
                         // top referrals
                         $this->getTopReferrals($overview);
 
@@ -283,6 +286,27 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                 }
         }
 
+
+        /**
+         * Fetch bounce rate data and set it for the overview
+         *
+         * @param AnalyticsOverview $overview The overview
+         */
+        private function getBounceRate(&$overview)
+        {
+            $this->output->writeln("\t" . 'Fetching bounce rate..');
+
+            // bounce rate
+            $results = $this->analyticsHelper->getResults(
+                $overview->getTimespan(),
+                $overview->getStartOffset(),
+                'ga:bounces'
+            );
+            $rows    = $results->getRows();
+            $visits  = is_numeric($rows[0][0]) ? $rows[0][0] : 0;
+            $overview->setBounceRate($visits);
+        }
+
         /**
          * Fetch referral data and set it for the overview
          *
@@ -337,8 +361,8 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                 $results = $this->analyticsHelper->getResults(
                     $overview->getTimespan(),
                     $overview->getStartOffset(),
-                    'ga:searchUniques',
-                    array('dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchUniques', 'max-results' => '3')
+                    'ga:searchVisits',
+                    array('dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchVisits', 'max-results' => '3')
                 );
                 $rows    = $results->getRows();
 

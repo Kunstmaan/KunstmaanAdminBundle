@@ -5,6 +5,7 @@ namespace Kunstmaan\AdminBundle\Command;
 use Kunstmaan\AdminBundle\Entity\AnalyticsTopReferral;
 use Kunstmaan\AdminBundle\Entity\AnalyticsTopSearch;
 use Kunstmaan\AdminBundle\Entity\AnalyticsGoal;
+use Kunstmaan\AdminBundle\Entity\AnalyticsCampaign;
 use Kunstmaan\AdminBundle\Helper\GoogleAnalyticsHelper;
 use Kunstmaan\AdminBundle\Helper\GoogleClientHelper;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -97,6 +98,9 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
 
                         // top searches
                         $this->getTopSearches($overview);
+
+                        // top campaigns
+                        $this->getTopCampaigns($overview);
                     } else { // if no visits
                         // reset overview
                         $this->reset($overview);
@@ -362,7 +366,11 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                     $overview->getTimespan(),
                     $overview->getStartOffset(),
                     'ga:searchVisits',
-                    array('dimensions' => 'ga:searchKeyword', 'sort' => '-ga:searchVisits', 'max-results' => '3')
+                    array(
+                        'dimensions' => 'ga:searchKeyword',
+                        'sort' => '-ga:searchVisits',
+                        'max-results' => '3'
+                    )
                 );
                 $rows    = $results->getRows();
 
@@ -384,6 +392,50 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                                 $overview->getSearches()->add($search);
                         }
                 }
+
+        }
+
+        /**
+         * Fetch campaign data and set it for the overview
+         *
+         * @param AnalyticsOverview $overview The overview
+         */
+        private function getTopCampaigns(&$overview)
+        {
+            // top campaigns
+            $this->output->writeln("\t" . 'Fetching campaigns..');
+            $results = $this->analyticsHelper->getResults(
+                $overview->getTimespan(),
+                $overview->getStartOffset(),
+                'ga:visits',
+                array(
+                    'dimensions' => 'ga:campaign',
+                    'sort' => '-ga:visits',
+                    'max-results' => '4'
+                )
+            );
+            $rows    = $results->getRows();
+            // first entry is '(not set)' and not needed
+            unset($rows[0]);
+
+            // delete existing entries
+            if (is_array($overview->getCampaigns()->toArray())) {
+                foreach ($overview->getCampaigns()->toArray() as $campaign) {
+                    $this->em->remove($campaign);
+                }
+                $this->em->flush();
+            }
+
+            // load new campaigns
+            if (is_array($rows)) {
+                foreach ($rows as $key => $row) {
+                    $campaign = new AnalyticsCampaign();
+                    $campaign->setName($row[0]);
+                    $campaign->setVisits($row[1]);
+                    $campaign->setOverview($overview);
+                    $overview->getCampaigns()->add($campaign);
+                }
+            }
 
         }
 

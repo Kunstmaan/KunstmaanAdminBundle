@@ -37,6 +37,7 @@
                 <!-- COL -->
                 <div class="db-col db-col--2">
                     {% include 'KunstmaanAdminBundle:Analytics:traffic.html.twig' with {'overview' : overview} %}
+                    {% include 'KunstmaanAdminBundle:Analytics:visits.html.twig' with {'overview' : overview} %}
                 </div>
                 <!-- end COL -->
 
@@ -44,7 +45,7 @@
                 <div class="db-col db-col--4">
                     {% include 'KunstmaanAdminBundle:Analytics:referrals.html.twig' with {'overview' : overview} %}
                     {% include 'KunstmaanAdminBundle:Analytics:searches.html.twig' with {'overview' : overview} %}
-                    {% include 'KunstmaanAdminBundle:Analytics:visits.html.twig' with {'overview' : overview} %}
+                    {% include 'KunstmaanAdminBundle:Analytics:campaigns.html.twig' with {'campaigns' : overview.getCampaigns} %}
                 </div>
                 <!-- end COL -->
 
@@ -77,6 +78,7 @@
     '@KunstmaanAdminBundle/Resources/public/js/analytics/header.js'
     '@KunstmaanAdminBundle/Resources/public/js/analytics/referrals.js'
     '@KunstmaanAdminBundle/Resources/public/js/analytics/searches.js'
+    '@KunstmaanAdminBundle/Resources/public/js/analytics/campaigns.js'
     '@KunstmaanAdminBundle/Resources/public/js/analytics/tabs.js'
     '@KunstmaanAdminBundle/Resources/public/js/analytics/traffic.js'
     '@KunstmaanAdminBundle/Resources/public/js/analytics/goals.js'

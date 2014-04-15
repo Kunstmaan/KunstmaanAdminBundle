@@ -101,6 +101,9 @@ analytics:
   searches:
     title: Top Search Terms
     unavailable: No data available for Top Search Terms
+  campaigns:
+    title: Top Campaigns
+    unavailable: No data available for Top Campaigns
   visitors: Visitors
   pageviews: pageviews
   visits: 'Visits'

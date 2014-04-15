@@ -22,6 +22,7 @@
                         setTraffic(data);
                         setReferrals(data);
                         setSearches(data);
+                        setCampaigns(data);
                         setVisits(data);
                         setChart(data);
                         setGoals(data);

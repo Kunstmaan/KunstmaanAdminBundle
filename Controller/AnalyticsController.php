@@ -162,6 +162,11 @@ class AnalyticsController extends Controller
                 $extra['searches'][$key]['visits']  = $search->getVisits();
                 $extra['searches'][$key]['name']    = $search->getName();
             }
+            $extra['campaigns'] = array();
+            foreach ($overview->getCampaigns()->toArray() as $key => $search) {
+                $extra['campaigns'][$key]['visits']  = $search->getVisits();
+                $extra['campaigns'][$key]['name']    = $search->getName();
+            }
             $extra['goals'] = array();
             foreach ($overview->getGoals()->toArray() as $key => $goal) {
                 $extra['goals'][$key]['name']       = $goal->getName();

@@ -1,8 +1,30 @@
 parameters:
     kunstmaan_admin.menubuilder.class: 'Kunstmaan\AdminBundle\Helper\Menu\MenuBuilder'
     kunstmaan_admin.apply_acl_changeset.listener.class: 'Kunstmaan\AdminBundle\EventListener\ApplyAclChangesetListener'
+    kunstmaan_admin.googleclient.class: 'Google_Client'
+    kunstmaan_admin.googleclienthelper.class: 'Kunstmaan\AdminBundle\Helper\GoogleClientHelper'
+    google.api.app_name: 'Kuma Analytics Dashboard'
 
 services:
+    kunstmaan_admin.googleclient:
+        class: "%kunstmaan_admin.googleclient.class%"
+        calls:
+          - [ "setApplicationName", [ "%google.api.app_name%" ] ]
+          - [ "setClientId", [ "%google.api.client_id%" ] ]
+          - [ "setClientSecret", [ "%google.api.client_secret%" ] ]
+          - [ "setDeveloperKey", [ "%google.api.dev_key%" ] ]
+          - [ "setScopes", [ 'https://www.googleapis.com/auth/analytics.readonly' ] ]
+          - [ "setUseObjects", [ true ] ]
+
+    kunstmaan_admin.googleclienthelper:
+        class: "%kunstmaan_admin.googleclienthelper.class%"
+        arguments: ["@kunstmaan_admin.googleclient", "@doctrine.orm.entity_manager"]
+        calls:
+          - [ "setRedirectUri", [ "@router", "KunstmaanAdminBundle_setToken" ] ]
+
+    kunstmaan_admin.googleanalyticshelper:
+        class: "Kunstmaan\AdminBundle\Helper\GoogleAnalyticsHelper"
+
     kunstmaan_admin.menubuilder:
         class: "%kunstmaan_admin.menubuilder.class%"
         arguments: ["@translator", "@service_container"]
@@ -119,3 +141,8 @@ services:
         arguments: ["%fos_user.model.user.class%"]
         tags:
             - { name: doctrine.event_listener, event: loadClassMetadata }
+
+    kunstmaan_admin.command.UpdateAnalyticsOverviewCommand:
+        class: Kunstmaan\AdminBundle\Command\UpdateAnalyticsOverviewCommand
+        tags:
+            -  { name: console.command }

@@ -1,5 +1,7 @@
 //Init functions needed on every page
-$(document).ready(function () {
+var chartData = [];
+
+$(document).ready(function (){
     if($('.tree').length > 0) {
         init_tree();
     }
@@ -29,10 +31,10 @@ function init_tree() {
             "icons" : true
         },
         "core": {
-                    "animation": 0,
-                    "open_parents": true,
-                    "initially_open": [topLevelTreeElements]
-                },
+            "animation": 0,
+            "open_parents": true,
+            "initially_open": [topLevelTreeElements]
+        },
         "types" : {
             "types" : {
                 //Page
@@ -111,10 +113,10 @@ function init_tree() {
             "dots" : true,
             "icons" : true
         },"core": {
-                    "animation": 0,
-                    "open_parents": true,
-                    "initially_open": [topLevelTreeElements]
-                },
+            "animation": 0,
+            "open_parents": true,
+            "initially_open": [topLevelTreeElements]
+        },
         "types" : {
             "types" : {
                 //Page
@@ -505,6 +507,7 @@ function updateOptions(el, options){
         } else {
             $(this).attr("name", $(this).attr("name") + "_" + uniqueid);
         }
+        console.log($(this).attr("name"));
         if($(this).hasClass("datepick")){
             $(this).datepicker(options);
         }

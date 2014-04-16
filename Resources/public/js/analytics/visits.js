@@ -6,5 +6,5 @@
         $('#newVisits .data_visits').html(data.overview.newVisits);
         $('#newVisits .data_percentage').html(data.extra.newVisitsPercentage);
 
-        $('#bounceVisits').html(data.overview.bounceRate);
+        $('#bounceVisits').html(data.overview.bounceRate + '%');
     }

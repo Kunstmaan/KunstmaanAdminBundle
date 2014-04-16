@@ -16,22 +16,23 @@
                     $('.db-tabs__item').removeClass('db-tabs__item--active');
                     $('#tab'+id).addClass('db-tabs__item--active');
 
-                    $('.db-content').fadeOut(100, function(){
-                        // add functions here to add component behaviour
-                        // these functions are declared in a per-template js file (public/js/analytics/)
-                        setHeader(data);
-                        setTraffic(data);
-                        setReferrals(data);
-                        setSearches(data);
-                        setCampaigns(data);
-                        setVisits(data);
-                        setChart(data);
-                        setGoals(data);
-                        resetGoalChart();
-                        $('.db-content').fadeIn(400, function() {
-                            initChart();
-                        });
-                    });
+
+                    $('.db-content').animate({ opacity: 0 });
+
+                    // add functions here to add component behaviour
+                    // these functions are declared in a per-template js file (public/js/analytics/)
+                    setHeader(data);
+                    setTraffic(data);
+                    setReferrals(data);
+                    setSearches(data);
+                    setCampaigns(data);
+                    setVisits(data);
+                    setChart(data);
+                    setGoals(data);
+                    resetGoalChart();
+                    initChart();
+
+                    $('.db-content').animate({ opacity: 100 });
                 }
             });
         }

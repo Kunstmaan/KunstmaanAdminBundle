@@ -5,29 +5,18 @@
     });
 
     // load dashboard data
-    var url = "analytics/getDailyOverview";
     var chartData = [];
     var chartLabels = [];
-    var dailyOverview = [];
-
-    $.get(url, function(data) {
-        dailyOverview = data.dailyOverview;
-        var data = data.dailyOverview.slice(0,7);
-        setChartData(data, true);
-    });
 
     // sets the chart data
-    function setChartData(data) {
+    function setChart(data) {
         chartData = [];
         chartLabels = [];
-
-        var increment = Math.ceil(data.length / 26);
-        for (var i = 0; i < data.length; i+=increment) {
-                chartData.push(parseInt(data[i].visits));
-                chartLabels.push(data[i].timestamp);
+        var increment = Math.ceil(data.overview.chartData.length / 26);
+        for (var i = 0; i < data.overview.chartData.length; i+=increment) {
+            chartData.push(parseInt(data.overview.chartData[i].visits));
+            chartLabels.push(data.overview.chartData[i].timestamp);
         }
-
-        initChart();
     }
 
     // sets chart width and height
@@ -39,8 +28,7 @@
     }
 
     // inits the chart
-    initChart = function() {
-
+    function initChart() {
         var barChartData = {
             labels : chartLabels,
             datasets : [
@@ -54,13 +42,12 @@
                 }
             ]
         };
-
         resizeChart();
 
-        // only use animation in browsers who are not IE8
         var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Line(barChartData, {animation:false});
     };
 
-    function setChart(data) {
-        setChartData(data.overview.chartData);
-    }
+
+
+
+

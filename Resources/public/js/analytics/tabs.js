@@ -1,11 +1,12 @@
     $(document).ready(function() {
         // show first tab
-        // switchTab($('.db-tabs > li:nth-child(3) > a').attr('id'), $('.db-tabs > li:nth-child(3) > a').attr('path'));
+        var tab = $('#tab3');
+        switchTab(tab.attr('data-id'), tab.attr('data-path'))
 
         // Tab switcher
         $(".db-tabs__controller").click(function(){
-            var id = $(this).attr('id');
-            var url = $(this).attr('path');
+            var id = $(this).attr('data-id');
+            var url = $(this).attr('data-path');
             switchTab(id, url);
         });
 

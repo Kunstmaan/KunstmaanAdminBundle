@@ -202,24 +202,6 @@ class AnalyticsController extends Controller
         return new JsonResponse($return, 200, array('Content-Type' => 'application/json'));
     }
 
-    /**
-     * Return an ajax response
-     *
-     * @Route("/getDailyOverview", name="KunstmaanAdminBundle_analytics_dailyoverview_ajax")
-     *
-     */
-    public function getDailyOverviewAction()
-    {
-        $em            = $this->getDoctrine()->getManager();
-        $dailyOverview = $em->getRepository('KunstmaanAdminBundle:AnalyticsDailyOverview')->getOverview();
-
-        $return = array(
-          'responseCode'  => 200,
-          'dailyOverview' => json_decode($dailyOverview->getData())
-        );
-
-        return new JsonResponse($return, 200, array('Content-Type' => 'application/json'));
-    }
 
     /**
      * Return an ajax response

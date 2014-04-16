@@ -184,7 +184,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                 // timestamp for chart data
                 if (!$isDaily) {
                     // if date
-                    $timestamp = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
+                    $timestamp = substr($row[0], 6, 2) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 0, 4);
                 } else {
                     // if hour
                     $timestamp = $row[0];
@@ -483,7 +483,7 @@ class UpdateAnalyticsOverviewCommand extends ContainerAwareCommand
                         // timestamp for chart data
                         if (!$isDaily) {
                             // if date
-                            $timestamp = substr($row[0], 0, 4) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 6, 2);
+                            $timestamp = substr($row[0], 6, 2) . '-' . substr($row[0], 4, 2) . '-' . substr($row[0], 0, 4);
                         } else {
                             // if hour
                             $timestamp = $row[0];

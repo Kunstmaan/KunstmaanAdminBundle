@@ -36,7 +36,6 @@
             });
         }
 
-
         var updateButtonText = $('#updateButton').html();
         var updating = false;
 

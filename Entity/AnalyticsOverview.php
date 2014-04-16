@@ -13,119 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
 {
 
-
-    /**
-     * @ORM\OneToMany(targetEntity="AnalyticsCampaign", mappedBy="overview", cascade={"persist"})
-     */
-    private $campaigns;
-
-    /**
-     * Set campaigns
-     *
-     * @param array $campaigns
-     * @return AnalyticsDailyOverview
-     */
-    public function setCampaigns($campaigns)
-    {
-        $this->campaigns = $campaigns;
-
-        return $this;
-    }
-
-    /**
-     * Get campaigns
-     *
-     * @return array
-     */
-    public function getCampaigns()
-    {
-        return $this->campaigns;
-    }
-
-    /**
-     * @ORM\OneToMany(targetEntity="AnalyticsTopReferral", mappedBy="overview", cascade={"persist"})
-     */
-    private $referrals;
-
-    /**
-     * Set referrals
-     *
-     * @param array $referrals
-     * @return AnalyticsDailyOverview
-     */
-    public function setReferrals($referrals)
-    {
-        $this->referrals = $referrals;
-
-        return $this;
-    }
-
-    /**
-     * Get referrals
-     *
-     * @return array
-     */
-    public function getReferrals()
-    {
-        return $this->referrals;
-    }
-
-    /**
-     * @ORM\OneToMany(targetEntity="AnalyticsGoal", mappedBy="overview", cascade={"persist"})
-     */
-    private $goals;
-
-    /**
-     * Set goals
-     *
-     * @param array $goals
-     * @return AnalyticsDailyOverview
-     */
-    public function setGoals($goals)
-    {
-        $this->goals = $goals;
-
-        return $this;
-    }
-
-    /**
-     * Get goals
-     *
-     * @return array
-     */
-    public function getGoals()
-    {
-        return $this->goals;
-    }
-
-    /**
-     * @ORM\OneToMany(targetEntity="AnalyticsTopSearch", mappedBy="overview", cascade={"persist"})
-     */
-    private $searches;
-
-    /**
-     * Set searches
-     *
-     * @param array $searches
-     * @return AnalyticsDailyOverview
-     */
-    public function setSearches($searches)
-    {
-        $this->searches = $searches;
-
-        return $this;
-    }
-
-    /**
-     * Get searches
-     *
-     * @return array
-     */
-    public function getSearches()
-    {
-        return $this->searches;
-    }
-
     /**
      * Get percentage of direct traffic
      *
@@ -172,37 +59,26 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
     }
 
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="chart_data", type="text")
-     */
-    private $chartData = '';
-
 
     /**
-     * Set chartData
-     *
-     * @param array $chartData
-     * @return AnalyticsDailyOverview
+     * @ORM\OneToMany(targetEntity="AnalyticsCampaign", mappedBy="overview", cascade={"persist"})
      */
-    public function setChartData($chartData)
-    {
-        $this->chartData = $chartData;
-
-        return $this;
-    }
+    private $campaigns;
 
     /**
-     * Get chartData
-     *
-     * @return array
+     * @ORM\OneToMany(targetEntity="AnalyticsTopReferral", mappedBy="overview", cascade={"persist"})
      */
-    public function getChartData()
-    {
-        return $this->chartData;
-    }
+    private $referrals;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AnalyticsGoal", mappedBy="overview", cascade={"persist"})
+     */
+    private $goals;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AnalyticsTopSearch", mappedBy="overview", cascade={"persist"})
+     */
+    private $searches;
 
     /**
      * @var string
@@ -281,6 +157,132 @@ class AnalyticsOverview extends \Kunstmaan\AdminBundle\Entity\AbstractEntity
      */
     private $bounceRate = 0;
 
+
+
+
+    /**
+     * Set campaigns
+     *
+     * @param array $campaigns
+     * @return AnalyticsDailyOverview
+     */
+    public function setCampaigns($campaigns)
+    {
+        $this->campaigns = $campaigns;
+
+        return $this;
+    }
+
+    /**
+     * Get campaigns
+     *
+     * @return array
+     */
+    public function getCampaigns()
+    {
+        return $this->campaigns;
+    }
+
+    /**
+     * Set referrals
+     *
+     * @param array $referrals
+     * @return AnalyticsDailyOverview
+     */
+    public function setReferrals($referrals)
+    {
+        $this->referrals = $referrals;
+
+        return $this;
+    }
+
+    /**
+     * Get referrals
+     *
+     * @return array
+     */
+    public function getReferrals()
+    {
+        return $this->referrals;
+    }
+
+    /**
+     * Set goals
+     *
+     * @param array $goals
+     * @return AnalyticsDailyOverview
+     */
+    public function setGoals($goals)
+    {
+        $this->goals = $goals;
+
+        return $this;
+    }
+
+    /**
+     * Get goals
+     *
+     * @return array
+     */
+    public function getGoals()
+    {
+        return $this->goals;
+    }
+
+    /**
+     * Set searches
+     *
+     * @param array $searches
+     * @return AnalyticsDailyOverview
+     */
+    public function setSearches($searches)
+    {
+        $this->searches = $searches;
+
+        return $this;
+    }
+
+    /**
+     * Get searches
+     *
+     * @return array
+     */
+    public function getSearches()
+    {
+        return $this->searches;
+    }
+
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="chart_data", type="text")
+     */
+    private $chartData = '';
+
+
+    /**
+     * Set chartData
+     *
+     * @param array $chartData
+     * @return AnalyticsDailyOverview
+     */
+    public function setChartData($chartData)
+    {
+        $this->chartData = $chartData;
+
+        return $this;
+    }
+
+    /**
+     * Get chartData
+     *
+     * @return array
+     */
+    public function getChartData()
+    {
+        return $this->chartData;
+    }
 
     /**
      * Set trafficSearchEngine

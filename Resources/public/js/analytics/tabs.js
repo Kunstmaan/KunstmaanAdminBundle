@@ -17,7 +17,7 @@
                     $('#tab'+id).addClass('db-tabs__item--active');
 
 
-                    $('.db-content').animate({ opacity: 0 });
+                    $('.db-content').addClass('db-content--hidden');
 
                     // add functions here to add component behaviour
                     // these functions are declared in a per-template js file (public/js/analytics/)
@@ -32,7 +32,7 @@
                     resetGoalChart();
                     initChart();
 
-                    $('.db-content').animate({ opacity: 100 });
+                    $('.db-content').removeClass('db-content--hidden');
                 }
             });
         }

@@ -52,7 +52,7 @@
 
         resizeChart();
         var myLine = new Chart(document.getElementById("js-dashboard-chart").getContext("2d")).Line(barChartData,
-            {scaleOverride: true, scaleStepWidth: Math.ceil(max/steps), scaleSteps: steps, animation:false});
+            {scaleOverride: true, scaleStepWidth: Math.ceil(max/steps), scaleSteps: steps, animation:true});
     };
 
 

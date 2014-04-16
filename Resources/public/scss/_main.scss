@@ -13,6 +13,7 @@ body > .container-fluid{
     background:     -ms-linear-gradient(top, #fff 0, #f1f3f9 300px);
     background:      -o-linear-gradient(top, #fff 0, #f1f3f9 300px);
     background:         linear-gradient(to bottom, #fff 0, #f1f3f9 300px);
+    min-width: 0px!important; // TESTING DASHBOARD
 }
 a{
     color: #2997ce;

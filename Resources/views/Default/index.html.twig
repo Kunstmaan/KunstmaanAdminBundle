@@ -3,14 +3,16 @@
 {% block header %}{% endblock %}
 
 {% block content %}
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <a href="{{ path('KunstmaanAdminBundle_homepage_admin') }}" class="btn btn-medium" style="float:right">{{ 'Edit dashboard' | trans }}</a>
-    {% endif %}
-
     {% if dashboardConfiguration %}
         {% if token %}
             <div class="page-header">
-                <h1>{{ dashboardConfiguration.title }}</h1>
+                <h1 class="pull-left">
+                    {{ dashboardConfiguration.title }}
+                </h1>
+                <p class="pull-right db__update-head">
+                    {{ 'analytics.dashboard.lastUpdate' | trans }} {{ lastUpdate }}
+                </p>
+
             </div>
 
 
@@ -68,6 +70,10 @@
         <div class="page-header">
             <h1>{{ 'omnext.welcome' | trans | raw }}</h1>
         </div>
+    {% endif %}
+
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <a href="{{ path('KunstmaanAdminBundle_homepage_admin') }}" class="btn btn-medium" style="float:right">{{ 'Edit dashboard' | trans }}</a>
     {% endif %}
 
 {% endblock %}

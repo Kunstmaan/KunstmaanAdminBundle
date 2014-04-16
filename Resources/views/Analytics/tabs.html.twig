@@ -10,14 +10,16 @@
         </li>
         {% set i = i + 1 %}
     {% endfor %}
+    {#
     <div id="lastUpdate">
-        {# <a href="#" id="updateButton" class="btn btn-primary"
+        <a href="#" id="updateButton" class="btn btn-primary"
             data-update-text=" {{ 'analytics.dashboard.update' | trans }}"
             data-updating-text=" {{ 'analytics.dashboard.updating' | trans }}">
             {{ 'analytics.dashboard.lastUpdate' | trans }} {{ lastUpdate }}
-        </a> #}
+        </a>
 
         {{ 'analytics.dashboard.lastUpdate' | trans }} {{ lastUpdate }}
     </div>
+    #}
 </ul>
 

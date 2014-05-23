@@ -58,7 +58,7 @@ class AdminLocaleListener implements EventSubscriberInterface
         if ($this->context->getToken()) {
             preg_match('/^\/(app_(.*)\.php\/)?([a-zA-Z_-]{2,5}\/)?admin\/(.*)/', $url, $match);
 
-            if (count($match)) {
+            if (count($match) && is_object($this->context->getToken()->getUser())) {
                 $locale = $this->context->getToken()->getUser()->getAdminLocale();
 
                 if (!$locale) {

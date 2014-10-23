@@ -65,8 +65,8 @@
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    {% include "KunstmaanAdminBundle:Default:_js_header.html.twig" %}
-    {% include "KunstmaanAdminBundle:Default:_css_header.html.twig" %}
+    {% include "@KunstmaanAdminBundle:Default:_js_header.html.twig" %}
+    {% include "@KunstmaanAdminBundle:Default:_css_header.html.twig" %}
 </head>
 
 
@@ -252,7 +252,7 @@
             });
         });
 
-        {% include "KunstmaanAdminBundle:Default:_js_footer.html.twig" %}
+        {% include "@KunstmaanAdminBundle:Default:_js_footer.html.twig" %}
      </script>
 </body>
 </html>

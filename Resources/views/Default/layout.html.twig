@@ -26,12 +26,12 @@
     {% stylesheets
         "@KunstmaanAdminBundle/Resources/public/scss/style.scss"
         "@KunstmaanAdminBundle/Resources/public/js/chosen/chosen.css"
-        filter="scss"
+        output='generated-css/style.css' filter="scss"
     %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
     {% endstylesheets %}
     <!--[if lte IE 8]>
-    {% stylesheets filter="scss" "@KunstmaanAdminBundle/Resources/public/scss/ie8.scss" %}
+    {% stylesheets output='generated-css/ie8.css' filter="scss" "@KunstmaanAdminBundle/Resources/public/scss/ie8.scss" %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
     {% endstylesheets %}
     <![endif]-->

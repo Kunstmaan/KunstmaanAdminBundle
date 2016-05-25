@@ -319,7 +319,7 @@ kunstmaanbundles.pageEditor = (function(window, undefined) {
     // Key Combinations
     keyCombinations = function() {
         $(document).on('keydown', function(e) {
-            if((e.ctrlKey || e.metaKey) && e.which === 83) {
+            if((e.ctrlKey || e.metaKey) && e.which === 83 && !e.altKey) {
                 e.preventDefault();
 
                 kunstmaanbundles.appLoading.addLoading();

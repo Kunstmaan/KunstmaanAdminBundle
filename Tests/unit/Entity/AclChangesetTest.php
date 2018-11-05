@@ -2,6 +2,8 @@
 
 namespace Kunstmaan\AdminBundle\Tests\Entity;
 
+use Codeception\Stub;
+use Kunstmaan\AdminBundle\Entity\AbstractEntity;
 use Kunstmaan\AdminBundle\Entity\AclChangeset;
 
 /**
@@ -55,10 +57,11 @@ class AclChangesetTest extends \PHPUnit_Framework_TestCase
 
     public function testSetAndGetRef()
     {
-        $entity = new TestEntity(1);
+        /** @var AbstractEntity $entity */
+        $entity = Stub::makeEmpty(AbstractEntity::class, ['getId' => 1, 'setId' => null, '__toString' => '1']);
         $this->object->setRef($entity);
         $this->assertEquals(1, $this->object->getRefId());
-        $this->assertEquals('Kunstmaan\AdminBundle\Tests\Entity\TestEntity', $this->object->getRefEntityName());
+        $this->assertEquals(get_class($entity), $this->object->getRefEntityName());
     }
 
     public function testSetAndGetStatus()

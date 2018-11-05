@@ -2,6 +2,7 @@
 
 namespace Kunstmaan\AdminBundle\Tests\Helper\Security\Acl;
 
+use Codeception\Stub;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -80,7 +81,7 @@ class AclHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($platform));
 
         /* @var $stmt Statement */
-        $stmt = $this->getMockForAbstractClass('Kunstmaan\AdminBundle\Tests\Mocks\StatementMock');
+        $stmt = Stub::makeEmpty(Statement::class);
 
         $conn->expects($this->any())
             ->method('executeQuery')

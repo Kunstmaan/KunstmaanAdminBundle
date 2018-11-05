@@ -1,6 +1,6 @@
 <?php
 
-namespace Kunstmaan\AdminBundle\Tests\Helper\FormWidgets;
+namespace Kunstmaan\AdminBundle\Tests\unit\Helper\FormWidgets;
 
 use Symfony\Component\Form\FormView;
 

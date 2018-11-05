@@ -59,7 +59,11 @@ class VersionCheckTest extends PHPUnit_Framework_TestCase
      */
     public function testVersionChecker()
     {
-        $path = realpath(getcwd().'/src');
+        $currentPath = getcwd();
+        if(strpos($currentPath, 'src') !== false) {
+            $currentPath = strstr($currentPath, 'src', true);
+        }
+        $path = realpath($currentPath.'/src');
         $trans = $this->createMock(Translator::class);
         $kernel = $this->createMock(Kernel::class);
         $request = $this->createMock(Request::class);
@@ -102,7 +106,11 @@ class VersionCheckTest extends PHPUnit_Framework_TestCase
         $this->cache = $this->createMock(Cache::class);
         $this->object = new VersionChecker($this->container, $this->cache);
         $this->cache->expects($this->never())->method('fetch');
-        $path = realpath(getcwd().'/src');
+        $currentPath = getcwd();
+        if(strpos($currentPath, 'src') !== false) {
+            $currentPath = strstr($currentPath, 'src', true);
+        }
+        $path = realpath($currentPath.'/src');
         $client = new FakeClient();
         $this->object->setClient($client);
         $trans = $this->createMock(Translator::class);
@@ -129,7 +137,11 @@ class VersionCheckTest extends PHPUnit_Framework_TestCase
         $this->object->setClient($client);
         $this->cache->expects($this->once())->method('fetch')->willReturn('not_an_array');
         $this->cache->expects($this->once())->method('save')->willReturn(true);
-        $path = realpath(getcwd().'/src');
+        $currentPath = getcwd();
+        if(strpos($currentPath, 'src') !== false) {
+            $currentPath = strstr($currentPath, 'src', true);
+        }
+        $path = realpath($currentPath.'/src');
         $trans = $this->createMock(Translator::class);
         $kernel = $this->createMock(Kernel::class);
         $request = $this->createMock(Request::class);
@@ -169,7 +181,11 @@ class VersionCheckTest extends PHPUnit_Framework_TestCase
      */
     public function testCheckGetPackagesThrowsExceptionWhenNoPackagesInLock()
     {
-        $path = realpath(getcwd().'/src/Kunstmaan/AdminBundle/Tests/Helper/VersionCheck');
+        $currentPath = getcwd();
+        if(strpos($currentPath, 'src') !== false) {
+            $currentPath = strstr($currentPath, 'src', true);
+        }
+        $path = realpath($currentPath.'/src/Kunstmaan/AdminBundle/Tests/Helper/VersionCheck');
         $this->expectException(Exception::class);
         $trans = $this->createMock(Translator::class);
         $kernel = $this->createMock(Kernel::class);
@@ -191,7 +207,11 @@ class VersionCheckTest extends PHPUnit_Framework_TestCase
      */
     public function testCheckGetPackagesThrowsExceptionWithBadJson()
     {
-        $path = realpath(getcwd().'/src/Kunstmaan/AdminBundle/Tests/Helper');
+        $currentPath = getcwd();
+        if(strpos($currentPath, 'src') !== false) {
+            $currentPath = strstr($currentPath, 'src', true);
+        }
+        $path = realpath($currentPath.'/src/Kunstmaan/AdminBundle/Tests/Helper');
         $this->expectException(Exception::class);
         $trans = $this->createMock(Translator::class);
         $kernel = $this->createMock(Kernel::class);

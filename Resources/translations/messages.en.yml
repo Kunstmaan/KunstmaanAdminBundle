@@ -151,3 +151,4 @@ toolbar:
             exceptions: Exceptions
             events: Events
         title: Exceptions
+          message: "<strong>%X%</strong> exception(s) veroorzaakt door <strong>%Y%</strong> events"
